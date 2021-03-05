@@ -1,0 +1,8 @@
+{
+  "name": "chef",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue",
+  "id": "5d9b6165"
+}
