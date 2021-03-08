@@ -10,15 +10,14 @@ const getters = {};
 const actions = {
   getAllIngredients({ commit }: { commit: any }): void {
     getIngredients().then((a: Ingredient[]) => {
-      console.log(a);
-      commit("ingredients/setAllIngredients", a);
+      commit("setAllIngredients", a);
     });
   }
 };
 
 const mutations = {
   setAllIngredients(state: any, payload: any): void {
-    // console.log(payload);
+    state.all = payload;
   }
 };
 
