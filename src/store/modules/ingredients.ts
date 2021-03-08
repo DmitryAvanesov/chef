@@ -1,24 +1,27 @@
 import { Ingredient, IngredientsState } from "@/types/ingredients";
 import { getIngredients } from "@/api/ingredients";
+import { ActionContext } from "vuex";
+import { RootState } from "@/types/root";
 
 const state = (): IngredientsState => ({
-  all: []
+  all: [],
 });
 
 const getters = {};
 
 const actions = {
-  getAllIngredients({ commit }: { commit: any }): void {
-    getIngredients().then((a: Ingredient[]) => {
-      commit("setAllIngredients", a);
-    });
-  }
+  async getAllIngredients({
+    commit,
+  }: ActionContext<IngredientsState, RootState>): Promise<void> {
+    const ingredients = await getIngredients();
+    commit("setAllIngredients", ingredients);
+  },
 };
 
 const mutations = {
-  setAllIngredients(state: any, payload: any): void {
+  setAllIngredients(state: IngredientsState, payload: Ingredient[]): void {
     state.all = payload;
-  }
+  },
 };
 
 export default {
@@ -26,5 +29,5 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

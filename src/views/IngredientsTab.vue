@@ -2,31 +2,38 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>{{ all }}</ion-title>
+        <ion-title>Ингредиенты</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">{{ all }}</ion-title>
-        </ion-toolbar>
-      </ion-header>
+    <ion-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-xs="2" v-for="ingredient in all" :key="ingredient.name">
+            <ingredient-card />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent} from '@ionic/vue';
-import {store} from "@/store"
-import {mapState} from "vuex";
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+} from "@ionic/vue";
+import { store } from "@/store";
+import { mapState } from "vuex";
 
 export default {
-  name: 'IngredientsTab',
-  store,
-  components: {IonHeader, IonToolbar, IonTitle, IonContent, IonPage},
-  computed: mapState('ingredients', ['all']),
+  name: "IngredientsTab",
+  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage },
+  computed: mapState("ingredients", ["all"]),
   beforeCreate() {
-    store.dispatch('ingredients/getAllIngredients')
-  }
-}
+    store.dispatch("ingredients/getAllIngredients");
+  },
+};
 </script>
