@@ -2,6 +2,17 @@ export interface IngredientsState {
   all: Ingredient[];
 }
 
-interface Ingredient {
+export interface Ingredient {
   name: string;
+  units: Units[];
+}
+
+interface IngredientQuantity {
+  number: number;
+  unit: Units;
+}
+
+enum Units {
+  Grams,
+  Kilograms
 }

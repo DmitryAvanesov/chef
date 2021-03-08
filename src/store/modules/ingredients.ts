@@ -1,4 +1,5 @@
-import { IngredientsState } from "@/types/ingredients";
+import { Ingredient, IngredientsState } from "@/types/ingredients";
+import { getIngredients } from "@/api/ingredients";
 
 const state = (): IngredientsState => ({
   all: []
@@ -6,9 +7,20 @@ const state = (): IngredientsState => ({
 
 const getters = {};
 
-const actions = {};
+const actions = {
+  getAllIngredients({ commit }: { commit: any }): void {
+    getIngredients().then((a: Ingredient[]) => {
+      console.log(a);
+      commit("ingredients/setAllIngredients", a);
+    });
+  }
+};
 
-const mutations = {};
+const mutations = {
+  setAllIngredients(state: any, payload: any): void {
+    // console.log(payload);
+  }
+};
 
 export default {
   namespaced: true,
