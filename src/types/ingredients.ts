@@ -1,5 +1,5 @@
 export interface IngredientsState {
-  all: Ingredient[];
+  ingredientsList: Ingredient[];
 }
 
 export interface Ingredient {
@@ -12,7 +12,7 @@ interface IngredientQuantity {
   unit: Units;
 }
 
-enum Units {
-  Grams,
-  Kilograms
+export enum Units {
+  г,
+  кг,
 }

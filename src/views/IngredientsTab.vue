@@ -8,8 +8,12 @@
     <ion-content>
       <ion-grid>
         <ion-row>
-          <ion-col size-xs="2" v-for="ingredient in all" :key="ingredient.name">
-            <ingredient-card />
+          <ion-col
+            size-xs="2"
+            v-for="(ingredient, index) in ingredientsList"
+            :key="ingredient.name"
+          >
+            <ingredient-card :index="index"></ingredient-card>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -25,15 +29,31 @@ import {
   IonTitle,
   IonContent,
 } from "@ionic/vue";
-import { store } from "@/store";
 import { mapState } from "vuex";
+import IngredientCard from "@/components/ingredient-card/IngredientCard.vue";
+import { useRootStore } from "@/store";
+import { computed } from "@vue/runtime-core";
+import { ref } from "vue";
 
 export default {
   name: "IngredientsTab",
-  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage },
-  computed: mapState("ingredients", ["all"]),
-  beforeCreate() {
-    store.dispatch("ingredients/getAllIngredients");
+  components: {
+    IngredientCard,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonPage,
+  },
+  setup() {
+    const store = useRootStore();
+    const ingredientsList = computed(
+      () => store.state.ingredients.ingredientsList
+    );
+
+    store.dispatch("ingredients/getIngredientsList");
+
+    return { ingredientsList };
   },
 };
 </script>
