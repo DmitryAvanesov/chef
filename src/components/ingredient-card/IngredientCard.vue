@@ -1,11 +1,15 @@
 <template>
-  <ion-card>
+  <ion-card class="card">
     <ion-card-content class="content">
-      <ion-img
-        src="http://cdn.iz.ru/sites/default/files/styles/900x506/public/news-2018-11/Depositphotos_131270798_xl-2015.jpg?itok=85lnFA2R"
-      ></ion-img>
+      <div
+        class="image"
+        :style="{
+          backgroundImage:
+            'url(http://cdn.iz.ru/sites/default/files/styles/900x506/public/news-2018-11/Depositphotos_131270798_xl-2015.jpg?itok=85lnFA2R)',
+        }"
+      ></div>
     </ion-card-content>
-    <ion-card-header>
+    <ion-card-header class="header">
       <ion-card-subtitle>
         <span v-for="unit in ingredient.units" :key="unit">{{ unit }}</span>
       </ion-card-subtitle>
@@ -46,8 +50,28 @@ export default {
 };
 </script>
 
-<style scoped>
-.content {
-  padding: 0;
+<style lang="scss" scoped>
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+
+  .content {
+    padding: 0;
+    height: 50%;
+
+    .image {
+      background-size: cover;
+      background-position: center;
+      height: 100%;
+    }
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+  }
 }
 </style>
