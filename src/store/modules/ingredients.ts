@@ -1,5 +1,5 @@
 import { Ingredient, IngredientsState, Units } from "@/types/ingredients";
-import { getIngredients } from "@/api/ingredients";
+import { apiGetIngredients, apiPostIngredient } from "@/api/ingredients";
 import { ActionContext } from "vuex";
 import { RootState } from "@/types/root";
 
@@ -13,10 +13,10 @@ const getters = {
 };
 
 const actions = {
-  async getIngredientsList({
+  async getIngredients({
     commit,
   }: ActionContext<IngredientsState, RootState>): Promise<void> {
-    const ingredients = (await getIngredients()).map(
+    const ingredients = (await apiGetIngredients()).map(
       (ingredient: Ingredient) => ({
         ...ingredient,
         units: ingredient.units.map((index: number) => Units[index]),
@@ -25,11 +25,24 @@ const actions = {
 
     commit("setIngredientsList", ingredients);
   },
+  async postIngredient(
+    { commit }: ActionContext<IngredientsState, RootState>,
+    body: Ingredient
+  ): Promise<void> {
+    const ingredient = await apiPostIngredient(body);
+    commit("addIngredient", ingredient);
+  },
 };
 
 const mutations = {
-  setIngredientsList(state: IngredientsState, payload: Ingredient[]): void {
-    state.ingredientsList = payload;
+  setIngredientsList(
+    state: IngredientsState,
+    ingredientsList: Ingredient[]
+  ): void {
+    state.ingredientsList = ingredientsList;
+  },
+  addIngredient(state: IngredientsState, ingredient: Ingredient): void {
+    state.ingredientsList = [...state.ingredientsList, ingredient];
   },
 };
 

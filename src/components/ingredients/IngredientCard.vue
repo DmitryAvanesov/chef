@@ -1,13 +1,12 @@
 <template>
   <ion-card class="card">
-    <ion-card-content class="content">
-      <div
-        class="image"
-        :style="{
-          backgroundImage:
-            'url(http://cdn.iz.ru/sites/default/files/styles/900x506/public/news-2018-11/Depositphotos_131270798_xl-2015.jpg?itok=85lnFA2R)',
-        }"
-      ></div>
+    <ion-card-content
+      class="content"
+      :style="{
+        backgroundImage:
+          'url(https://sup-kartoshka.ru/wp-content/uploads/2019/01/svarit-kurinoe-file-6.jpg)',
+      }"
+    >
     </ion-card-content>
     <ion-card-header class="header">
       <ion-card-subtitle>
@@ -58,13 +57,10 @@ export default {
 
   .content {
     padding: 0;
-    height: 50%;
-
-    .image {
-      background-size: cover;
-      background-position: center;
-      height: 100%;
-    }
+    flex-grow: 10;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
   }
 
   .header {
