@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import Tab1 from "@/views/IngredientsTab.vue";
+import Tab1 from "@/views/Ingredients.vue";
 
 describe("IngredientsTab.vue", () => {
   it("renders tab 1 view", () => {

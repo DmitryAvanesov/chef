@@ -5,7 +5,7 @@ import Tabs from "../views/Tabs.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/tabs/ingredients"
+    redirect: "/tabs/ingredients",
   },
   {
     path: "/tabs/",
@@ -13,19 +13,19 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "",
-        redirect: "/tabs/ingredients"
+        redirect: "/tabs/ingredients",
       },
       {
         path: "ingredients",
-        component: () => import("@/views/IngredientsTab.vue")
-      }
-    ]
-  }
+        component: () => import("@/views/Ingredients.vue"),
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 });
 
 export default router;

@@ -26,9 +26,9 @@ import {
   IonCardContent,
 } from "@ionic/vue";
 import { useRootStore } from "@/store";
-import { computed } from "@vue/runtime-core";
+import { computed, defineComponent } from "@vue/runtime-core";
 
-export default {
+export default defineComponent({
   name: "IngredientCard",
   components: {
     IonCard,
@@ -46,7 +46,7 @@ export default {
 
     return { ingredient };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

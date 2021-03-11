@@ -20,7 +20,10 @@
             <ingredient-card :index="index"></ingredient-card>
           </ion-col>
           <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
-            <add-ingredient-card></add-ingredient-card>
+            <add-ingredient-button @click="openModal"></add-ingredient-button>
+            <ion-modal :is-open="isOpenRef">
+              <add-ingredient-modal></add-ingredient-modal>
+            </ion-modal>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -35,22 +38,27 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
+  IonModal,
+  modalController,
 } from "@ionic/vue";
 import IngredientCard from "@/components/ingredients/IngredientCard.vue";
-import AddIngredientCard from "@/components/ingredients/AddIngredientCard.vue";
+import AddIngredientButton from "@/components/ingredients/AddIngredientButton.vue";
+import AddIngredientModal from "@/components/ingredients/AddIngredientModal.vue";
 import { useRootStore } from "@/store";
-import { computed } from "@vue/runtime-core";
+import { computed, defineComponent } from "@vue/runtime-core";
 
-export default {
-  name: "IngredientsTab",
+export default defineComponent({
+  name: "Ingredients",
   components: {
     IngredientCard,
-    AddIngredientCard,
+    AddIngredientButton,
+    AddIngredientModal,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
     IonPage,
+    IonModal,
   },
   setup() {
     const store = useRootStore();
@@ -58,11 +66,19 @@ export default {
       () => store.state.ingredients.ingredientsList
     );
 
+    const openModal = async () => {
+      const modal = await modalController.create({
+        component: AddIngredientModal,
+      });
+
+      return modal.present();
+    };
+
     store.dispatch("ingredients/getIngredients");
 
-    return { ingredientsList };
+    return { ingredientsList, openModal };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
