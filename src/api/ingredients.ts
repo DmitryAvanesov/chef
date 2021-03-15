@@ -20,6 +20,9 @@ export const apiPostIngredient = async (
 ): Promise<Ingredient> => {
   const options: RequestInit = {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(body),
   };
 
