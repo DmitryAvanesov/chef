@@ -12,7 +12,7 @@ const state = (): IngredientsState => ({
 });
 
 const getters = {
-  ingredientByIndex: (state: IngredientsState) => (index: number) =>
+  ingredientByIndex: (state: IngredientsState) => (index: number): Ingredient =>
     state.ingredientsList[index],
 };
 
