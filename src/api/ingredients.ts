@@ -34,3 +34,17 @@ export const apiPostIngredient = async (
 
   throw Error("An error occurred while posting an ingredient");
 };
+
+export const apiDeleteIngredient = async (id: string): Promise<void> => {
+  const options: RequestInit = {
+    method: "DELETE",
+  };
+
+  const response = await fetch(`${api}/ingredients/${id}`, options);
+
+  if (response.ok) {
+    return;
+  }
+
+  throw Error("An error occurred while deleting an ingredient");
+};

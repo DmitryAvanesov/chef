@@ -5,6 +5,7 @@ export interface IngredientsState {
 }
 
 export interface Ingredient {
+  _id?: string;
   name: string;
   units: Unit[];
 }

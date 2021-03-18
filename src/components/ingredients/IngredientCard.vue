@@ -1,5 +1,14 @@
 <template>
   <ion-card class="card">
+    <ion-fab vertical="top" horizontal="end">
+      <ion-fab-button
+        class="delete-button"
+        color="danger"
+        @click="deleteIngredient()"
+      >
+        <ion-icon class="delete-icon" :icon="close"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
     <ion-card-content
       class="content"
       :style="{
@@ -26,7 +35,9 @@ import {
   IonCardContent,
 } from "@ionic/vue";
 import { useRootStore } from "@/store";
-import { computed, defineComponent } from "@vue/runtime-core";
+import { computed, ComputedRef, defineComponent } from "@vue/runtime-core";
+import { close } from "ionicons/icons";
+import { Ingredient } from "@/types/ingredients";
 
 export default defineComponent({
   name: "IngredientCard",
@@ -40,11 +51,16 @@ export default defineComponent({
   props: ["index"],
   setup(props: any) {
     const store = useRootStore();
-    const ingredient = computed(() =>
+
+    const ingredient: ComputedRef<Ingredient> = computed(() =>
       store.getters["ingredients/ingredientByIndex"](props.index)
     );
 
-    return { ingredient };
+    const deleteIngredient = (): void => {
+      store.dispatch("ingredients/deleteIngredient", ingredient.value._id);
+    };
+
+    return { ingredient, deleteIngredient, close };
   },
 });
 </script>
@@ -54,6 +70,23 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   height: 200px;
+
+  .delete-button {
+    display: none;
+    width: 20px;
+    height: 20px;
+
+    .delete-icon {
+      font-size: 16px;
+      pointer-events: none;
+    }
+  }
+
+  &:hover {
+    .delete-button {
+      display: block;
+    }
+  }
 
   .content {
     padding: 0;

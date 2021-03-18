@@ -10,7 +10,7 @@
       </ion-item>
       <div>
         <ion-button @click="addIngredient()">Добавить</ion-button>
-        <ion-button color="light">Отмена</ion-button>
+        <ion-button color="light" @click="dismiss()">Отмена</ion-button>
       </div>
     </v-form>
   </ion-content>
@@ -20,6 +20,7 @@
 import { useRootStore } from "@/store";
 import { Ingredient } from "@/types/ingredients";
 import { defineComponent, Ref, ref } from "@vue/runtime-core";
+import { modalController } from "@ionic/vue";
 
 export default defineComponent({
   name: "AddIngredientModal",
@@ -30,15 +31,20 @@ export default defineComponent({
       units: [],
     });
 
-    const updateName = (name: string) => {
+    const updateName = (name: string): void => {
       data.value.name = name;
     };
 
-    const addIngredient = () => {
+    const addIngredient = (): void => {
       store.dispatch("ingredients/postIngredient", data.value);
+      dismiss();
     };
 
-    return { store, data, updateName, addIngredient };
+    const dismiss = (): void => {
+      modalController.dismiss();
+    };
+
+    return { store, data, updateName, addIngredient, dismiss };
   },
 });
 </script>

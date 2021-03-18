@@ -44,10 +44,5 @@
     "sass-loader": "^10.1.1",
     "vue-jest": "^5.0.0-0"
   },
-  "description": "An Ionic project",
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  }
+  "description": "An Ionic project"
 }

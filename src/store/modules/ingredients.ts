@@ -1,5 +1,9 @@
 import { Ingredient, IngredientsState } from "@/types/ingredients";
-import { apiGetIngredients, apiPostIngredient } from "@/api/ingredients";
+import {
+  apiDeleteIngredient,
+  apiGetIngredients,
+  apiPostIngredient,
+} from "@/api/ingredients";
 import { ActionContext } from "vuex";
 import { RootState } from "@/types/root";
 
@@ -16,15 +20,34 @@ const actions = {
   async getIngredients({
     commit,
   }: ActionContext<IngredientsState, RootState>): Promise<void> {
-    const ingredients = await apiGetIngredients();
-    commit("setIngredientsList", ingredients);
+    try {
+      const ingredients = await apiGetIngredients();
+      commit("setIngredientsList", ingredients);
+    } catch (e) {
+      console.log(e.message);
+    }
   },
   async postIngredient(
     { commit }: ActionContext<IngredientsState, RootState>,
     body: Ingredient
   ): Promise<void> {
-    const ingredient = await apiPostIngredient(body);
-    commit("addIngredient", ingredient);
+    try {
+      const ingredient = await apiPostIngredient(body);
+      commit("addIngredient", ingredient);
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
+  async deleteIngredient(
+    { commit }: ActionContext<IngredientsState, RootState>,
+    id: string
+  ): Promise<void> {
+    try {
+      await apiDeleteIngredient(id);
+      commit("removeIngredient", id);
+    } catch (e) {
+      console.log(e.message);
+    }
   },
 };
 
@@ -37,6 +60,13 @@ const mutations = {
   },
   addIngredient(state: IngredientsState, ingredient: Ingredient): void {
     state.ingredientsList = [...state.ingredientsList, ingredient];
+  },
+  removeIngredient(state: IngredientsState, id: string): void {
+    state.ingredientsList = [
+      ...state.ingredientsList.filter(
+        (ingredient: Ingredient) => ingredient._id !== id
+      ),
+    ];
   },
 };
 
