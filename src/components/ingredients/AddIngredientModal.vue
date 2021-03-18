@@ -26,7 +26,9 @@
         </ion-select>
       </ion-item>
       <div class="actions">
-        <ion-button type="submit" @click="addIngredient()">Добавить</ion-button>
+        <ion-button type="submit" @click="postIngredient()"
+          >Добавить</ion-button
+        >
         <ion-button color="light" @click="dismiss()">Отмена</ion-button>
       </div>
     </v-form>
@@ -55,7 +57,7 @@ export default defineComponent({
       data.value.name = name;
     };
 
-    const addIngredient = (): void => {
+    const postIngredient = (): void => {
       store.dispatch("ingredients/postIngredient", data.value);
       dismiss();
     };
@@ -69,7 +71,7 @@ export default defineComponent({
       data,
       unitsList,
       updateName,
-      addIngredient,
+      postIngredient,
       dismiss,
     };
   },

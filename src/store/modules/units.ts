@@ -1,4 +1,4 @@
-import { apiGetUnits, apiPostUnit } from "@/api/units";
+import { apiDeleteUnit, apiGetUnits, apiPostUnit } from "@/api/units";
 import { RootState } from "@/types/root";
 import { Unit, UnitsState } from "@/types/units";
 import { ActionContext } from "vuex";
@@ -31,14 +31,30 @@ const actions = {
       console.log(error.message);
     }
   },
+  async deleteUnit(
+    { commit }: ActionContext<UnitsState, RootState>,
+    id: string
+  ): Promise<void> {
+    try {
+      const unit = await apiDeleteUnit(id);
+      commit("removeUnit", id);
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
 };
 
 const mutations = {
   setUnitsList(state: UnitsState, unitsList: Unit[]): void {
     state.unitsList = unitsList;
   },
-  addUnit(state: UnitsState, unit: Unit) {
+  addUnit(state: UnitsState, unit: Unit): void {
     state.unitsList = [...state.unitsList, unit];
+  },
+  removeUnit(state: UnitsState, id: string): void {
+    state.unitsList = [
+      ...state.unitsList.filter((unit: Unit) => unit._id !== id),
+    ];
   },
 };
 

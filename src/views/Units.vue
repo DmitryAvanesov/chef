@@ -17,7 +17,9 @@
           </ion-item>
           <ion-item-options side="start">
             <ion-item-option color="primary">Редактировать</ion-item-option>
-            <ion-item-option color="danger">Удалить</ion-item-option>
+            <ion-item-option color="danger" @click="deleteUnit(unit._id)"
+              >Удалить</ion-item-option
+            >
           </ion-item-options>
         </ion-item-sliding>
         <add-unit-item></add-unit-item>
@@ -43,7 +45,12 @@ export default defineComponent({
     const store = useRootStore();
     const unitsList = computed(() => store.state.units.unitsList);
     store.dispatch("units/getUnits");
-    return { unitsList };
+
+    const deleteUnit = (id: string): void => {
+      store.dispatch("units/deleteUnit", id);
+    };
+
+    return { unitsList, deleteUnit };
   },
 });
 </script>

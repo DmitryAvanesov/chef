@@ -7,7 +7,7 @@
       :value="data.name"
       @ionInput="updateName($event.target.value)"
     ></ion-input>
-    <ion-button :disabled="!data.name" @click="addUnit()">
+    <ion-button :disabled="!data.name" @click="postUnit()">
       <ion-icon :icon="checkmark"></ion-icon>
     </ion-button>
   </ion-item>
@@ -32,12 +32,12 @@ export default defineComponent({
       data.value.name = name;
     };
 
-    const addUnit = (): void => {
+    const postUnit = (): void => {
       store.dispatch("units/postUnit", data.value);
       data.value.name = "";
     };
 
-    return { data, updateName, addUnit, checkmark };
+    return { data, updateName, postUnit, checkmark };
   },
 });
 </script>
