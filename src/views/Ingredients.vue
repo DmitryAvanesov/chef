@@ -66,6 +66,8 @@ export default defineComponent({
       () => store.state.ingredients.ingredientsList
     );
 
+    store.dispatch("ingredients/getIngredients");
+
     const openModal = async () => {
       const modal = await modalController.create({
         component: AddIngredientModal,
@@ -73,8 +75,6 @@ export default defineComponent({
 
       return modal.present();
     };
-
-    store.dispatch("ingredients/getIngredients");
 
     return { ingredientsList, openModal };
   },

@@ -10,13 +10,19 @@
       </ion-item>
       <ion-item>
         <ion-label>Единицы измерения</ion-label>
-        <ion-select multiple placeholder="Выберите">
+        <ion-select
+          multiple
+          placeholder="Выберите"
+          cancel-text="Отмена"
+          ok-text="ОК"
+        >
           <ion-select-option
             v-for="unit in unitsList"
             :key="unit._id"
             :value="unit._id"
-            >{{ unit.name }}</ion-select-option
           >
+            {{ unit.name }}
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <div class="actions">
@@ -43,6 +49,8 @@ export default defineComponent({
     });
     const unitsList = computed(() => store.state.units.unitsList);
 
+    store.dispatch("units/getUnits");
+
     const updateName = (name: string): void => {
       data.value.name = name;
     };
@@ -56,7 +64,14 @@ export default defineComponent({
       modalController.dismiss();
     };
 
-    return { store, data, unitsList, updateName, addIngredient, dismiss };
+    return {
+      store,
+      data,
+      unitsList,
+      updateName,
+      addIngredient,
+      dismiss,
+    };
   },
 });
 </script>

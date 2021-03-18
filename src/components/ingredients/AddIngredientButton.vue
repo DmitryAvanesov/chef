@@ -38,6 +38,7 @@ export default defineComponent({
   .add-icon {
     --ionicon-stroke-width: 48px;
     font-size: 30px;
+    pointer-events: none;
   }
 }
 </style>
