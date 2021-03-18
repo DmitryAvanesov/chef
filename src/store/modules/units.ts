@@ -1,4 +1,4 @@
-import { apiGetUnits } from "@/api/units";
+import { apiGetUnits, apiPostUnit } from "@/api/units";
 import { RootState } from "@/types/root";
 import { Unit, UnitsState } from "@/types/units";
 import { ActionContext } from "vuex";
@@ -16,8 +16,19 @@ const actions = {
     try {
       const units = await apiGetUnits();
       commit("setUnitsList", units);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
+  async postUnit(
+    { commit }: ActionContext<UnitsState, RootState>,
+    body: Unit
+  ): Promise<void> {
+    try {
+      const unit = await apiPostUnit(body);
+      commit("addUnit", unit);
+    } catch (error) {
+      console.log(error.message);
     }
   },
 };
@@ -25,6 +36,9 @@ const actions = {
 const mutations = {
   setUnitsList(state: UnitsState, unitsList: Unit[]): void {
     state.unitsList = unitsList;
+  },
+  addUnit(state: UnitsState, unit: Unit) {
+    state.unitsList = [...state.unitsList, unit];
   },
 };
 

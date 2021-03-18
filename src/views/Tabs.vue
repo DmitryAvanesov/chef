@@ -2,12 +2,12 @@
   <ion-page>
     <ion-tabs>
       <ion-tab-bar>
-        <ion-tab-button tab="IngredientsTab" href="/ingredients">
+        <ion-tab-button tab="Ingredients" href="/ingredients">
           <ion-icon :icon="ellipse" />
           <ion-label>Ингредиенты</ion-label>
         </ion-tab-button>
-        <ion-tab-button tab="UnitsTab" href="/units">
-          <ion-icon :icon="triangle" />
+        <ion-tab-button tab="Units" href="/units">
+          <ion-icon :icon="square" />
           <ion-label>Единицы измерения</ion-label>
         </ion-tab-button>
       </ion-tab-bar>

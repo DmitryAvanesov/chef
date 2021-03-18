@@ -23,8 +23,8 @@ const actions = {
     try {
       const ingredients = await apiGetIngredients();
       commit("setIngredientsList", ingredients);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      console.log(error.message);
     }
   },
   async postIngredient(
@@ -34,8 +34,8 @@ const actions = {
     try {
       const ingredient = await apiPostIngredient(body);
       commit("addIngredient", ingredient);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      console.log(error.message);
     }
   },
   async deleteIngredient(
@@ -45,8 +45,8 @@ const actions = {
     try {
       await apiDeleteIngredient(id);
       commit("removeIngredient", id);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      console.log(error.message);
     }
   },
 };

@@ -28,7 +28,7 @@ export default defineComponent({
   setup() {
     const store = useRootStore();
 
-    const openModal = async () => {
+    const openModal = async (): Promise<void> => {
       const modal = await modalController.create({
         component: AddIngredientModal,
       });
