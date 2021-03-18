@@ -1,5 +1,10 @@
 <template>
-  <ion-fab class="add-ingredient-button" vertical="bottom" horizontal="end">
+  <ion-fab
+    class="add-ingredient-button"
+    vertical="bottom"
+    horizontal="end"
+    @click="openModal()"
+  >
     <ion-fab-button>
       <ion-icon class="add-icon" :icon="add"></ion-icon>
     </ion-fab-button>
@@ -7,10 +12,11 @@
 </template>
 
 <script lang="ts">
-import { IonFab, IonFabButton, IonIcon } from "@ionic/vue";
+import { IonFab, IonFabButton, IonIcon, modalController } from "@ionic/vue";
 import { useRootStore } from "@/store";
 import { add } from "ionicons/icons";
 import { defineComponent } from "@vue/runtime-core";
+import AddIngredientModal from "@/components/ingredients/AddIngredientModal.vue";
 
 export default defineComponent({
   name: "AddIngredientButton",
@@ -22,11 +28,15 @@ export default defineComponent({
   setup() {
     const store = useRootStore();
 
-    const handleCardClick = () => {
-      store.dispatch("ingredients/postIngredient");
+    const openModal = async () => {
+      const modal = await modalController.create({
+        component: AddIngredientModal,
+      });
+
+      return modal.present();
     };
 
-    return { store, handleCardClick, add };
+    return { store, openModal, add };
   },
 });
 </script>

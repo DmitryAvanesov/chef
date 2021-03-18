@@ -20,7 +20,7 @@
             <ingredient-card :index="index"></ingredient-card>
           </ion-col>
           <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
-            <add-ingredient-button @click="openModal"></add-ingredient-button>
+            <add-ingredient-button></add-ingredient-button>
             <ion-modal :is-open="isOpenRef">
               <add-ingredient-modal></add-ingredient-modal>
             </ion-modal>
@@ -68,15 +68,7 @@ export default defineComponent({
 
     store.dispatch("ingredients/getIngredients");
 
-    const openModal = async () => {
-      const modal = await modalController.create({
-        component: AddIngredientModal,
-      });
-
-      return modal.present();
-    };
-
-    return { ingredientsList, openModal };
+    return { ingredientsList };
   },
 });
 </script>
