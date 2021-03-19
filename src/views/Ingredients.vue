@@ -9,15 +9,15 @@
       <ion-grid class="ingredients-grid">
         <ion-row>
           <ion-col
-            v-for="(ingredient, index) in ingredientsList"
-            :key="ingredient.name"
+            v-for="ingredient in ingredientsList"
+            :key="ingredient._id"
             size-xs="12"
             size-sm="6"
             size-md="4"
             size-lg="3"
             size-xl="2"
           >
-            <ingredient-card :index="index"></ingredient-card>
+            <ingredient-card :id="ingredient._id"></ingredient-card>
           </ion-col>
           <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
             <add-ingredient-button></add-ingredient-button>
@@ -32,15 +32,7 @@
 </template>
 
 <script lang="ts">
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonModal,
-  modalController,
-} from "@ionic/vue";
+import { IonPage } from "@ionic/vue";
 import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import AddIngredientButton from "@/components/ingredients/AddIngredientButton.vue";
 import AddIngredientModal from "@/components/ingredients/AddIngredientModal.vue";
@@ -53,12 +45,7 @@ export default defineComponent({
     IngredientCard,
     AddIngredientButton,
     AddIngredientModal,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
     IonPage,
-    IonModal,
   },
   setup() {
     const store = useRootStore();

@@ -12,8 +12,10 @@ const state = (): IngredientsState => ({
 });
 
 const getters = {
-  ingredientByIndex: (state: IngredientsState) => (index: number): Ingredient =>
-    state.ingredientsList[index],
+  ingredientById: (state: IngredientsState) => (id: string): Ingredient =>
+    state.ingredientsList.find(
+      (ingredient: Ingredient) => ingredient._id === id
+    ) || { name: "", units: [] },
 };
 
 const actions = {

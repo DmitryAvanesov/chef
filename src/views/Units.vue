@@ -6,61 +6,26 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="content">
-      <ion-list class="list">
-        <ion-item-sliding
-          class="list-item"
-          v-for="unit in unitsList"
-          :key="unit._id"
-        >
-          <ion-item>
-            <ion-label>{{ unit.name }}</ion-label>
-          </ion-item>
-          <ion-item-options side="start">
-            <ion-item-option color="primary">Редактировать</ion-item-option>
-            <ion-item-option color="danger" @click="deleteUnit(unit._id)"
-              >Удалить</ion-item-option
-            >
-          </ion-item-options>
-        </ion-item-sliding>
-        <add-unit-item></add-unit-item>
-      </ion-list>
+      <units-list></units-list>
+      <units-reorder></units-reorder>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import { IonPage } from "@ionic/vue";
-import { useRootStore } from "@/store";
 import { defineComponent } from "@vue/runtime-core";
-import { computed } from "vue";
-import AddUnitItem from "@/components/units/AddUnitItem.vue";
+import UnitsList from "@/components/units/UnitsList.vue";
+import UnitsReorder from "@/components/units/UnitsReorder.vue";
 
 export default defineComponent({
   name: "Units",
   components: {
-    AddUnitItem,
+    UnitsList,
+    UnitsReorder,
     IonPage,
-  },
-  setup() {
-    const store = useRootStore();
-    const unitsList = computed(() => store.state.units.unitsList);
-    store.dispatch("units/getUnits");
-
-    const deleteUnit = (id: string): void => {
-      store.dispatch("units/deleteUnit", id);
-    };
-
-    return { unitsList, deleteUnit };
   },
 });
 </script>
 
-<style lang="scss" scoped>
-.list {
-  padding: 5% 10%;
-
-  .list-item {
-    cursor: pointer;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

@@ -36,7 +36,7 @@ const actions = {
     id: string
   ): Promise<void> {
     try {
-      const unit = await apiDeleteUnit(id);
+      await apiDeleteUnit(id);
       commit("removeUnit", id);
     } catch (error) {
       console.log(error.message);

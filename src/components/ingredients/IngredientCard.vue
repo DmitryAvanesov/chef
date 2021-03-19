@@ -48,12 +48,12 @@ export default defineComponent({
     IonCardTitle,
     IonCardContent,
   },
-  props: ["index"],
+  props: ["id"],
   setup(props: any) {
     const store = useRootStore();
 
     const ingredient: ComputedRef<Ingredient> = computed(() =>
-      store.getters["ingredients/ingredientByIndex"](props.index)
+      store.getters["ingredients/ingredientById"](props.id)
     );
 
     const deleteIngredient = (): void => {
