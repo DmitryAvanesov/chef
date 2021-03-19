@@ -21,9 +21,6 @@
           </ion-col>
           <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
             <add-ingredient-button></add-ingredient-button>
-            <ion-modal :is-open="isOpenRef">
-              <add-ingredient-modal></add-ingredient-modal>
-            </ion-modal>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -35,7 +32,6 @@
 import { IonPage } from "@ionic/vue";
 import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import AddIngredientButton from "@/components/ingredients/AddIngredientButton.vue";
-import AddIngredientModal from "@/components/ingredients/AddIngredientModal.vue";
 import { useRootStore } from "@/store";
 import { computed, defineComponent } from "@vue/runtime-core";
 
@@ -44,7 +40,6 @@ export default defineComponent({
   components: {
     IngredientCard,
     AddIngredientButton,
-    AddIngredientModal,
     IonPage,
   },
   setup() {
