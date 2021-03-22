@@ -1,11 +1,11 @@
-import { Ingredient, IngredientsState } from "@/types/ingredients";
 import {
   apiDeleteIngredient,
   apiGetIngredients,
   apiPostIngredient,
 } from "@/api/ingredients";
-import { ActionContext } from "vuex";
-import { RootState } from "@/types/root";
+import type { Ingredient, IngredientsState } from "@/types/ingredients";
+import type { RootState } from "@/types/root";
+import type { ActionContext } from "vuex";
 
 const state = (): IngredientsState => ({
   ingredientsList: [],

@@ -29,10 +29,10 @@
 </template>
 
 <script lang="ts">
-import { IonPage } from "@ionic/vue";
-import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import AddIngredientButton from "@/components/ingredients/AddIngredientButton.vue";
+import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import { useRootStore } from "@/store";
+import { IonPage } from "@ionic/vue";
 import { computed, defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({

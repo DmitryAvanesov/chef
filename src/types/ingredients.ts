@@ -1,4 +1,4 @@
-import { Unit } from "@/types/units";
+import type { Unit } from "@/types/units";
 
 export interface IngredientsState {
   ingredientsList: Ingredient[];

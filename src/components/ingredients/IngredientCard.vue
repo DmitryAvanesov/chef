@@ -27,6 +27,8 @@
 </template>
 
 <script lang="ts">
+import { useRootStore } from "@/store";
+import type { Ingredient } from "@/types/ingredients";
 import {
   IonCard,
   IonCardHeader,
@@ -34,10 +36,9 @@ import {
   IonCardTitle,
   IonCardContent,
 } from "@ionic/vue";
-import { useRootStore } from "@/store";
-import { computed, ComputedRef, defineComponent } from "@vue/runtime-core";
+import type { ComputedRef} from "@vue/runtime-core";
+import { computed, defineComponent } from "@vue/runtime-core";
 import { close } from "ionicons/icons";
-import { Ingredient } from "@/types/ingredients";
 
 export default defineComponent({
   name: "IngredientCard",

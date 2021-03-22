@@ -1,7 +1,7 @@
 import { apiDeleteUnit, apiGetUnits, apiPostUnit } from "@/api/units";
-import { RootState } from "@/types/root";
-import { Unit, UnitsState } from "@/types/units";
-import { ActionContext } from "vuex";
+import type { RootState } from "@/types/root";
+import type { Unit, UnitsState } from "@/types/units";
+import type { ActionContext } from "vuex";
 
 const state = (): UnitsState => ({
   unitsList: [],

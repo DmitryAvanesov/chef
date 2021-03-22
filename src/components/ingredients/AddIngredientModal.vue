@@ -37,9 +37,10 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import { Ingredient } from "@/types/ingredients";
-import { computed, defineComponent, Ref, ref } from "@vue/runtime-core";
+import type { Ingredient } from "@/types/ingredients";
 import { modalController } from "@ionic/vue";
+import type { Ref} from "@vue/runtime-core";
+import { computed, defineComponent, ref } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "AddIngredientModal",

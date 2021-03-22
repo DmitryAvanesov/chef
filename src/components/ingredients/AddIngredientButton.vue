@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts">
-import { IonFab, IonFabButton, IonIcon, modalController } from "@ionic/vue";
-import { useRootStore } from "@/store";
-import { add } from "ionicons/icons";
-import { defineComponent } from "@vue/runtime-core";
-import AddIngredientModal from "@/components/ingredients/AddIngredientModal.vue";
+import AddIngredientModal from '@/components/ingredients/AddIngredientModal.vue';
+import { useRootStore } from '@/store';
+import { IonFab, IonFabButton, IonIcon, modalController } from '@ionic/vue';
+import { defineComponent } from '@vue/runtime-core';
+import { add } from 'ionicons/icons';
 
 export default defineComponent({
-  name: "AddIngredientButton",
+  name: 'AddIngredientButton',
   components: {
     IonFab,
     IonFabButton,

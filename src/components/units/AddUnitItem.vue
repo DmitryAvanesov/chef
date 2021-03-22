@@ -15,10 +15,11 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import { Unit } from "@/types/units";
+import type { Unit } from "@/types/units";
 import { defineComponent } from "@vue/runtime-core";
 import { checkmark } from "ionicons/icons";
-import { Ref, ref } from "vue";
+import type { Ref} from "vue";
+import { ref } from "vue";
 
 export default defineComponent({
   name: "AddUnitItem",

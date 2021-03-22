@@ -4,6 +4,7 @@
       class="list-item"
       v-for="unit in unitsList"
       :key="unit._id"
+      ref="listItem"
     >
       <ion-item>
         <ion-label v-if="!editing">{{ unit.name }}</ion-label>
@@ -29,11 +30,12 @@
 </template>
 
 <script lang="ts">
-import { useRootStore } from "@/store";
-import { defineComponent, ref } from "@vue/runtime-core";
-import { computed, Ref } from "vue";
 import AddUnitItem from "@/components/units/AddUnitItem.vue";
-import { Unit } from "@/types/units";
+import { useRootStore } from "@/store";
+import type { Unit } from "@/types/units";
+import { defineComponent, ref } from "@vue/runtime-core";
+import type { Ref } from "vue";
+import { computed } from "vue";
 
 export default defineComponent({
   name: "UnitsList",
@@ -43,21 +45,29 @@ export default defineComponent({
     const data: Ref<Unit> = ref({
       name: "",
     });
-    let editing = ref(false);
+    const editing = ref(false);
+    const listItem: Ref<HTMLIonItemSlidingElement | undefined> = ref();
     const unitsList = computed(() => store.state.units.unitsList);
 
     store.dispatch("units/getUnits");
 
-    const handleEditing = (target: any): void => {
+    const handleEditing = (): void => {
       editing.value = !editing.value;
-      console.log(target);
+      listItem.value?.close();
     };
 
     const deleteUnit = (id: string): void => {
       store.dispatch("units/deleteUnit", id);
     };
 
-    return { data, editing, unitsList, handleEditing, deleteUnit };
+    return {
+      data,
+      editing,
+      listItem,
+      unitsList,
+      handleEditing,
+      deleteUnit,
+    };
   },
 });
 </script>

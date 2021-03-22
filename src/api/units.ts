@@ -1,5 +1,5 @@
-import { Ingredient } from "@/types/ingredients";
-import { Unit } from "@/types/units";
+import type { Unit } from "@/types/units";
+
 const api = process.env.VUE_APP_API;
 
 export const apiGetUnits = async (): Promise<Unit[]> => {

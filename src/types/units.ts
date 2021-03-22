@@ -10,5 +10,5 @@ export interface Unit {
 export interface UnitReorderEventDetail {
   from: number;
   to: number;
-  complete: () => unknown;
+  complete: () => void;
 }
