@@ -7,22 +7,22 @@
       :value="data.name"
       @ionInput="updateName($event.target.value)"
     ></ion-input>
-    <ion-button :disabled="!data.name" @click="postUnit()">
-      <ion-icon :icon="checkmark"></ion-icon>
-    </ion-button>
+    <confirm-button :data="data" :callback="postUnit"></confirm-button>
   </ion-item>
 </template>
 
 <script lang="ts">
+import ConfirmButton from "@/components/units/ConfirmButton.vue";
 import { useRootStore } from "@/store";
 import type { Unit } from "@/types/units";
 import { defineComponent } from "@vue/runtime-core";
 import { checkmark } from "ionicons/icons";
-import type { Ref} from "vue";
+import type { Ref } from "vue";
 import { ref } from "vue";
 
 export default defineComponent({
   name: "AddUnitItem",
+  components: { ConfirmButton },
   setup() {
     const store = useRootStore();
     const data: Ref<Unit> = ref({

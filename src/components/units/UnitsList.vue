@@ -2,22 +2,25 @@
   <ion-list class="list">
     <ion-item-sliding
       class="list-item"
-      v-for="unit in unitsList"
+      v-for="(unit, index) in unitsList"
       :key="unit._id"
-      ref="listItem"
+      :ref="`${index}`"
     >
       <ion-item>
-        <ion-label v-if="!editing">{{ unit.name }}</ion-label>
         <ion-input
           class="add-input"
-          v-if="editing"
+          v-if="editing === index"
           :placeholder="unit.name"
           :value="data.name"
           @ionInput="updateName($event.target.value)"
         ></ion-input>
+        <ion-label v-else>{{ unit.name }}</ion-label>
       </ion-item>
       <ion-item-options side="start">
-        <ion-item-option color="primary" @click="handleEditing()">
+        <ion-item-option
+          color="primary"
+          @click="handleEditing($refs[index], index)"
+        >
           Редактировать
         </ion-item-option>
         <ion-item-option color="danger" @click="deleteUnit(unit._id)">
@@ -33,6 +36,7 @@
 import AddUnitItem from "@/components/units/AddUnitItem.vue";
 import { useRootStore } from "@/store";
 import type { Unit } from "@/types/units";
+import type { ComputedRef } from "@vue/runtime-core";
 import { defineComponent, ref } from "@vue/runtime-core";
 import type { Ref } from "vue";
 import { computed } from "vue";
@@ -45,15 +49,19 @@ export default defineComponent({
     const data: Ref<Unit> = ref({
       name: "",
     });
-    const editing = ref(false);
-    const listItem: Ref<HTMLIonItemSlidingElement | undefined> = ref();
-    const unitsList = computed(() => store.state.units.unitsList);
+    const editing: Ref<number | null> = ref(null);
+    const unitsList: ComputedRef<Unit[]> = computed(
+      () => store.state.units.unitsList
+    );
 
     store.dispatch("units/getUnits");
 
-    const handleEditing = (): void => {
-      editing.value = !editing.value;
-      listItem.value?.close();
+    const handleEditing = (
+      item: HTMLIonItemSlidingElement,
+      index: number
+    ): void => {
+      editing.value = index;
+      item.close();
     };
 
     const deleteUnit = (id: string): void => {
@@ -63,7 +71,6 @@ export default defineComponent({
     return {
       data,
       editing,
-      listItem,
       unitsList,
       handleEditing,
       deleteUnit,

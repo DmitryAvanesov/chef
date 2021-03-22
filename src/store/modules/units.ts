@@ -7,7 +7,9 @@ const state = (): UnitsState => ({
   unitsList: [],
 });
 
-const getters = {};
+const getters = {
+  unitsCount: (state: UnitsState): number => state.unitsList.length,
+};
 
 const actions = {
   async getUnits({
