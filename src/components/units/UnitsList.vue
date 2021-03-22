@@ -7,13 +7,15 @@
       :ref="`${index}`"
     >
       <ion-item>
-        <ion-input
-          class="add-input"
-          v-if="editing === index"
-          :placeholder="unit.name"
-          :value="data.name"
-          @ionInput="updateName($event.target.value)"
-        ></ion-input>
+        <div v-if="editing === index">
+          <ion-input
+            class="add-input"
+            :placeholder="unit.name"
+            :value="data.name"
+            @ionInput="updateName($event.target.value)"
+          ></ion-input>
+          <confirm-button :data="data" :callback="patchUnit"></confirm-button>
+        </div>
         <ion-label v-else>{{ unit.name }}</ion-label>
       </ion-item>
       <ion-item-options side="start">
@@ -34,6 +36,7 @@
 
 <script lang="ts">
 import AddUnitItem from "@/components/units/AddUnitItem.vue";
+import ConfirmButton from "@/components/units/ConfirmButton.vue";
 import { useRootStore } from "@/store";
 import type { Unit } from "@/types/units";
 import type { ComputedRef } from "@vue/runtime-core";
@@ -43,7 +46,7 @@ import { computed } from "vue";
 
 export default defineComponent({
   name: "UnitsList",
-  components: { AddUnitItem },
+  components: { AddUnitItem, ConfirmButton },
   setup() {
     const store = useRootStore();
     const data: Ref<Unit> = ref({
@@ -56,12 +59,25 @@ export default defineComponent({
 
     store.dispatch("units/getUnits");
 
+    const updateName = (name: string): void => {
+      data.value.name = name;
+    };
+
     const handleEditing = (
       item: HTMLIonItemSlidingElement,
       index: number
     ): void => {
       editing.value = index;
       item.close();
+    };
+
+    const patchUnit = () => {
+      if (editing.value !== null) {
+        store.dispatch("units/patchUnit", {
+          id: unitsList.value[editing.value]._id,
+          unit: data.value,
+        });
+      }
     };
 
     const deleteUnit = (id: string): void => {
@@ -72,7 +88,9 @@ export default defineComponent({
       data,
       editing,
       unitsList,
+      updateName,
       handleEditing,
+      patchUnit,
       deleteUnit,
     };
   },

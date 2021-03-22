@@ -1,6 +1,11 @@
-import { apiDeleteUnit, apiGetUnits, apiPostUnit } from "@/api/units";
+import {
+  apiDeleteUnit,
+  apiGetUnits,
+  apiPatchUnit,
+  apiPostUnit,
+} from "@/api/units";
 import type { RootState } from "@/types/root";
-import type { Unit, UnitsState } from "@/types/units";
+import type { Unit, UnitsState, UpdateUnitPayload } from "@/types/units";
 import type { ActionContext } from "vuex";
 
 const state = (): UnitsState => ({
@@ -33,6 +38,17 @@ const actions = {
       console.log(error.message);
     }
   },
+  async patchUnit(
+    { commit }: ActionContext<UnitsState, RootState>,
+    payload: UpdateUnitPayload
+  ): Promise<void> {
+    try {
+      const unit = await apiPatchUnit(payload.id, payload.unit);
+      commit("addUnit", payload);
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
   async deleteUnit(
     { commit }: ActionContext<UnitsState, RootState>,
     id: string
@@ -52,6 +68,12 @@ const mutations = {
   },
   addUnit(state: UnitsState, unit: Unit): void {
     state.unitsList = [...state.unitsList, unit];
+  },
+  updateUnit(state: UnitsState, payload: UpdateUnitPayload): void {
+    state.unitsList = [
+      ...state.unitsList.filter((unit: Unit) => unit._id !== payload.id),
+      payload.unit,
+    ];
   },
   removeUnit(state: UnitsState, id: string): void {
     state.unitsList = [

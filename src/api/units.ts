@@ -34,6 +34,25 @@ export const apiPostUnit = async (body: Unit): Promise<Unit> => {
   throw Error("An error occurred while posting a unit");
 };
 
+export const apiPatchUnit = async (id: string, body: Unit): Promise<Unit> => {
+  console.log(id, body);
+  const options: RequestInit = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  };
+
+  const response = await fetch(`${api}/units/${id}`, options);
+
+  if (response.ok) {
+    return response.json();
+  }
+
+  throw Error("An error occurred while patching a unit");
+};
+
 export const apiDeleteUnit = async (id: string): Promise<void> => {
   const options: RequestInit = {
     method: "DELETE",

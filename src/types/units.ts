@@ -12,3 +12,8 @@ export interface UnitReorderEventDetail {
   to: number;
   complete: () => void;
 }
+
+export interface UpdateUnitPayload {
+  id: string;
+  unit: Unit;
+}
