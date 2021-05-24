@@ -4,10 +4,12 @@ module.exports = {
     node: true,
   },
   extends: [
-    "@ionic/eslint-config/recommended",
-    "plugin:vue/vue3-essential",
     "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "@ionic/eslint-config/recommended",
     "@vue/typescript/recommended",
+    "plugin:vue/vue3-essential",
   ],
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",

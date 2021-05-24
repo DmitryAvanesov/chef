@@ -44,7 +44,7 @@ const actions = {
   ): Promise<void> {
     try {
       const unit = await apiPatchUnit(payload.id, payload.unit);
-      commit("addUnit", payload);
+      commit("updateUnit", { id: payload.id, unit });
     } catch (error) {
       console.log(error.message);
     }
@@ -64,21 +64,29 @@ const actions = {
 
 const mutations = {
   setUnitsList(state: UnitsState, unitsList: Unit[]): void {
-    state.unitsList = unitsList;
+    state.unitsList = unitsList.sort((a: Unit, b: Unit) =>
+      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+    );
   },
   addUnit(state: UnitsState, unit: Unit): void {
-    state.unitsList = [...state.unitsList, unit];
+    state.unitsList = [...state.unitsList, unit].sort((a: Unit, b: Unit) =>
+      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+    );
   },
   updateUnit(state: UnitsState, payload: UpdateUnitPayload): void {
     state.unitsList = [
       ...state.unitsList.filter((unit: Unit) => unit._id !== payload.id),
       payload.unit,
-    ];
+    ].sort((a: Unit, b: Unit) =>
+      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+    );
   },
   removeUnit(state: UnitsState, id: string): void {
     state.unitsList = [
       ...state.unitsList.filter((unit: Unit) => unit._id !== id),
-    ];
+    ].sort((a: Unit, b: Unit) =>
+      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+    );
   },
 };
 

@@ -7,12 +7,6 @@ export interface Unit {
   name: string;
 }
 
-export interface UnitReorderEventDetail {
-  from: number;
-  to: number;
-  complete: () => void;
-}
-
 export interface UpdateUnitPayload {
   id: string;
   unit: Unit;

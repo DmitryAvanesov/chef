@@ -35,7 +35,6 @@ export const apiPostUnit = async (body: Unit): Promise<Unit> => {
 };
 
 export const apiPatchUnit = async (id: string, body: Unit): Promise<Unit> => {
-  console.log(id, body);
   const options: RequestInit = {
     method: "PATCH",
     headers: {

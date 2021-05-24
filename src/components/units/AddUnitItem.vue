@@ -16,7 +16,6 @@ import ConfirmButton from "@/components/units/ConfirmButton.vue";
 import { useRootStore } from "@/store";
 import type { Unit } from "@/types/units";
 import { defineComponent } from "@vue/runtime-core";
-import { checkmark } from "ionicons/icons";
 import type { Ref } from "vue";
 import { ref } from "vue";
 
@@ -38,7 +37,7 @@ export default defineComponent({
       data.value.name = "";
     };
 
-    return { data, updateName, postUnit, checkmark };
+    return { data, updateName, postUnit };
   },
 });
 </script>

@@ -13,6 +13,8 @@
     "baseUrl": ".",
     "types": ["webpack-env", "jest"],
     "paths": {
+      "@ingredients/*": ["src/components/ingredients"],
+      "@units/*": ["src/components/units"],
       "@/*": ["src/*"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]

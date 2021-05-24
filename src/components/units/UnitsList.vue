@@ -78,6 +78,9 @@ export default defineComponent({
           unit: data.value,
         });
       }
+
+      editing.value = null;
+      data.value.name = "";
     };
 
     const deleteUnit = (id: string): void => {
