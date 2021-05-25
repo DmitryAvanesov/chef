@@ -64,27 +64,24 @@ const actions = {
 
 const mutations = {
   setUnitsList(state: UnitsState, unitsList: Unit[]): void {
-    state.unitsList = unitsList.sort((a: Unit, b: Unit) =>
-      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
-    );
+    state.unitsList = unitsList;
   },
   addUnit(state: UnitsState, unit: Unit): void {
-    state.unitsList = [...state.unitsList, unit].sort((a: Unit, b: Unit) =>
-      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
-    );
+    state.unitsList = [...state.unitsList, unit];
   },
   updateUnit(state: UnitsState, payload: UpdateUnitPayload): void {
     state.unitsList = [
       ...state.unitsList.filter((unit: Unit) => unit._id !== payload.id),
       payload.unit,
-    ].sort((a: Unit, b: Unit) =>
-      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
-    );
+    ];
   },
   removeUnit(state: UnitsState, id: string): void {
     state.unitsList = [
       ...state.unitsList.filter((unit: Unit) => unit._id !== id),
-    ].sort((a: Unit, b: Unit) =>
+    ];
+  },
+  sortUnits(state: UnitsState): void {
+    state.unitsList.sort((a: Unit, b: Unit) =>
       a.name > b.name ? 1 : a.name < b.name ? -1 : 0
     );
   },
