@@ -7,7 +7,7 @@
       :ref="`${index}`"
     >
       <ion-item>
-        <div v-if="editing === index">
+        <div v-if="editing === index" class="edit-unit">
           <ion-input
             class="add-input"
             :placeholder="unit.name"
@@ -23,7 +23,7 @@
           color="primary"
           @click="handleEditing($refs[index], index)"
         >
-          Редактировать
+          {{ editing ? "Отменить" : "Редактировать" }}
         </ion-item-option>
         <ion-item-option color="danger" @click="deleteUnit(unit._id)">
           Удалить
@@ -67,7 +67,12 @@ export default defineComponent({
       item: HTMLIonItemSlidingElement,
       index: number
     ): void => {
-      editing.value = index;
+      if (!editing.value) {
+        editing.value = index;
+      } else {
+        editing.value = null;
+      }
+
       item.close();
     };
 
@@ -106,6 +111,11 @@ export default defineComponent({
 
   .list-item {
     cursor: pointer;
+
+    .edit-unit {
+      display: flex;
+      width: 100%;
+    }
   }
 }
 </style>

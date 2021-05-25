@@ -52,6 +52,7 @@ export default defineComponent({
 
   .add-input {
     color: var(--ion-color-medium);
+    text-overflow: ellipsis;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <ion-button :disabled="!data.name" @click="callback()">
+  <ion-button size="small" :disabled="!data.name" @click="callback()">
     <ion-icon :icon="checkmark"></ion-icon>
   </ion-button>
 </template>
@@ -17,4 +17,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.confirm-button {
+  width: 30px;
+}
+</style>

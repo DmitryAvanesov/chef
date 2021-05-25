@@ -25,7 +25,6 @@ export const store = createStore<RootState>({
 });
 
 export const key: InjectionKey<Store<RootState>> = Symbol();
-
 export function useRootStore(): Store<RootState> {
   return useStore(key);
 }
