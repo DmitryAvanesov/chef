@@ -1,25 +1,28 @@
 <template>
   <ion-card class="card">
-    <ion-fab vertical="top" horizontal="end">
-      <ion-fab-button
-        class="delete-button"
-        color="danger"
-        @click="deleteIngredient()"
-      >
-        <ion-icon class="delete-icon" :icon="close"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
+    <ingredient-action-button
+      v-for="(actionButton, index) in actionButtons"
+      class="action-button"
+      :color="actionButton.color"
+      :icon="actionButton.icon"
+      :callback="actionButton.callback"
+      :key="index"
+      :style="{ marginRight: `${index * 36}px` }"
+    ></ingredient-action-button>
     <ion-card-content
       class="content"
       :style="{
         backgroundImage:
-          'url(https://sup-kartoshka.ru/wp-content/uploads/2019/01/svarit-kurinoe-file-6.jpg)',
+          'url(https://kubnews.ru/upload/iblock/942/942f183419487ced865decdbda8efcab.jpg)',
       }"
     >
     </ion-card-content>
     <ion-card-header class="header">
       <ion-card-subtitle>
-        <span v-for="unit in ingredient.units" :key="unit">{{ unit }}</span>
+        <span v-for="(unit, index) in ingredient.units" :key="unit">
+          <span v-if="index > 0"> &middot; </span>
+          <span>{{ unit.name }}</span>
+        </span>
       </ion-card-subtitle>
       <ion-card-title>{{ ingredient.name }}</ion-card-title>
     </ion-card-header>
@@ -27,6 +30,8 @@
 </template>
 
 <script lang="ts">
+import { useRootStore } from "@/store";
+import type { ActionButton, Ingredient } from "@/types/ingredients";
 import {
   IonCard,
   IonCardHeader,
@@ -34,33 +39,50 @@ import {
   IonCardTitle,
   IonCardContent,
 } from "@ionic/vue";
-import { useRootStore } from "@/store";
-import { computed, ComputedRef, defineComponent } from "@vue/runtime-core";
-import { close } from "ionicons/icons";
-import { Ingredient } from "@/types/ingredients";
+import type { ComputedRef } from "@vue/runtime-core";
+import { computed, defineComponent } from "@vue/runtime-core";
+import { create, close } from "ionicons/icons";
+
+import IngredientActionButton from "./IngredientActionButton.vue";
 
 export default defineComponent({
   name: "IngredientCard",
   components: {
+    IngredientActionButton,
     IonCard,
     IonCardHeader,
     IonCardSubtitle,
     IonCardTitle,
     IonCardContent,
   },
-  props: ["index"],
+  props: ["id"],
   setup(props: any) {
     const store = useRootStore();
 
-    const ingredient: ComputedRef<Ingredient> = computed(() =>
-      store.getters["ingredients/ingredientByIndex"](props.index)
-    );
+    const editIngredient = (): void => {
+      console.log("edit");
+    };
 
     const deleteIngredient = (): void => {
       store.dispatch("ingredients/deleteIngredient", ingredient.value._id);
     };
 
-    return { ingredient, deleteIngredient, close };
+    const ingredient: ComputedRef<Ingredient> = computed(() =>
+      store.getters["ingredients/ingredientById"](props.id)
+    );
+    const actionButtons: ActionButton[] = [
+      { color: "danger", icon: close, callback: deleteIngredient },
+      { color: "primary", icon: create, callback: editIngredient },
+    ];
+
+    return {
+      editIngredient,
+      deleteIngredient,
+      ingredient,
+      actionButtons,
+      create,
+      close,
+    };
   },
 });
 </script>
@@ -69,21 +91,14 @@ export default defineComponent({
 .card {
   display: flex;
   flex-direction: column;
-  height: 200px;
+  height: 225px;
 
-  .delete-button {
+  .action-button {
     display: none;
-    width: 20px;
-    height: 20px;
-
-    .delete-icon {
-      font-size: 16px;
-      pointer-events: none;
-    }
   }
 
   &:hover {
-    .delete-button {
+    .action-button {
       display: block;
     }
   }

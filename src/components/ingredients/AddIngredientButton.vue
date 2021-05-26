@@ -12,11 +12,17 @@
 </template>
 
 <script lang="ts">
-import { IonFab, IonFabButton, IonIcon, modalController } from "@ionic/vue";
-import { useRootStore } from "@/store";
-import { add } from "ionicons/icons";
-import { defineComponent } from "@vue/runtime-core";
 import AddIngredientModal from "@/components/ingredients/AddIngredientModal.vue";
+import { useRootStore } from "@/store";
+import {
+  IonFab,
+  IonFabButton,
+  IonIcon,
+  modalController,
+  isPlatform,
+} from "@ionic/vue";
+import { defineComponent } from "@vue/runtime-core";
+import { add } from "ionicons/icons";
 
 export default defineComponent({
   name: "AddIngredientButton",
@@ -28,9 +34,12 @@ export default defineComponent({
   setup() {
     const store = useRootStore();
 
-    const openModal = async () => {
+    const openModal = async (): Promise<void> => {
       const modal = await modalController.create({
         component: AddIngredientModal,
+        ...(isPlatform("desktop")
+          ? { cssClass: "add-ingredient-modal-desktop" }
+          : {}),
       });
 
       return modal.present();

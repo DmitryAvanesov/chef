@@ -1,5 +1,5 @@
-import { IngredientsState } from "@/types/ingredients";
-import { UnitsState } from "@/types/units";
+import type { IngredientsState } from "@/types/ingredients";
+import type { UnitsState } from "@/types/units";
 
 export interface RootState {
   ingredients: IngredientsState;

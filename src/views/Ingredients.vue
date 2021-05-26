@@ -8,22 +8,29 @@
     <ion-content class="content">
       <ion-grid class="ingredients-grid">
         <ion-row>
-          <ion-col
-            v-for="(ingredient, index) in ingredientsList"
-            :key="ingredient.name"
-            size-xs="12"
-            size-sm="6"
-            size-md="4"
-            size-lg="3"
-            size-xl="2"
-          >
-            <ingredient-card :index="index"></ingredient-card>
-          </ion-col>
-          <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
-            <add-ingredient-button></add-ingredient-button>
-            <ion-modal :is-open="isOpenRef">
-              <add-ingredient-modal></add-ingredient-modal>
-            </ion-modal>
+          <ion-col size-sm="10" offset-sm="1">
+            <ion-row>
+              <ion-col
+                v-for="ingredient in ingredientsList"
+                :key="ingredient._id"
+                size-xs="12"
+                size-sm="6"
+                size-md="4"
+                size-lg="3"
+                size-xl="2"
+              >
+                <ingredient-card :id="ingredient._id"></ingredient-card>
+              </ion-col>
+              <ion-col
+                size-xs="12"
+                size-sm="6"
+                size-md="4"
+                size-lg="3"
+                size-xl="2"
+              >
+                <add-ingredient-button></add-ingredient-button>
+              </ion-col>
+            </ion-row>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -32,19 +39,10 @@
 </template>
 
 <script lang="ts">
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonModal,
-  modalController,
-} from "@ionic/vue";
-import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import AddIngredientButton from "@/components/ingredients/AddIngredientButton.vue";
-import AddIngredientModal from "@/components/ingredients/AddIngredientModal.vue";
+import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import { useRootStore } from "@/store";
+import { IonPage } from "@ionic/vue";
 import { computed, defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
@@ -52,13 +50,7 @@ export default defineComponent({
   components: {
     IngredientCard,
     AddIngredientButton,
-    AddIngredientModal,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
     IonPage,
-    IonModal,
   },
   setup() {
     const store = useRootStore();
@@ -75,6 +67,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .ingredients-grid {
-  padding: 5% 10%;
+  padding: 5% 0;
 }
 </style>

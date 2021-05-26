@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "@ionic/vue-router";
-import { RouteRecordRaw } from "vue-router";
+import type { RouteRecordRaw } from "vue-router";
+
 import Tabs from "../views/Tabs.vue";
 
-const routes: Array<RouteRecordRaw> = [
+const routes: RouteRecordRaw[] = [
   {
     path: "/",
     component: Tabs,

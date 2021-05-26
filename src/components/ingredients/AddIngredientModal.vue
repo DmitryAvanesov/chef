@@ -2,31 +2,39 @@
   <ion-content>
     <v-form class="form">
       <ion-item>
-        <ion-label position="floating">Название</ion-label>
+        <ion-label position="stacked">Название</ion-label>
         <ion-input
           :value="data.name"
+          placeholder="Филе куриное"
           @ionInput="updateName($event.target.value)"
         ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label>Единицы измерения</ion-label>
+        <ion-label position="stacked">Единицы измерения</ion-label>
         <ion-select
           multiple
           placeholder="Выберите"
           cancel-text="Отмена"
           ok-text="ОК"
+          @ionChange="updateUnits($event.target.value)"
         >
           <ion-select-option
             v-for="unit in unitsList"
             :key="unit._id"
-            :value="unit._id"
+            :value="unit"
           >
             {{ unit.name }}
           </ion-select-option>
         </ion-select>
       </ion-item>
       <div class="actions">
-        <ion-button type="submit" @click="addIngredient()">Добавить</ion-button>
+        <ion-button
+          type="submit"
+          @click="postIngredient()"
+          :disabled="!data.name || !data.units"
+        >
+          Добавить
+        </ion-button>
         <ion-button color="light" @click="dismiss()">Отмена</ion-button>
       </div>
     </v-form>
@@ -35,12 +43,15 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import { Ingredient } from "@/types/ingredients";
-import { computed, defineComponent, Ref, ref } from "@vue/runtime-core";
-import { modalController } from "@ionic/vue";
+import type { Ingredient } from "@/types/ingredients";
+import type { Unit } from "@/types/units";
+import { modalController, IonSelect, IonSelectOption } from "@ionic/vue";
+import type { Ref } from "@vue/runtime-core";
+import { computed, defineComponent, ref } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "AddIngredientModal",
+  components: { IonSelect, IonSelectOption },
   setup() {
     const store = useRootStore();
     const data: Ref<Ingredient> = ref({
@@ -55,13 +66,17 @@ export default defineComponent({
       data.value.name = name;
     };
 
-    const addIngredient = (): void => {
-      store.dispatch("ingredients/postIngredient", data.value);
-      dismiss();
+    const updateUnits = (units: Unit[]): void => {
+      data.value.units = units;
     };
 
     const dismiss = (): void => {
       modalController.dismiss();
+    };
+
+    const postIngredient = (): void => {
+      store.dispatch("ingredients/postIngredient", data.value);
+      dismiss();
     };
 
     return {
@@ -69,7 +84,8 @@ export default defineComponent({
       data,
       unitsList,
       updateName,
-      addIngredient,
+      updateUnits,
+      postIngredient,
       dismiss,
     };
   },

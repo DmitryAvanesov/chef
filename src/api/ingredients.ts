@@ -1,4 +1,5 @@
-import { Ingredient } from "@/types/ingredients";
+import type { Ingredient } from "@/types/ingredients";
+
 const api = process.env.VUE_APP_API;
 
 export const apiGetIngredients = async (): Promise<Ingredient[]> => {

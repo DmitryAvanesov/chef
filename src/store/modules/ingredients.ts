@@ -1,19 +1,21 @@
-import { Ingredient, IngredientsState } from "@/types/ingredients";
 import {
   apiDeleteIngredient,
   apiGetIngredients,
   apiPostIngredient,
 } from "@/api/ingredients";
-import { ActionContext } from "vuex";
-import { RootState } from "@/types/root";
+import type { Ingredient, IngredientsState } from "@/types/ingredients";
+import type { RootState } from "@/types/root";
+import type { ActionContext } from "vuex";
 
 const state = (): IngredientsState => ({
   ingredientsList: [],
 });
 
 const getters = {
-  ingredientByIndex: (state: IngredientsState) => (index: number): Ingredient =>
-    state.ingredientsList[index],
+  ingredientById: (state: IngredientsState) => (id: string): Ingredient =>
+    state.ingredientsList.find(
+      (ingredient: Ingredient) => ingredient._id === id
+    ) || { name: "", units: [] },
 };
 
 const actions = {
@@ -23,8 +25,8 @@ const actions = {
     try {
       const ingredients = await apiGetIngredients();
       commit("setIngredientsList", ingredients);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      console.log(error.message);
     }
   },
   async postIngredient(
@@ -34,8 +36,8 @@ const actions = {
     try {
       const ingredient = await apiPostIngredient(body);
       commit("addIngredient", ingredient);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      console.log(error.message);
     }
   },
   async deleteIngredient(
@@ -45,8 +47,8 @@ const actions = {
     try {
       await apiDeleteIngredient(id);
       commit("removeIngredient", id);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      console.log(error.message);
     }
   },
 };
