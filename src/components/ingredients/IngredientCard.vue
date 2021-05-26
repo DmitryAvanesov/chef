@@ -1,14 +1,14 @@
 <template>
   <ion-card class="card">
-    <ion-fab vertical="top" horizontal="end">
-      <ion-fab-button
-        class="delete-button"
-        color="danger"
-        @click="deleteIngredient()"
-      >
-        <ion-icon class="delete-icon" :icon="close"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
+    <ingredient-action-button
+      v-for="(actionButton, index) in actionButtons"
+      class="action-button"
+      :color="actionButton.color"
+      :icon="actionButton.icon"
+      :callback="actionButton.callback"
+      :key="index"
+      :style="{ marginRight: `${index * 36}px` }"
+    ></ingredient-action-button>
     <ion-card-content
       class="content"
       :style="{
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import type { Ingredient } from "@/types/ingredients";
+import type { ActionButton, Ingredient } from "@/types/ingredients";
 import {
   IonCard,
   IonCardHeader,
@@ -41,11 +41,14 @@ import {
 } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
-import { close } from "ionicons/icons";
+import { create, close } from "ionicons/icons";
+
+import IngredientActionButton from "./IngredientActionButton.vue";
 
 export default defineComponent({
   name: "IngredientCard",
   components: {
+    IngredientActionButton,
     IonCard,
     IonCardHeader,
     IonCardSubtitle,
@@ -56,15 +59,30 @@ export default defineComponent({
   setup(props: any) {
     const store = useRootStore();
 
-    const ingredient: ComputedRef<Ingredient> = computed(() =>
-      store.getters["ingredients/ingredientById"](props.id)
-    );
+    const editIngredient = (): void => {
+      console.log("edit");
+    };
 
     const deleteIngredient = (): void => {
       store.dispatch("ingredients/deleteIngredient", ingredient.value._id);
     };
 
-    return { ingredient, deleteIngredient, close };
+    const ingredient: ComputedRef<Ingredient> = computed(() =>
+      store.getters["ingredients/ingredientById"](props.id)
+    );
+    const actionButtons: ActionButton[] = [
+      { color: "danger", icon: close, callback: deleteIngredient },
+      { color: "primary", icon: create, callback: editIngredient },
+    ];
+
+    return {
+      editIngredient,
+      deleteIngredient,
+      ingredient,
+      actionButtons,
+      create,
+      close,
+    };
   },
 });
 </script>
@@ -75,19 +93,12 @@ export default defineComponent({
   flex-direction: column;
   height: 225px;
 
-  .delete-button {
+  .action-button {
     display: none;
-    width: 20px;
-    height: 20px;
-
-    .delete-icon {
-      font-size: 16px;
-      pointer-events: none;
-    }
   }
 
   &:hover {
-    .delete-button {
+    .action-button {
       display: block;
     }
   }

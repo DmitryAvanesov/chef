@@ -9,3 +9,9 @@ export interface Ingredient {
   name: string;
   units: Unit[];
 }
+
+export interface ActionButton {
+  color: string;
+  icon: string;
+  callback: () => void;
+}
