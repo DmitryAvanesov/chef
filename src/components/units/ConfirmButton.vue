@@ -1,5 +1,10 @@
 <template>
-  <ion-button size="small" :disabled="!data.name" @click="callback()">
+  <ion-button
+    :disabled="!data.name"
+    @click="callback()"
+    fill="outline"
+    size="default"
+  >
     <ion-icon :icon="checkmark"></ion-icon>
   </ion-button>
 </template>

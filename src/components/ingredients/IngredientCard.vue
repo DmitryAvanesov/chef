@@ -13,7 +13,7 @@
       class="content"
       :style="{
         backgroundImage:
-          'url(https://sup-kartoshka.ru/wp-content/uploads/2019/01/svarit-kurinoe-file-6.jpg)',
+          'url(https://kubnews.ru/upload/iblock/942/942f183419487ced865decdbda8efcab.jpg)',
       }"
     >
     </ion-card-content>
@@ -36,7 +36,7 @@ import {
   IonCardTitle,
   IonCardContent,
 } from "@ionic/vue";
-import type { ComputedRef} from "@vue/runtime-core";
+import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
 import { close } from "ionicons/icons";
 

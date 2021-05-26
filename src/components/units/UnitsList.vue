@@ -6,10 +6,9 @@
       :key="unit._id"
       :ref="`${index}`"
     >
-      <ion-item>
+      <ion-item lines="full">
         <div v-if="editing === index" class="edit-unit">
           <ion-input
-            class="add-input"
             :placeholder="unit.name"
             :value="data.name"
             @ionInput="updateName($event.target.value)"
@@ -23,7 +22,7 @@
           color="primary"
           @click="handleEditing($refs[index], index)"
         >
-          {{ editing ? "Отменить" : "Редактировать" }}
+          {{ editing === index ? "Отменить" : "Редактировать" }}
         </ion-item-option>
         <ion-item-option color="danger" @click="deleteUnit(unit._id)">
           Удалить
