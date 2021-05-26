@@ -8,19 +8,29 @@
     <ion-content class="content">
       <ion-grid class="ingredients-grid">
         <ion-row>
-          <ion-col
-            v-for="ingredient in ingredientsList"
-            :key="ingredient._id"
-            size-xs="12"
-            size-sm="6"
-            size-md="4"
-            size-lg="3"
-            size-xl="2"
-          >
-            <ingredient-card :id="ingredient._id"></ingredient-card>
-          </ion-col>
-          <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
-            <add-ingredient-button></add-ingredient-button>
+          <ion-col size-sm="10" offset-sm="1">
+            <ion-row>
+              <ion-col
+                v-for="ingredient in ingredientsList"
+                :key="ingredient._id"
+                size-xs="12"
+                size-sm="6"
+                size-md="4"
+                size-lg="3"
+                size-xl="2"
+              >
+                <ingredient-card :id="ingredient._id"></ingredient-card>
+              </ion-col>
+              <ion-col
+                size-xs="12"
+                size-sm="6"
+                size-md="4"
+                size-lg="3"
+                size-xl="2"
+              >
+                <add-ingredient-button></add-ingredient-button>
+              </ion-col>
+            </ion-row>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -57,6 +67,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .ingredients-grid {
-  padding: 5% 10%;
+  padding: 5% 0;
 }
 </style>

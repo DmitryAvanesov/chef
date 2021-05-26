@@ -19,7 +19,10 @@
     </ion-card-content>
     <ion-card-header class="header">
       <ion-card-subtitle>
-        <span v-for="unit in ingredient.units" :key="unit">{{ unit }}</span>
+        <span v-for="(unit, index) in ingredient.units" :key="unit">
+          <span v-if="index > 0"> &middot; </span>
+          <span>{{ unit.name }}</span>
+        </span>
       </ion-card-subtitle>
       <ion-card-title>{{ ingredient.name }}</ion-card-title>
     </ion-card-header>
@@ -70,7 +73,7 @@ export default defineComponent({
 .card {
   display: flex;
   flex-direction: column;
-  height: 200px;
+  height: 225px;
 
   .delete-button {
     display: none;
