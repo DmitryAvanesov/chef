@@ -1,36 +1,45 @@
 <template>
-  <ion-list class="list">
-    <ion-item-sliding
-      class="list-item"
-      v-for="(unit, index) in unitsList"
-      :key="unit._id"
-      :ref="`${index}`"
-    >
-      <ion-item lines="full">
-        <div v-if="editing === index" class="edit-unit">
-          <ion-input
-            :placeholder="unit.name"
-            :value="data.name"
-            @ionInput="updateName($event.target.value)"
-          ></ion-input>
-          <confirm-button :data="data" :callback="patchUnit"></confirm-button>
-        </div>
-        <ion-label v-else>{{ unit.name }}</ion-label>
-      </ion-item>
-      <ion-item-options side="start">
-        <ion-item-option
-          color="primary"
-          @click="handleEditing($refs[index], index)"
-        >
-          {{ editing === index ? "Отменить" : "Редактировать" }}
-        </ion-item-option>
-        <ion-item-option color="danger" @click="deleteUnit(unit._id)">
-          Удалить
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-    <add-unit-item></add-unit-item>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col :size-md="8" :offset-md="2">
+        <ion-list class="list">
+          <ion-item-sliding
+            class="list-item"
+            v-for="(unit, index) in unitsList"
+            :key="unit._id"
+            :ref="`${index}`"
+          >
+            <ion-item lines="full">
+              <div v-if="editing === index" class="edit-unit">
+                <ion-input
+                  :placeholder="unit.name"
+                  :value="data.name"
+                  @ionInput="updateName($event.target.value)"
+                ></ion-input>
+                <confirm-button
+                  :data="data"
+                  :callback="patchUnit"
+                ></confirm-button>
+              </div>
+              <ion-label v-else>{{ unit.name }}</ion-label>
+            </ion-item>
+            <ion-item-options side="start">
+              <ion-item-option
+                color="primary"
+                @click="handleEditing($refs[index], index)"
+              >
+                {{ editing === index ? "Отменить" : "Редактировать" }}
+              </ion-item-option>
+              <ion-item-option color="danger" @click="deleteUnit(unit._id)">
+                Удалить
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+          <add-unit-item></add-unit-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </template>
 
 <script lang="ts">
@@ -106,7 +115,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .list {
-  padding: 5% 10%;
+  padding: 5% 0;
 
   .list-item {
     cursor: pointer;
