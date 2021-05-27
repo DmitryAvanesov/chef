@@ -16,12 +16,13 @@
           placeholder="Выберите"
           cancel-text="Отмена"
           ok-text="ОК"
+          :value="data.units.map((x) => x._id)"
           @ionChange="updateUnits($event.target.value)"
         >
           <ion-select-option
             v-for="unit in unitsList"
             :key="unit._id"
-            :value="unit"
+            :value="unit._id"
           >
             {{ unit.name }}
           </ion-select-option>
@@ -30,7 +31,7 @@
       <div class="actions">
         <ion-button
           type="submit"
-          @click="postIngredient()"
+          @click="confirm()"
           :disabled="!data.name || !data.units"
         >
           Добавить
@@ -50,13 +51,14 @@ import type { Ref } from "@vue/runtime-core";
 import { computed, defineComponent, ref } from "@vue/runtime-core";
 
 export default defineComponent({
-  name: "AddIngredientModal",
+  name: "IngredientModal",
   components: { IonSelect, IonSelectOption },
-  setup() {
+  props: ["_id", "name", "units", "callback"],
+  setup(props) {
     const store = useRootStore();
     const data: Ref<Ingredient> = ref({
-      name: "",
-      units: [],
+      name: props.name,
+      units: props.units,
     });
     const unitsList = computed(() => store.state.units.unitsList);
 
@@ -66,16 +68,18 @@ export default defineComponent({
       data.value.name = name;
     };
 
-    const updateUnits = (units: Unit[]): void => {
-      data.value.units = units;
+    const updateUnits = (unitIds: string[]): void => {
+      data.value.units = unitsList.value.filter(
+        (unit: Unit) => unit._id && unitIds.includes(unit._id)
+      );
     };
 
-    const dismiss = (): void => {
+    const dismiss = () => {
       modalController.dismiss();
     };
 
-    const postIngredient = (): void => {
-      store.dispatch("ingredients/postIngredient", data.value);
+    const confirm = (): void => {
+      props.callback(data.value);
       dismiss();
     };
 
@@ -85,8 +89,8 @@ export default defineComponent({
       unitsList,
       updateName,
       updateUnits,
-      postIngredient,
       dismiss,
+      confirm,
     };
   },
 });

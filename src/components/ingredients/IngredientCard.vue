@@ -38,12 +38,15 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonCardContent,
+  isPlatform,
+  modalController,
 } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
 import { create, close } from "ionicons/icons";
 
 import IngredientActionButton from "./IngredientActionButton.vue";
+import IngredientModal from "./IngredientModal.vue";
 
 export default defineComponent({
   name: "IngredientCard",
@@ -56,20 +59,36 @@ export default defineComponent({
     IonCardContent,
   },
   props: ["id"],
-  setup(props: any) {
+  setup(props) {
     const store = useRootStore();
 
-    const editIngredient = (): void => {
-      console.log("edit");
+    const ingredient: ComputedRef<Ingredient> = computed(() =>
+      store.getters["ingredients/ingredientById"](props.id)
+    );
+
+    const patchIngredient = (ingredient: Ingredient): void => {
+      store.dispatch("ingredients/patchIngredient", {
+        id: props.id,
+        ingredient: ingredient,
+      });
+    };
+
+    const editIngredient = async (): Promise<void> => {
+      const modal = await modalController.create({
+        component: IngredientModal,
+        componentProps: { ...ingredient.value, callback: patchIngredient },
+        ...(isPlatform("desktop")
+          ? { cssClass: "add-ingredient-modal-desktop" }
+          : {}),
+      });
+
+      return modal.present();
     };
 
     const deleteIngredient = (): void => {
       store.dispatch("ingredients/deleteIngredient", ingredient.value._id);
     };
 
-    const ingredient: ComputedRef<Ingredient> = computed(() =>
-      store.getters["ingredients/ingredientById"](props.id)
-    );
     const actionButtons: ActionButton[] = [
       { color: "danger", icon: close, callback: deleteIngredient },
       { color: "primary", icon: create, callback: editIngredient },

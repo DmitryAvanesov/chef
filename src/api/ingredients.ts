@@ -36,6 +36,27 @@ export const apiPostIngredient = async (
   throw Error("An error occurred while posting an ingredient");
 };
 
+export const apiPatchIngredient = async (
+  id: string,
+  body: Ingredient
+): Promise<void> => {
+  const options: RequestInit = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  };
+
+  const response = await fetch(`${api}/ingredients/${id}`, options);
+
+  if (response.ok) {
+    return response.json();
+  }
+
+  throw Error("An error occurred while patching an ingredient");
+};
+
 export const apiDeleteIngredient = async (id: string): Promise<void> => {
   const options: RequestInit = {
     method: "DELETE",
