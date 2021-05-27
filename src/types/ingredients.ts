@@ -10,9 +10,10 @@ export interface Ingredient {
   units: Unit[];
 }
 
-export interface UpdateIngredientPayload {
-  id: string;
-  ingredient: Ingredient;
+export interface IngredientPayload {
+  _id: string;
+  name: string;
+  units: string[];
 }
 
 export interface ActionButton {

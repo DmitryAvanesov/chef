@@ -16,7 +16,7 @@
           placeholder="Выберите"
           cancel-text="Отмена"
           ok-text="ОК"
-          :value="data.units.map((x) => x._id)"
+          :value="data.units"
           @ionChange="updateUnits($event.target.value)"
         >
           <ion-select-option
@@ -44,8 +44,7 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import type { Ingredient } from "@/types/ingredients";
-import type { Unit } from "@/types/units";
+import type { IngredientPayload } from "@/types/ingredients";
 import { modalController, IonSelect, IonSelectOption } from "@ionic/vue";
 import type { Ref } from "@vue/runtime-core";
 import { computed, defineComponent, ref } from "@vue/runtime-core";
@@ -56,7 +55,8 @@ export default defineComponent({
   props: ["_id", "name", "units", "callback"],
   setup(props) {
     const store = useRootStore();
-    const data: Ref<Ingredient> = ref({
+    const data: Ref<IngredientPayload> = ref({
+      _id: props._id,
       name: props.name,
       units: props.units,
     });
@@ -68,10 +68,8 @@ export default defineComponent({
       data.value.name = name;
     };
 
-    const updateUnits = (unitIds: string[]): void => {
-      data.value.units = unitsList.value.filter(
-        (unit: Unit) => unit._id && unitIds.includes(unit._id)
-      );
+    const updateUnits = (units: string[]): void => {
+      data.value.units = units;
     };
 
     const dismiss = () => {

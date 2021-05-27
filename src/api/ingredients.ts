@@ -1,4 +1,4 @@
-import type { Ingredient } from "@/types/ingredients";
+import type { Ingredient, IngredientPayload } from "@/types/ingredients";
 
 const api = process.env.VUE_APP_API;
 
@@ -37,18 +37,17 @@ export const apiPostIngredient = async (
 };
 
 export const apiPatchIngredient = async (
-  id: string,
-  body: Ingredient
+  payload: IngredientPayload
 ): Promise<void> => {
   const options: RequestInit = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(payload),
   };
 
-  const response = await fetch(`${api}/ingredients/${id}`, options);
+  const response = await fetch(`${api}/ingredients/${payload._id}`, options);
 
   if (response.ok) {
     return response.json();

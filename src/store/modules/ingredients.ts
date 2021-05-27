@@ -7,7 +7,7 @@ import {
 import type {
   Ingredient,
   IngredientsState,
-  UpdateIngredientPayload,
+  IngredientPayload,
 } from "@/types/ingredients";
 import type { RootState } from "@/types/root";
 import type { ActionContext } from "vuex";
@@ -29,6 +29,7 @@ const actions = {
   }: ActionContext<IngredientsState, RootState>): Promise<void> {
     try {
       const ingredients = await apiGetIngredients();
+      console.log(ingredients);
       commit("setIngredientsList", ingredients);
     } catch (error) {
       console.log(error.message);
@@ -47,13 +48,10 @@ const actions = {
   },
   async patchIngredient(
     { commit }: ActionContext<IngredientsState, RootState>,
-    payload: UpdateIngredientPayload
+    payload: IngredientPayload
   ): Promise<void> {
     try {
-      const ingredient = await apiPatchIngredient(
-        payload.id,
-        payload.ingredient
-      );
+      const ingredient = await apiPatchIngredient(payload);
       commit("updateIngredient", ingredient);
     } catch (error) {
       console.log(error.message);
