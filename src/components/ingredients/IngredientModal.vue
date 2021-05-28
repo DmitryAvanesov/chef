@@ -34,7 +34,7 @@
           @click="confirm()"
           :disabled="!data.name || !data.units"
         >
-          Добавить
+          Сохранить
         </ion-button>
         <ion-button color="light" @click="dismiss()">Отмена</ion-button>
       </div>
@@ -45,6 +45,7 @@
 <script lang="ts">
 import { useRootStore } from "@/store";
 import type { IngredientPayload } from "@/types/ingredients";
+import type { Unit } from "@/types/units";
 import { modalController, IonSelect, IonSelectOption } from "@ionic/vue";
 import type { Ref } from "@vue/runtime-core";
 import { computed, defineComponent, ref } from "@vue/runtime-core";
@@ -58,7 +59,7 @@ export default defineComponent({
     const data: Ref<IngredientPayload> = ref({
       _id: props._id,
       name: props.name,
-      units: props.units,
+      units: props.units.map((unit: Unit) => unit._id),
     });
     const unitsList = computed(() => store.state.units.unitsList);
 

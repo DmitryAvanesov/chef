@@ -29,7 +29,6 @@ const actions = {
   }: ActionContext<IngredientsState, RootState>): Promise<void> {
     try {
       const ingredients = await apiGetIngredients();
-      console.log(ingredients);
       commit("setIngredientsList", ingredients);
     } catch (error) {
       console.log(error.message);
@@ -41,6 +40,7 @@ const actions = {
   ): Promise<void> {
     try {
       const ingredient = await apiPostIngredient(body);
+      console.log(ingredient);
       commit("addIngredient", ingredient);
     } catch (error) {
       console.log(error.message);

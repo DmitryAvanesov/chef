@@ -31,7 +31,11 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import type { ActionButton, Ingredient } from "@/types/ingredients";
+import type {
+  ActionButton,
+  Ingredient,
+  IngredientPayload,
+} from "@/types/ingredients";
 import {
   IonCard,
   IonCardHeader,
@@ -66,11 +70,8 @@ export default defineComponent({
       store.getters["ingredients/ingredientById"](props.id)
     );
 
-    const patchIngredient = (ingredient: Ingredient): void => {
-      store.dispatch("ingredients/patchIngredient", {
-        id: props.id,
-        ingredient: ingredient,
-      });
+    const patchIngredient = (ingredient: IngredientPayload): void => {
+      store.dispatch("ingredients/patchIngredient", ingredient);
     };
 
     const editIngredient = async (): Promise<void> => {
