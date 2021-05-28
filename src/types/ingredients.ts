@@ -5,9 +5,15 @@ export interface IngredientsState {
 }
 
 export interface Ingredient {
-  _id?: string;
+  _id: string;
   name: string;
   units: Unit[];
+}
+
+export interface IngredientPayload {
+  _id: string;
+  name: string;
+  units: string[];
 }
 
 export interface ActionButton {

@@ -13,7 +13,8 @@
 
 <script lang="ts">
 import UnitsList from "@/components/units/UnitsList.vue";
-import { IonPage } from "@ionic/vue";
+import { useRootStore } from "@/store";
+import { IonPage, onIonViewWillEnter } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
@@ -21,6 +22,13 @@ export default defineComponent({
   components: {
     UnitsList,
     IonPage,
+  },
+  setup() {
+    const store = useRootStore();
+
+    onIonViewWillEnter(() => {
+      store.dispatch("units/getUnits");
+    });
   },
 });
 </script>

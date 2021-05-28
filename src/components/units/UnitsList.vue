@@ -5,12 +5,12 @@
         <ion-list class="list">
           <ion-item-sliding
             class="list-item"
-            v-for="(unit, index) in unitsList"
+            v-for="unit in unitsList"
             :key="unit._id"
-            :ref="`${index}`"
+            :ref="unit._id"
           >
             <ion-item lines="full">
-              <div v-if="editing === index" class="edit-unit">
+              <div v-if="data._id === unit._id" class="edit-unit">
                 <ion-input
                   :placeholder="unit.name"
                   :value="data.name"
@@ -26,9 +26,9 @@
             <ion-item-options side="start">
               <ion-item-option
                 color="primary"
-                @click="handleEditing($refs[index], index)"
+                @click="handleEditing($refs[unit._id], unit._id)"
               >
-                {{ editing === index ? "Отменить" : "Редактировать" }}
+                {{ data._id === unit._id ? "Отменить" : "Редактировать" }}
               </ion-item-option>
               <ion-item-option color="danger" @click="deleteUnit(unit._id)">
                 Удалить
@@ -58,14 +58,12 @@ export default defineComponent({
   setup() {
     const store = useRootStore();
     const data: Ref<Unit> = ref({
+      _id: "",
       name: "",
     });
-    const editing: Ref<number | null> = ref(null);
     const unitsList: ComputedRef<Unit[]> = computed(
       () => store.state.units.unitsList
     );
-
-    store.dispatch("units/getUnits");
 
     const updateName = (name: string): void => {
       data.value.name = name;
@@ -73,36 +71,33 @@ export default defineComponent({
 
     const handleEditing = (
       item: HTMLIonItemSlidingElement,
-      index: number
+      unit: string
     ): void => {
-      if (!editing.value) {
-        editing.value = index;
+      if (!data.value._id) {
+        data.value._id = unit;
       } else {
-        editing.value = null;
+        data.value._id = "";
       }
 
       item.close();
     };
 
     const patchUnit = () => {
-      if (editing.value !== null) {
-        store.dispatch("units/patchUnit", {
-          id: unitsList.value[editing.value]._id,
-          unit: data.value,
-        });
+      if (data.value._id) {
+        store.dispatch("units/patchUnit", data.value);
       }
 
-      editing.value = null;
+      data.value._id = "";
       data.value.name = "";
     };
 
     const deleteUnit = (id: string): void => {
       store.dispatch("units/deleteUnit", id);
+      data.value._id = "";
     };
 
     return {
       data,
-      editing,
       unitsList,
       updateName,
       handleEditing,

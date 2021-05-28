@@ -25,6 +25,7 @@ export default defineComponent({
   setup() {
     const store = useRootStore();
     const data: Ref<Unit> = ref({
+      _id: "",
       name: "",
     });
 

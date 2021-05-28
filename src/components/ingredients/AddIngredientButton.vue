@@ -12,8 +12,9 @@
 </template>
 
 <script lang="ts">
-import AddIngredientModal from "@/components/ingredients/AddIngredientModal.vue";
+import IngredientModal from "@/components/ingredients/IngredientModal.vue";
 import { useRootStore } from "@/store";
+import type { Ingredient } from "@/types/ingredients";
 import {
   IonFab,
   IonFabButton,
@@ -34,9 +35,17 @@ export default defineComponent({
   setup() {
     const store = useRootStore();
 
+    const postIngredient = (ingredient: Ingredient): void => {
+      store.dispatch("ingredients/postIngredient", ingredient);
+    };
+
     const openModal = async (): Promise<void> => {
       const modal = await modalController.create({
-        component: AddIngredientModal,
+        component: IngredientModal,
+        componentProps: {
+          ...{ name: "", units: [] },
+          callback: postIngredient,
+        },
         ...(isPlatform("desktop")
           ? { cssClass: "add-ingredient-modal-desktop" }
           : {}),

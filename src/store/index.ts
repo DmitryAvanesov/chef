@@ -12,6 +12,11 @@ const sortUnitsPlugin = (store: Store<RootState>) => {
       mutation.type !== "units/sortUnits"
     ) {
       store.commit("units/sortUnits");
+    } else if (
+      mutation.type.startsWith("ingredients") &&
+      mutation.type !== "ingredients/sortIngredients"
+    ) {
+      store.commit("ingredients/sortIngredients");
     }
   });
 };

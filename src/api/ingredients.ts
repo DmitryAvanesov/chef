@@ -1,9 +1,9 @@
-import type { Ingredient } from "@/types/ingredients";
+import type { Ingredient, IngredientPayload } from "@/types/ingredients";
 
 const api = process.env.VUE_APP_API;
 
 export const apiGetIngredients = async (): Promise<Ingredient[]> => {
-  const options = {
+  const options: RequestInit = {
     method: "GET",
   };
 
@@ -17,8 +17,10 @@ export const apiGetIngredients = async (): Promise<Ingredient[]> => {
 };
 
 export const apiPostIngredient = async (
-  body: Ingredient
+  ingredient: Ingredient
 ): Promise<Ingredient> => {
+  const { _id, ...body } = ingredient;
+
   const options: RequestInit = {
     method: "POST",
     headers: {
@@ -34,6 +36,26 @@ export const apiPostIngredient = async (
   }
 
   throw Error("An error occurred while posting an ingredient");
+};
+
+export const apiPatchIngredient = async (
+  payload: IngredientPayload
+): Promise<void> => {
+  const options: RequestInit = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  };
+
+  const response = await fetch(`${api}/ingredients/${payload._id}`, options);
+
+  if (response.ok) {
+    return response.json();
+  }
+
+  throw Error("An error occurred while patching an ingredient");
 };
 
 export const apiDeleteIngredient = async (id: string): Promise<void> => {

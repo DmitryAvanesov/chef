@@ -31,19 +31,27 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import type { ActionButton, Ingredient } from "@/types/ingredients";
+import type {
+  ActionButton,
+  Ingredient,
+  IngredientPayload,
+} from "@/types/ingredients";
+import type { Unit } from "@/types/units";
 import {
   IonCard,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
   IonCardContent,
+  isPlatform,
+  modalController,
 } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
-import { create, close } from "ionicons/icons";
+import { refresh, create, close } from "ionicons/icons";
 
 import IngredientActionButton from "./IngredientActionButton.vue";
+import IngredientModal from "./IngredientModal.vue";
 
 export default defineComponent({
   name: "IngredientCard",
@@ -56,23 +64,57 @@ export default defineComponent({
     IonCardContent,
   },
   props: ["id"],
-  setup(props: any) {
+  setup(props) {
     const store = useRootStore();
 
-    const editIngredient = (): void => {
-      console.log("edit");
+    const ingredient: ComputedRef<Ingredient> = computed(() =>
+      store.getters["ingredients/ingredientById"](props.id)
+    );
+
+    const patchIngredient = (ingredient: IngredientPayload): void => {
+      store.dispatch("ingredients/patchIngredient", ingredient);
     };
 
     const deleteIngredient = (): void => {
       store.dispatch("ingredients/deleteIngredient", ingredient.value._id);
     };
 
-    const ingredient: ComputedRef<Ingredient> = computed(() =>
-      store.getters["ingredients/ingredientById"](props.id)
-    );
+    const editIngredient = async (): Promise<void> => {
+      const modal = await modalController.create({
+        component: IngredientModal,
+        componentProps: { ...ingredient.value, callback: patchIngredient },
+        ...(isPlatform("desktop")
+          ? { cssClass: "add-ingredient-modal-desktop" }
+          : {}),
+      });
+
+      return modal.present();
+    };
+
+    const refreshImage = async () => {
+      const options: RequestInit = {
+        method: "GET",
+      };
+
+      const result = await fetch(
+        `${process.env.VUE_APP_GOOGLE_API}?key=${
+          process.env.VUE_APP_GOOGLE_KEY
+        }&cx=${process.env.VUE_APP_GOOGLE_SEARCH_ENGINE}&q=${
+          ingredient.value.name
+        }&searchType=image&num=1&start=${Math.floor(Math.random() * 98 + 1)}`,
+        options
+      );
+
+      patchIngredient({
+        ...ingredient.value,
+        units: ingredient.value.units.map((unit: Unit) => unit._id),
+      });
+    };
+
     const actionButtons: ActionButton[] = [
       { color: "danger", icon: close, callback: deleteIngredient },
       { color: "primary", icon: create, callback: editIngredient },
+      { color: "warning", icon: refresh, callback: refreshImage },
     ];
 
     return {
@@ -91,7 +133,7 @@ export default defineComponent({
 .card {
   display: flex;
   flex-direction: column;
-  height: 225px;
+  height: 200px;
 
   .action-button {
     display: none;

@@ -16,12 +16,13 @@
           placeholder="Выберите"
           cancel-text="Отмена"
           ok-text="ОК"
+          :value="data.units"
           @ionChange="updateUnits($event.target.value)"
         >
           <ion-select-option
             v-for="unit in unitsList"
             :key="unit._id"
-            :value="unit"
+            :value="unit._id"
           >
             {{ unit.name }}
           </ion-select-option>
@@ -30,10 +31,10 @@
       <div class="actions">
         <ion-button
           type="submit"
-          @click="postIngredient()"
+          @click="confirm()"
           :disabled="!data.name || !data.units"
         >
-          Добавить
+          Сохранить
         </ion-button>
         <ion-button color="light" @click="dismiss()">Отмена</ion-button>
       </div>
@@ -43,20 +44,22 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import type { Ingredient } from "@/types/ingredients";
+import type { IngredientPayload } from "@/types/ingredients";
 import type { Unit } from "@/types/units";
 import { modalController, IonSelect, IonSelectOption } from "@ionic/vue";
 import type { Ref } from "@vue/runtime-core";
 import { computed, defineComponent, ref } from "@vue/runtime-core";
 
 export default defineComponent({
-  name: "AddIngredientModal",
+  name: "IngredientModal",
   components: { IonSelect, IonSelectOption },
-  setup() {
+  props: ["_id", "name", "units", "callback"],
+  setup(props) {
     const store = useRootStore();
-    const data: Ref<Ingredient> = ref({
-      name: "",
-      units: [],
+    const data: Ref<IngredientPayload> = ref({
+      _id: props._id,
+      name: props.name,
+      units: props.units.map((unit: Unit) => unit._id),
     });
     const unitsList = computed(() => store.state.units.unitsList);
 
@@ -66,16 +69,16 @@ export default defineComponent({
       data.value.name = name;
     };
 
-    const updateUnits = (units: Unit[]): void => {
+    const updateUnits = (units: string[]): void => {
       data.value.units = units;
     };
 
-    const dismiss = (): void => {
+    const dismiss = () => {
       modalController.dismiss();
     };
 
-    const postIngredient = (): void => {
-      store.dispatch("ingredients/postIngredient", data.value);
+    const confirm = (): void => {
+      props.callback(data.value);
       dismiss();
     };
 
@@ -85,8 +88,8 @@ export default defineComponent({
       unitsList,
       updateName,
       updateUnits,
-      postIngredient,
       dismiss,
+      confirm,
     };
   },
 });

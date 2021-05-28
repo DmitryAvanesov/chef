@@ -3,11 +3,6 @@ export interface UnitsState {
 }
 
 export interface Unit {
-  _id?: string;
+  _id: string;
   name: string;
-}
-
-export interface UpdateUnitPayload {
-  id: string;
-  unit: Unit;
 }

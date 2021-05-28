@@ -3,7 +3,7 @@ import type { Unit } from "@/types/units";
 const api = process.env.VUE_APP_API;
 
 export const apiGetUnits = async (): Promise<Unit[]> => {
-  const options = {
+  const options: RequestInit = {
     method: "GET",
   };
 
@@ -16,7 +16,9 @@ export const apiGetUnits = async (): Promise<Unit[]> => {
   throw Error("An error occurred while getting units");
 };
 
-export const apiPostUnit = async (body: Unit): Promise<Unit> => {
+export const apiPostUnit = async (unit: Unit): Promise<Unit> => {
+  const { _id, ...body } = unit;
+
   const options: RequestInit = {
     method: "POST",
     headers: {
@@ -34,7 +36,9 @@ export const apiPostUnit = async (body: Unit): Promise<Unit> => {
   throw Error("An error occurred while posting a unit");
 };
 
-export const apiPatchUnit = async (id: string, body: Unit): Promise<Unit> => {
+export const apiPatchUnit = async (unit: Unit): Promise<Unit> => {
+  const { _id, ...body } = unit;
+
   const options: RequestInit = {
     method: "PATCH",
     headers: {
@@ -43,7 +47,7 @@ export const apiPatchUnit = async (id: string, body: Unit): Promise<Unit> => {
     body: JSON.stringify(body),
   };
 
-  const response = await fetch(`${api}/units/${id}`, options);
+  const response = await fetch(`${api}/units/${_id}`, options);
 
   if (response.ok) {
     return response.json();
