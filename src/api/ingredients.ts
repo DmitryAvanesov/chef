@@ -3,7 +3,7 @@ import type { Ingredient, IngredientPayload } from "@/types/ingredients";
 const api = process.env.VUE_APP_API;
 
 export const apiGetIngredients = async (): Promise<Ingredient[]> => {
-  const options = {
+  const options: RequestInit = {
     method: "GET",
   };
 
@@ -17,8 +17,10 @@ export const apiGetIngredients = async (): Promise<Ingredient[]> => {
 };
 
 export const apiPostIngredient = async (
-  body: Ingredient
+  ingredient: Ingredient
 ): Promise<Ingredient> => {
+  const { _id, ...body } = ingredient;
+
   const options: RequestInit = {
     method: "POST",
     headers: {

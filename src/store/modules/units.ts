@@ -5,7 +5,7 @@ import {
   apiPostUnit,
 } from "@/api/units";
 import type { RootState } from "@/types/root";
-import type { Unit, UnitsState, UpdateUnitPayload } from "@/types/units";
+import type { Unit, UnitsState } from "@/types/units";
 import type { ActionContext } from "vuex";
 
 const state = (): UnitsState => ({
@@ -40,10 +40,11 @@ const actions = {
   },
   async patchUnit(
     { commit }: ActionContext<UnitsState, RootState>,
-    payload: UpdateUnitPayload
+    body: Unit
   ): Promise<void> {
     try {
-      const unit = await apiPatchUnit(payload.id, payload.unit);
+      console.log(body);
+      const unit = await apiPatchUnit(body);
       commit("updateUnit", unit);
     } catch (error) {
       console.log(error.message);

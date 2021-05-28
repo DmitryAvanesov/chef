@@ -20,7 +20,7 @@ const getters = {
   ingredientById: (state: IngredientsState) => (id: string): Ingredient =>
     state.ingredientsList.find(
       (ingredient: Ingredient) => ingredient._id === id
-    ) || { name: "", units: [] },
+    ) || { _id: "", name: "", units: [] },
 };
 
 const actions = {
