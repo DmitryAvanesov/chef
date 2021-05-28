@@ -42,7 +42,7 @@
 import AddIngredientButton from "@/components/ingredients/AddIngredientButton.vue";
 import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import { useRootStore } from "@/store";
-import { IonPage } from "@ionic/vue";
+import { IonPage, onIonViewWillEnter } from "@ionic/vue";
 import { computed, defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
@@ -58,7 +58,9 @@ export default defineComponent({
       () => store.state.ingredients.ingredientsList
     );
 
-    store.dispatch("ingredients/getIngredients");
+    onIonViewWillEnter(() => {
+      store.dispatch("ingredients/getIngredients");
+    });
 
     return { ingredientsList };
   },

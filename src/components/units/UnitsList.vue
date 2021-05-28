@@ -65,8 +65,6 @@ export default defineComponent({
       () => store.state.units.unitsList
     );
 
-    store.dispatch("units/getUnits");
-
     const updateName = (name: string): void => {
       data.value.name = name;
     };

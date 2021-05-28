@@ -40,7 +40,6 @@ const actions = {
   ): Promise<void> {
     try {
       const ingredient = await apiPostIngredient(body);
-      console.log(ingredient);
       commit("addIngredient", ingredient);
     } catch (error) {
       console.log(error.message);
