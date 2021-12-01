@@ -10,11 +10,13 @@
 </template>
 
 <script lang="ts">
+import { IonIcon } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 import { checkmark } from "ionicons/icons";
 
 export default defineComponent({
   name: "ConfirmButton",
+  components: { IonIcon },
   props: ["data", "callback"],
   setup() {
     return { checkmark };

@@ -12,8 +12,7 @@
     <ion-card-content
       class="content"
       :style="{
-        backgroundImage:
-          'url(https://kubnews.ru/upload/iblock/942/942f183419487ced865decdbda8efcab.jpg)',
+        backgroundImage: `url(${ingredient.image})`,
       }"
     >
     </ion-card-content>
@@ -31,11 +30,7 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import type {
-  ActionButton,
-  Ingredient,
-  IngredientPayload,
-} from "@/types/ingredients";
+import type { ActionButton, Ingredient } from "@/types/ingredients";
 import type { Unit } from "@/types/units";
 import {
   IonCard,
@@ -66,12 +61,11 @@ export default defineComponent({
   props: ["id"],
   setup(props) {
     const store = useRootStore();
-
     const ingredient: ComputedRef<Ingredient> = computed(() =>
       store.getters["ingredients/ingredientById"](props.id)
     );
 
-    const patchIngredient = (ingredient: IngredientPayload): void => {
+    const patchIngredient = (ingredient: Ingredient): void => {
       store.dispatch("ingredients/patchIngredient", ingredient);
     };
 
@@ -105,10 +99,14 @@ export default defineComponent({
         options
       );
 
-      patchIngredient({
-        ...ingredient.value,
-        units: ingredient.value.units.map((unit: Unit) => unit._id),
-      });
+      if (result.ok) {
+        const imageData = await result.json();
+        console.log(imageData);
+        patchIngredient({
+          ...ingredient.value,
+          image: imageData.items[0].link,
+        });
+      }
     };
 
     const actionButtons: ActionButton[] = [

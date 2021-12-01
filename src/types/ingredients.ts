@@ -8,12 +8,7 @@ export interface Ingredient {
   _id: string;
   name: string;
   units: Unit[];
-}
-
-export interface IngredientPayload {
-  _id: string;
-  name: string;
-  units: string[];
+  image: string;
 }
 
 export interface ActionButton {

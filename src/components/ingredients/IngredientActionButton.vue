@@ -7,10 +7,12 @@
 </template>
 
 <script lang="ts">
+import { IonIcon } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "IngredientActionButton",
+  components: { IonIcon },
   props: ["color", "icon", "callback"],
 });
 </script>

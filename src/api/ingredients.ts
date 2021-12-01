@@ -1,4 +1,4 @@
-import type { Ingredient, IngredientPayload } from "@/types/ingredients";
+import type { Ingredient } from "@/types/ingredients";
 
 const api = process.env.VUE_APP_API;
 
@@ -39,7 +39,7 @@ export const apiPostIngredient = async (
 };
 
 export const apiPatchIngredient = async (
-  payload: IngredientPayload
+  payload: Ingredient
 ): Promise<void> => {
   const options: RequestInit = {
     method: "PATCH",

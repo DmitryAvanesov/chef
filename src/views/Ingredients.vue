@@ -32,7 +32,7 @@
 import AddIngredientButton from "@/components/ingredients/AddIngredientButton.vue";
 import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import { useRootStore } from "@/store";
-import { IonPage, onIonViewWillEnter } from "@ionic/vue";
+import { IonCol, IonPage, IonRow, onIonViewWillEnter } from "@ionic/vue";
 import { computed, defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
@@ -41,6 +41,8 @@ export default defineComponent({
     IngredientCard,
     AddIngredientButton,
     IonPage,
+    IonRow,
+    IonCol,
   },
   setup() {
     const store = useRootStore();

@@ -4,11 +4,7 @@ import {
   apiPatchIngredient,
   apiPostIngredient,
 } from "@/api/ingredients";
-import type {
-  Ingredient,
-  IngredientsState,
-  IngredientPayload,
-} from "@/types/ingredients";
+import type { Ingredient, IngredientsState } from "@/types/ingredients";
 import type { RootState } from "@/types/root";
 import type { ActionContext } from "vuex";
 
@@ -20,7 +16,7 @@ const getters = {
   ingredientById: (state: IngredientsState) => (id: string): Ingredient =>
     state.ingredientsList.find(
       (ingredient: Ingredient) => ingredient._id === id
-    ) || { _id: "", name: "", units: [] },
+    ) || { _id: "", name: "", units: [], image: "" },
 };
 
 const actions = {
@@ -47,7 +43,7 @@ const actions = {
   },
   async patchIngredient(
     { commit }: ActionContext<IngredientsState, RootState>,
-    payload: IngredientPayload
+    payload: Ingredient
   ): Promise<void> {
     try {
       const ingredient = await apiPatchIngredient(payload);
