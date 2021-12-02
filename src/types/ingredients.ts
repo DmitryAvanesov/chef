@@ -14,5 +14,6 @@ export interface Ingredient {
 export interface ActionButton {
   color: string;
   icon: string;
+  title: string;
   callback: () => void;
 }
