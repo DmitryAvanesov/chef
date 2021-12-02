@@ -129,7 +129,7 @@ export default defineComponent({
             : "Не удалось обновить изображение",
         duration: 2000,
         color: "danger",
-        cssClass: "toast",
+        position: "top",
       });
       return toast.present();
     };
@@ -197,9 +197,5 @@ export default defineComponent({
     justify-content: center;
     flex-grow: 1;
   }
-}
-
-.toast {
-  background-color: yellow;
 }
 </style>

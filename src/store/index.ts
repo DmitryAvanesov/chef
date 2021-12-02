@@ -1,4 +1,5 @@
 import ingredients from "@/store/modules/ingredients";
+import recipes from "@/store/modules/recipes";
 import units from "@/store/modules/units";
 import type { RootState } from "@/types/root";
 import type { InjectionKey } from "vue";
@@ -23,6 +24,7 @@ const sortUnitsPlugin = (store: Store<RootState>) => {
 
 export const store = createStore<RootState>({
   modules: {
+    recipes,
     ingredients,
     units,
   },

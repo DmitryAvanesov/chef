@@ -5,7 +5,7 @@
         <ion-title>Ингредиенты</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content class="content">
+    <ion-content>
       <ion-grid class="ingredients-grid">
         <ion-row>
           <ion-col

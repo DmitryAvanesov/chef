@@ -2,32 +2,32 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Единицы измерения</ion-title>
+        <ion-title>Рецепты</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <units-list></units-list>
+      <recipes-list></recipes-list>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import UnitsList from "@/components/units/UnitsList.vue";
+import RecipesList from "@/components/recipes/RecipesList.vue";
 import { useRootStore } from "@/store";
 import { IonPage, onIonViewWillEnter } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
-  name: "Units",
+  name: "Recipes",
   components: {
-    UnitsList,
+    RecipesList,
     IonPage,
   },
   setup() {
     const store = useRootStore();
 
     onIonViewWillEnter(() => {
-      store.dispatch("units/getUnits");
+      store.dispatch("recipes/getRecipes");
     });
   },
 });
