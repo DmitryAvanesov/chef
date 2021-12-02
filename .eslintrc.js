@@ -16,6 +16,7 @@ module.exports = {
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "@typescript-eslint/no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
     "import/order": "warn",
+    "@typescript-eslint/consistent-type-imports": "warn",
     "vue/no-deprecated-slot-attribute": "off",
     "no-undef": "off",
   },

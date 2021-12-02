@@ -72,9 +72,9 @@ export default defineComponent({
       data.value.name = name;
     };
 
-    const updateUnits = (unitIds: string[]): void => {
+    const updateUnits = (units: string[]): void => {
       data.value.units = unitsList.value.filter((unit) =>
-        unitIds.includes(unit._id)
+        units.includes(unit._id)
       );
     };
 
