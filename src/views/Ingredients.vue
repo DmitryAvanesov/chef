@@ -52,6 +52,7 @@ export default defineComponent({
 
     onIonViewWillEnter(() => {
       store.dispatch("ingredients/getIngredients");
+      store.dispatch("units/getUnits");
     });
 
     return { ingredientsList };

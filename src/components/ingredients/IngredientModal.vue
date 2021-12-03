@@ -66,8 +66,6 @@ export default defineComponent({
       () => store.state.units.unitsList
     );
 
-    store.dispatch("units/getUnits");
-
     const updateName = (name: string): void => {
       data.value.name = name;
     };
@@ -104,7 +102,7 @@ export default defineComponent({
 .form {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
   padding: 25px;
 
   .actions {

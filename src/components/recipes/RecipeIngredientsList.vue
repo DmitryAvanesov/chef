@@ -3,7 +3,9 @@
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
         <ion-list>
-          <add-recipe-ingredient></add-recipe-ingredient>
+          <add-recipe-ingredient-button
+            :recipe="$props.recipe"
+          ></add-recipe-ingredient-button>
         </ion-list>
       </ion-col>
     </ion-row>
@@ -11,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import AddRecipeIngredient from "@/components/recipes/AddRecipeIngredient.vue";
+import AddRecipeIngredientButton from "@/components/recipes/AddRecipeIngredientButton.vue";
 import { useRootStore } from "@/store";
 import { IonCol, IonRow } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
@@ -20,12 +22,14 @@ export default defineComponent({
   name: "RecipeIngredientsList",
   props: ["recipe"],
   components: {
-    AddRecipeIngredient,
+    AddRecipeIngredientButton,
     IonRow,
     IonCol,
   },
   setup() {
     const store = useRootStore();
+
+    return {};
   },
 });
 </script>

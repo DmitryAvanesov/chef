@@ -1,4 +1,4 @@
-import { apiGetRecipes, apiPostRecipe } from "@/api/recipes";
+import { apiGetRecipes, apiPatchRecipe, apiPostRecipe } from "@/api/recipes";
 import type { Recipe, RecipesState } from "@/types/recipes";
 import type { RootState } from "@/types/root";
 import type { ActionContext } from "vuex";
@@ -38,6 +38,17 @@ const actions = {
       console.log(error.message);
     }
   },
+  async patchRecipe(
+    { commit }: ActionContext<RecipesState, RootState>,
+    payload: Recipe
+  ): Promise<void> {
+    try {
+      const recipe = await apiPatchRecipe(payload);
+      commit("updateRecipe", recipe);
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
 };
 
 const mutations = {
@@ -46,6 +57,14 @@ const mutations = {
   },
   addRecipe(state: RecipesState, recipe: Recipe): void {
     state.recipesList = [...state.recipesList, recipe];
+  },
+  updateRecipe(state: RecipesState, payload: Recipe): void {
+    state.recipesList = [
+      ...state.recipesList.filter(
+        (recipe: Recipe) => recipe._id !== payload._id
+      ),
+      payload,
+    ];
   },
 };
 

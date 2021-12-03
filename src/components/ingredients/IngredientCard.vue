@@ -87,9 +87,7 @@ export default defineComponent({
       const modal = await modalController.create({
         component: IngredientModal,
         componentProps: { ...ingredient.value, callback: patchIngredient },
-        ...(isPlatform("desktop")
-          ? { cssClass: "add-ingredient-modal-desktop" }
-          : {}),
+        ...(isPlatform("desktop") ? { cssClass: "modal-desktop" } : {}),
       });
 
       return modal.present();

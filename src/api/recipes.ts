@@ -35,3 +35,22 @@ export const apiPostRecipe = async (recipe: Recipe): Promise<Recipe> => {
 
   throw Error("An error occurred while posting a recipe");
 };
+
+export const apiPatchRecipe = async (payload: Recipe): Promise<void> => {
+  console.log(payload);
+  const options: RequestInit = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  };
+
+  const response = await fetch(`${api}/recipes/${payload._id}`, options);
+
+  if (response.ok) {
+    return response.json();
+  }
+
+  throw Error("An error occurred while patching a recipe");
+};
