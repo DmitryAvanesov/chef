@@ -9,6 +9,7 @@
       <ion-grid class="ingredients-grid">
         <ion-row>
           <ion-col
+            class="ingredients-cell"
             v-for="ingredient in ingredientsList"
             :key="ingredient._id"
             size-xs="12"
@@ -61,5 +62,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 .ingredients-grid {
   padding: 5%;
+
+  .ingredients-cell {
+    padding: 12px;
+  }
 }
 </style>

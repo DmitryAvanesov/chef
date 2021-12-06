@@ -1,6 +1,6 @@
 <template>
   <ion-content>
-    <v-form class="form">
+    <form class="form">
       <ion-item>
         <ion-label>Ингредиент</ion-label>
         <ion-select
@@ -8,6 +8,7 @@
           placeholder="Выберите ингредиент"
           cancel-text="Отмена"
           ok-text="ОК"
+          interface="popover"
           :value="data.ingredient._id"
           :disabled="$props.recipeIngredient"
           @ionChange="updateIngredient($event.target.value)"
@@ -64,7 +65,7 @@
         </ion-button>
         <ion-button color="light" @click="dismiss()">Отмена</ion-button>
       </div>
-    </v-form>
+    </form>
   </ion-content>
 </template>
 

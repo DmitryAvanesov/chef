@@ -7,6 +7,7 @@
     </ion-header>
     <ion-content>
       <recipe-ingredients-list :recipe="recipe"></recipe-ingredients-list>
+      <recipe-stages :recipe="recipe"></recipe-stages>
     </ion-content>
   </ion-page>
 </template>
@@ -19,10 +20,12 @@ import { IonPage, onIonViewWillEnter } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
+import RecipeStages from "@/components/recipes/RecipeStages.vue";
 
 export default defineComponent({
   name: "Recipe",
   components: {
+    RecipeStages,
     RecipeIngredientsList,
     IonPage,
   },

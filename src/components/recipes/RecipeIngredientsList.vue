@@ -11,9 +11,13 @@
             :ref="recipeIngredient._id"
           >
             <ion-item lines="full">
-              <div class="name">
+              <ion-text
+                class="name"
+                color="dark"
+                @click="openPopover($event, recipeIngredient.ingredient._id)"
+              >
                 {{ recipeIngredient.ingredient.name }}
-              </div>
+              </ion-text>
               <div class="dot" v-for="index in 150" :key="index">.</div>
               <div class="unit-block" slot="end">
                 <span class="quantity">
@@ -51,6 +55,7 @@
 </template>
 
 <script lang="ts">
+import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import AddRecipeIngredientButton from "@/components/recipes/AddRecipeIngredientButton.vue";
 import RecipeIngredientModal from "@/components/recipes/RecipeIngredientModal.vue";
 import { useRootStore } from "@/store";
@@ -60,8 +65,10 @@ import {
   IonItemOption,
   IonItemOptions,
   IonRow,
+  IonText,
   isPlatform,
   modalController,
+  popoverController,
 } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 
@@ -74,6 +81,7 @@ export default defineComponent({
     IonCol,
     IonItemOptions,
     IonItemOption,
+    IonText,
   },
   setup(props) {
     const store = useRootStore();
@@ -96,6 +104,17 @@ export default defineComponent({
       return modal.present();
     };
 
+    const openPopover = async (event: Event, id: string) => {
+      const popover = await popoverController.create({
+        event,
+        component: IngredientCard,
+        componentProps: {
+          id,
+        },
+      });
+      await popover.present();
+    };
+
     const patchRecipeIngredient = async (
       recipeIngredient: RecipeIngredient
     ) => {
@@ -110,7 +129,7 @@ export default defineComponent({
       store.dispatch("recipeIngredients/deleteRecipeIngredient", id);
     };
 
-    return { openModal, deleteRecipeIngredient };
+    return { openModal, openPopover, deleteRecipeIngredient };
   },
 });
 </script>
@@ -125,6 +144,10 @@ export default defineComponent({
     .name {
       white-space: nowrap;
       margin-right: 12px;
+
+      &:hover {
+        color: var(--ion-color-primary);
+      }
     }
 
     .dot {
