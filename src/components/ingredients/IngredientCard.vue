@@ -43,11 +43,12 @@ import {
   isPlatform,
   modalController,
   toastController,
+  onIonViewDidEnter,
 } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
 import { refresh, create, close } from "ionicons/icons";
-import { watch } from "vue";
+import { onMounted, watch } from "vue";
 
 import IngredientActionButton from "./IngredientActionButton.vue";
 import IngredientModal from "./IngredientModal.vue";
@@ -68,6 +69,12 @@ export default defineComponent({
     const ingredient: ComputedRef<Ingredient> = computed(() =>
       store.getters["ingredients/ingredientById"](props.id)
     );
+
+    onMounted(() => {
+      if (!ingredient.value.image) {
+        refreshImage();
+      }
+    });
 
     watch(ingredient, (newIngredient, oldIngredient) => {
       if (newIngredient.name !== oldIngredient.name) {
