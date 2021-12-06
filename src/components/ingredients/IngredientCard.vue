@@ -5,6 +5,7 @@
       class="action-button"
       :color="actionButton.color"
       :icon="actionButton.icon"
+      :title="actionButton.title"
       :callback="actionButton.callback"
       :key="index"
       :style="{ marginRight: `${index * 36}px` }"
@@ -12,8 +13,9 @@
     <ion-card-content
       class="content"
       :style="{
-        backgroundImage:
-          'url(https://kubnews.ru/upload/iblock/942/942f183419487ced865decdbda8efcab.jpg)',
+        backgroundImage: `url(${
+          ingredient.image
+        }), url(${require('../../../resources/fallback.jpg')})`,
       }"
     >
     </ion-card-content>
@@ -31,12 +33,7 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import type {
-  ActionButton,
-  Ingredient,
-  IngredientPayload,
-} from "@/types/ingredients";
-import type { Unit } from "@/types/units";
+import type { ActionButton, Ingredient } from "@/types/ingredients";
 import {
   IonCard,
   IonCardHeader,
@@ -45,10 +42,12 @@ import {
   IonCardContent,
   isPlatform,
   modalController,
+  toastController,
 } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
 import { refresh, create, close } from "ionicons/icons";
+import { watch } from "vue";
 
 import IngredientActionButton from "./IngredientActionButton.vue";
 import IngredientModal from "./IngredientModal.vue";
@@ -66,12 +65,17 @@ export default defineComponent({
   props: ["id"],
   setup(props) {
     const store = useRootStore();
-
     const ingredient: ComputedRef<Ingredient> = computed(() =>
       store.getters["ingredients/ingredientById"](props.id)
     );
 
-    const patchIngredient = (ingredient: IngredientPayload): void => {
+    watch(ingredient, (newIngredient, oldIngredient) => {
+      if (newIngredient.name !== oldIngredient.name) {
+        refreshImage();
+      }
+    });
+
+    const patchIngredient = (ingredient: Ingredient): void => {
       store.dispatch("ingredients/patchIngredient", ingredient);
     };
 
@@ -82,10 +86,8 @@ export default defineComponent({
     const editIngredient = async (): Promise<void> => {
       const modal = await modalController.create({
         component: IngredientModal,
-        componentProps: { ...ingredient.value, callback: patchIngredient },
-        ...(isPlatform("desktop")
-          ? { cssClass: "add-ingredient-modal-desktop" }
-          : {}),
+        componentProps: { ingredient, callback: patchIngredient },
+        ...(isPlatform("desktop") ? { cssClass: "modal-desktop" } : {}),
       });
 
       return modal.present();
@@ -105,16 +107,50 @@ export default defineComponent({
         options
       );
 
-      patchIngredient({
-        ...ingredient.value,
-        units: ingredient.value.units.map((unit: Unit) => unit._id),
+      if (result.ok) {
+        const imageData = await result.json();
+
+        patchIngredient({
+          ...ingredient.value,
+          image: imageData.items[0].link,
+        });
+      } else {
+        await openToast(result.status);
+      }
+    };
+
+    const openToast = async (status: number) => {
+      const toast = await toastController.create({
+        message:
+          status === 429
+            ? "Квота для запроса изображений исчерпана, попробуйте позже"
+            : "Не удалось обновить изображение",
+        duration: 2000,
+        color: "danger",
+        position: "top",
       });
+      return toast.present();
     };
 
     const actionButtons: ActionButton[] = [
-      { color: "danger", icon: close, callback: deleteIngredient },
-      { color: "primary", icon: create, callback: editIngredient },
-      { color: "warning", icon: refresh, callback: refreshImage },
+      {
+        color: "danger",
+        icon: close,
+        title: "Удалить",
+        callback: deleteIngredient,
+      },
+      {
+        color: "primary",
+        icon: create,
+        title: "Редактировать",
+        callback: editIngredient,
+      },
+      {
+        color: "warning",
+        icon: refresh,
+        title: "Обновить изображение",
+        callback: refreshImage,
+      },
     ];
 
     return {

@@ -47,6 +47,7 @@ import AddUnitItem from "@/components/units/AddUnitItem.vue";
 import ConfirmButton from "@/components/units/ConfirmButton.vue";
 import { useRootStore } from "@/store";
 import type { Unit } from "@/types/units";
+import { IonCol, IonItemOption, IonItemOptions, IonRow } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { defineComponent, ref } from "@vue/runtime-core";
 import type { Ref } from "vue";
@@ -54,7 +55,14 @@ import { computed } from "vue";
 
 export default defineComponent({
   name: "UnitsList",
-  components: { AddUnitItem, ConfirmButton },
+  components: {
+    AddUnitItem,
+    ConfirmButton,
+    IonRow,
+    IonCol,
+    IonItemOptions,
+    IonItemOption,
+  },
   setup() {
     const store = useRootStore();
     const data: Ref<Unit> = ref({

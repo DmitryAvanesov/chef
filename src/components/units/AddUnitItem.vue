@@ -45,8 +45,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .add-item {
-  cursor: pointer;
-
   .add-label {
     margin-right: 5px;
   }

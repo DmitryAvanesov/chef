@@ -14,8 +14,10 @@ module.exports = {
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "@typescript-eslint/no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
+    "import/order": "warn",
+    "@typescript-eslint/consistent-type-imports": "warn",
     "vue/no-deprecated-slot-attribute": "off",
-    "@typescript-eslint/no-explicit-any": "off",
     "no-undef": "off",
   },
   overrides: [

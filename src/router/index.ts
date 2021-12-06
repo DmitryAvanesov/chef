@@ -13,6 +13,14 @@ const routes: RouteRecordRaw[] = [
         redirect: "/ingredients",
       },
       {
+        path: "recipes",
+        component: () => import("@/views/Recipes.vue"),
+      },
+      {
+        path: "recipes/:id",
+        component: () => import("@/views/Recipe.vue"),
+      },
+      {
         path: "ingredients",
         component: () => import("@/views/Ingredients.vue"),
       },

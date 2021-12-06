@@ -1,6 +1,6 @@
 <template>
   <ion-fab
-    class="add-ingredient-button"
+    class="add-recipe-ingredient-button"
     vertical="bottom"
     horizontal="end"
     @click="openModal()"
@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-import IngredientModal from "@/components/ingredients/IngredientModal.vue";
+import RecipeIngredientModal from "@/components/recipes/RecipeIngredientModal.vue";
 import { useRootStore } from "@/store";
-import type { Ingredient } from "@/types/ingredients";
+import type { RecipeIngredient } from "@/types/recipe-ingredients";
 import {
   IonFab,
   IonFabButton,
@@ -22,28 +22,33 @@ import {
   modalController,
   isPlatform,
 } from "@ionic/vue";
-import { defineComponent } from "@vue/runtime-core";
+import { computed, defineComponent } from "@vue/runtime-core";
 import { add } from "ionicons/icons";
 
 export default defineComponent({
-  name: "AddIngredientButton",
+  name: "AddRecipeIngredientButton",
   components: {
     IonFab,
     IonFabButton,
     IonIcon,
   },
-  setup() {
+  props: ["recipe"],
+  setup(props) {
     const store = useRootStore();
 
-    const postIngredient = (ingredient: Ingredient) => {
-      store.dispatch("ingredients/postIngredient", ingredient);
+    const postRecipeIngredient = async (recipeIngredient: RecipeIngredient) => {
+      await store.dispatch(
+        "recipeIngredients/postRecipeIngredient",
+        recipeIngredient
+      );
     };
 
     const openModal = async (): Promise<void> => {
       const modal = await modalController.create({
-        component: IngredientModal,
+        component: RecipeIngredientModal,
         componentProps: {
-          callback: postIngredient,
+          recipe: props.recipe,
+          callback: postRecipeIngredient,
         },
         ...(isPlatform("desktop") ? { cssClass: "modal-desktop" } : {}),
       });
@@ -51,14 +56,14 @@ export default defineComponent({
       return modal.present();
     };
 
-    return { store, openModal, add };
+    return { openModal, add };
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.add-ingredient-button {
-  position: fixed;
+.add-recipe-ingredient-button {
+  bottom: 16px;
 
   .add-icon {
     --ionicon-stroke-width: 48px;

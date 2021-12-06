@@ -13,6 +13,7 @@
     "baseUrl": ".",
     "types": ["webpack-env", "jest"],
     "paths": {
+      "@recipes/*": ["src/components/recipes"],
       "@ingredients/*": ["src/components/ingredients"],
       "@units/*": ["src/components/units"],
       "@/*": ["src/*"]

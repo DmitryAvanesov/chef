@@ -16,7 +16,7 @@
           placeholder="Выберите"
           cancel-text="Отмена"
           ok-text="ОК"
-          :value="data.units"
+          :value="data.units.map((unit) => unit._id)"
           @ionChange="updateUnits($event.target.value)"
         >
           <ion-select-option
@@ -44,33 +44,39 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import type { IngredientPayload } from "@/types/ingredients";
+import type { Ingredient } from "@/types/ingredients";
 import type { Unit } from "@/types/units";
 import { modalController, IonSelect, IonSelectOption } from "@ionic/vue";
-import type { Ref } from "@vue/runtime-core";
+import type { ComputedRef, Ref } from "@vue/runtime-core";
 import { computed, defineComponent, ref } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "IngredientModal",
   components: { IonSelect, IonSelectOption },
-  props: ["_id", "name", "units", "callback"],
+  props: ["ingredient", "callback"],
   setup(props) {
     const store = useRootStore();
-    const data: Ref<IngredientPayload> = ref({
-      _id: props._id,
-      name: props.name,
-      units: props.units.map((unit: Unit) => unit._id),
+    const stubIngredient: Ingredient = {
+      _id: "",
+      name: "",
+      units: [],
+      image: "",
+    };
+    const data: Ref<Ingredient> = ref({
+      ...(props.ingredient?.value || stubIngredient),
     });
-    const unitsList = computed(() => store.state.units.unitsList);
-
-    store.dispatch("units/getUnits");
+    const unitsList: ComputedRef<Unit[]> = computed(
+      () => store.state.units.unitsList
+    );
 
     const updateName = (name: string): void => {
       data.value.name = name;
     };
 
     const updateUnits = (units: string[]): void => {
-      data.value.units = units;
+      data.value.units = unitsList.value.filter((unit) =>
+        units.includes(unit._id)
+      );
     };
 
     const dismiss = () => {
@@ -99,7 +105,7 @@ export default defineComponent({
 .form {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
   padding: 25px;
 
   .actions {

@@ -1,17 +1,24 @@
 <template>
   <ion-fab vertical="top" horizontal="end">
-    <ion-fab-button class="action-button" :color="color" @click="callback()">
+    <ion-fab-button
+      class="action-button"
+      :color="color"
+      :title="title"
+      @click="callback()"
+    >
       <ion-icon class="action-icon" :icon="icon"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </template>
 
 <script lang="ts">
+import { IonIcon } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "IngredientActionButton",
-  props: ["color", "icon", "callback"],
+  components: { IonIcon },
+  props: ["color", "icon", "title", "callback"],
 });
 </script>
 
