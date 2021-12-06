@@ -1,14 +1,10 @@
-import {
-  apiDeleteIngredient,
-  apiGetIngredients,
-  apiPatchIngredient,
-  apiPostIngredient,
-} from "@/api/ingredients";
+import { apiDelete, apiGet, apiPatch, apiPost } from "@/api";
 import type { Ingredient, IngredientsState } from "@/types/ingredients";
 import type { RootState } from "@/types/root";
 import type { ActionContext } from "vuex";
 
 const state = (): IngredientsState => ({
+  route: "ingredients",
   ingredientsList: [],
 });
 
@@ -21,43 +17,44 @@ const getters = {
 
 const actions = {
   async getIngredients({
+    state,
     commit,
   }: ActionContext<IngredientsState, RootState>): Promise<void> {
     try {
-      const ingredients = await apiGetIngredients();
+      const ingredients = await apiGet(state.route);
       commit("setIngredientsList", ingredients);
     } catch (error) {
       console.log(error.message);
     }
   },
   async postIngredient(
-    { commit }: ActionContext<IngredientsState, RootState>,
+    { state, commit }: ActionContext<IngredientsState, RootState>,
     body: Ingredient
   ): Promise<void> {
     try {
-      const ingredient = await apiPostIngredient(body);
+      const ingredient = await apiPost(state.route, body);
       commit("addIngredient", ingredient);
     } catch (error) {
       console.log(error.message);
     }
   },
   async patchIngredient(
-    { commit }: ActionContext<IngredientsState, RootState>,
+    { state, commit }: ActionContext<IngredientsState, RootState>,
     payload: Ingredient
   ): Promise<void> {
     try {
-      const ingredient = await apiPatchIngredient(payload);
+      const ingredient = await apiPatch(state.route, payload);
       commit("updateIngredient", ingredient);
     } catch (error) {
       console.log(error.message);
     }
   },
   async deleteIngredient(
-    { commit }: ActionContext<IngredientsState, RootState>,
+    { state, commit }: ActionContext<IngredientsState, RootState>,
     id: string
   ): Promise<void> {
     try {
-      await apiDeleteIngredient(id);
+      await apiDelete(state.route, id);
       commit("removeIngredient", id);
     } catch (error) {
       console.log(error.message);

@@ -1,61 +1,56 @@
-import {
-  apiDeleteUnit,
-  apiGetUnits,
-  apiPatchUnit,
-  apiPostUnit,
-} from "@/api/units";
+import { apiDelete, apiGet, apiPatch, apiPost } from "@/api";
 import type { RootState } from "@/types/root";
 import type { Unit, UnitsState } from "@/types/units";
 import type { ActionContext } from "vuex";
 
 const state = (): UnitsState => ({
+  route: "units",
   unitsList: [],
 });
 
-const getters = {
-  unitsCount: (state: UnitsState): number => state.unitsList.length,
-};
+const getters = {};
 
 const actions = {
   async getUnits({
+    state,
     commit,
   }: ActionContext<UnitsState, RootState>): Promise<void> {
     try {
-      const units = await apiGetUnits();
+      const units = await apiGet(state.route);
       commit("setUnitsList", units);
     } catch (error) {
       console.log(error.message);
     }
   },
   async postUnit(
-    { commit }: ActionContext<UnitsState, RootState>,
+    { state, commit }: ActionContext<UnitsState, RootState>,
     body: Unit
   ): Promise<void> {
     try {
-      const unit = await apiPostUnit(body);
+      const unit = await apiPost(state.route, body);
       commit("addUnit", unit);
     } catch (error) {
       console.log(error.message);
     }
   },
   async patchUnit(
-    { commit }: ActionContext<UnitsState, RootState>,
+    { state, commit }: ActionContext<UnitsState, RootState>,
     body: Unit
   ): Promise<void> {
     try {
       console.log(body);
-      const unit = await apiPatchUnit(body);
+      const unit = await apiPatch(state.route, body);
       commit("updateUnit", unit);
     } catch (error) {
       console.log(error.message);
     }
   },
   async deleteUnit(
-    { commit }: ActionContext<UnitsState, RootState>,
+    { state, commit }: ActionContext<UnitsState, RootState>,
     id: string
   ): Promise<void> {
     try {
-      await apiDeleteUnit(id);
+      await apiDelete(state.route, id);
       commit("removeUnit", id);
     } catch (error) {
       console.log(error.message);

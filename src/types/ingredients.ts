@@ -1,6 +1,8 @@
+import type { ApiRoute } from "@/types/api";
 import type { Unit } from "@/types/units";
 
 export interface IngredientsState {
+  route: ApiRoute;
   ingredientsList: Ingredient[];
 }
 

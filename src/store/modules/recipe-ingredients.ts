@@ -1,19 +1,13 @@
-import {
-  apiDeleteRecipeIngredient,
-  apiGetRecipeIngredients,
-  apiPatchRecipeIngredient,
-  apiPostRecipeIngredient,
-} from "@/api/recipe-ingredients";
+import { apiDelete, apiGet, apiPatch, apiPost } from "@/api";
 import type {
   RecipeIngredient,
   RecipeIngredientsState,
 } from "@/types/recipe-ingredients";
 import type { RootState } from "@/types/root";
 import type { ActionContext } from "vuex";
-import { Ingredient, IngredientsState } from "@/types/ingredients";
-import { apiDeleteIngredient } from "@/api/ingredients";
 
 const state = (): RecipeIngredientsState => ({
+  route: "recipe-ingredients",
   recipeIngredientsList: [],
 });
 
@@ -21,43 +15,44 @@ const getters = {};
 
 const actions = {
   async getRecipeIngredients({
+    state,
     commit,
   }: ActionContext<RecipeIngredientsState, RootState>): Promise<void> {
     try {
-      const recipeIngredients = await apiGetRecipeIngredients();
+      const recipeIngredients = await apiGet(state.route);
       commit("setRecipeIngredientsList", recipeIngredients);
     } catch (error) {
       console.log(error.message);
     }
   },
   async postRecipeIngredient(
-    { commit }: ActionContext<RecipeIngredientsState, RootState>,
+    { state, commit }: ActionContext<RecipeIngredientsState, RootState>,
     body: RecipeIngredient
   ): Promise<void> {
     try {
-      const recipeIngredient = await apiPostRecipeIngredient(body);
+      const recipeIngredient = await apiPost(state.route, body);
       commit("addRecipeIngredient", recipeIngredient);
     } catch (error) {
       console.log(error.message);
     }
   },
   async patchRecipeIngredient(
-    { commit }: ActionContext<RecipeIngredientsState, RootState>,
+    { state, commit }: ActionContext<RecipeIngredientsState, RootState>,
     payload: RecipeIngredient
   ): Promise<void> {
     try {
-      const recipeIngredient = await apiPatchRecipeIngredient(payload);
+      const recipeIngredient = await apiPatch(state.route, payload);
       commit("updateRecipeIngredient", recipeIngredient);
     } catch (error) {
       console.log(error.message);
     }
   },
   async deleteRecipeIngredient(
-    { commit }: ActionContext<RecipeIngredientsState, RootState>,
+    { state, commit }: ActionContext<RecipeIngredientsState, RootState>,
     id: string
   ): Promise<void> {
     try {
-      await apiDeleteRecipeIngredient(id);
+      await apiDelete(state.route, id);
       commit("removeRecipeIngredient", id);
     } catch (error) {
       console.log(error.message);

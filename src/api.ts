@@ -1,11 +1,9 @@
-import type { RecipeIngredient } from "@/types/recipe-ingredients";
+import type { Ingredient } from "@/types/ingredients";
+import { ApiType, ApiRoute } from "@/types/api";
 
 const api = process.env.VUE_APP_API;
-const route = "recipe-ingredients";
 
-export const apiGetRecipeIngredients = async (): Promise<
-  RecipeIngredient[]
-> => {
+export const apiGet = async (route: ApiRoute): Promise<ApiType[]> => {
   const options: RequestInit = {
     method: "GET",
   };
@@ -16,13 +14,14 @@ export const apiGetRecipeIngredients = async (): Promise<
     return response.json();
   }
 
-  throw Error("An error occurred while getting recipe ingredients");
+  throw Error(`An error occurred while getting ${route}`);
 };
 
-export const apiPostRecipeIngredient = async (
-  recipeIngredient: RecipeIngredient
-): Promise<RecipeIngredient> => {
-  const { _id, ...body } = recipeIngredient;
+export const apiPost = async (
+  route: ApiRoute,
+  payload: ApiType
+): Promise<ApiType> => {
+  const { _id, ...body } = payload;
 
   const options: RequestInit = {
     method: "POST",
@@ -38,11 +37,12 @@ export const apiPostRecipeIngredient = async (
     return response.json();
   }
 
-  throw Error("An error occurred while posting a recipe ingredient");
+  throw Error(`An error occurred while posting ${route}`);
 };
 
-export const apiPatchRecipeIngredient = async (
-  payload: RecipeIngredient
+export const apiPatch = async (
+  route: ApiRoute,
+  payload: ApiType
 ): Promise<void> => {
   const options: RequestInit = {
     method: "PATCH",
@@ -58,10 +58,10 @@ export const apiPatchRecipeIngredient = async (
     return response.json();
   }
 
-  throw Error("An error occurred while patching a recipe ingredient");
+  throw Error(`An error occurred while patching ${route}`);
 };
 
-export const apiDeleteRecipeIngredient = async (id: string): Promise<void> => {
+export const apiDelete = async (route: ApiRoute, id: string): Promise<void> => {
   const options: RequestInit = {
     method: "DELETE",
   };
@@ -72,5 +72,5 @@ export const apiDeleteRecipeIngredient = async (id: string): Promise<void> => {
     return;
   }
 
-  throw Error("An error occurred while deleting a recipe ingredient");
+  throw Error(`An error occurred while deleting ${route}`);
 };

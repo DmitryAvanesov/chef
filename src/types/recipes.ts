@@ -1,6 +1,8 @@
 import type { RecipeIngredient } from "@/types/recipe-ingredients";
+import { ApiRoute } from "@/types/api";
 
 export interface RecipesState {
+  route: ApiRoute;
   recipesList: Recipe[];
 }
 
