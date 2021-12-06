@@ -43,7 +43,6 @@ import {
   isPlatform,
   modalController,
   toastController,
-  onIonViewDidEnter,
 } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";

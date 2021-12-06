@@ -54,7 +54,6 @@ import AddRecipeIngredientButton from "@/components/recipes/AddRecipeIngredientB
 import RecipeIngredientModal from "@/components/recipes/RecipeIngredientModal.vue";
 import { useRootStore } from "@/store";
 import type { RecipeIngredient } from "@/types/recipe-ingredients";
-import type { Recipe } from "@/types/recipes";
 import {
   IonCol,
   IonItemOption,
@@ -63,9 +62,7 @@ import {
   isPlatform,
   modalController,
 } from "@ionic/vue";
-import type { ComputedRef } from "@vue/runtime-core";
-import { computed, defineComponent } from "@vue/runtime-core";
-import { watch } from "vue";
+import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "RecipeIngredientsList",

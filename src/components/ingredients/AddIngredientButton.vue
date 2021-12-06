@@ -3,6 +3,7 @@
     class="add-ingredient-button"
     vertical="bottom"
     horizontal="end"
+    title="Добавить ингредиент"
     @click="openModal()"
   >
     <ion-fab-button>
@@ -58,7 +59,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .add-ingredient-button {
-  position: fixed;
+  bottom: 16px;
+  right: 24px;
 
   .add-icon {
     --ionicon-stroke-width: 48px;

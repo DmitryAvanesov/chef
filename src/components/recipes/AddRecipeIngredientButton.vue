@@ -3,6 +3,7 @@
     class="add-recipe-ingredient-button"
     vertical="bottom"
     horizontal="end"
+    title="Добавить ингредиент"
     @click="openModal()"
   >
     <ion-fab-button>
@@ -15,6 +16,7 @@
 import RecipeIngredientModal from "@/components/recipes/RecipeIngredientModal.vue";
 import { useRootStore } from "@/store";
 import type { RecipeIngredient } from "@/types/recipe-ingredients";
+import type { Recipe } from "@/types/recipes";
 import {
   IonFab,
   IonFabButton,
@@ -22,9 +24,9 @@ import {
   modalController,
   isPlatform,
 } from "@ionic/vue";
-import { computed, ComputedRef, defineComponent } from "@vue/runtime-core";
+import type { ComputedRef } from "@vue/runtime-core";
+import { computed, defineComponent } from "@vue/runtime-core";
 import { add } from "ionicons/icons";
-import { Recipe } from "@/types/recipes";
 
 export default defineComponent({
   name: "AddRecipeIngredientButton",

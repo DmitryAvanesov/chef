@@ -12,7 +12,9 @@
         </ion-tab-button>
         <ion-tab-button tab="Units" href="/units">
           <ion-icon :icon="scale" />
-          <ion-label>Единицы измерения</ion-label>
+          <ion-label>
+            {{ isDesktop ? "Единицы измерения" : "Ед. изм." }}
+          </ion-label>
         </ion-tab-button>
       </ion-tab-bar>
     </ion-tabs>
@@ -27,6 +29,7 @@ import {
   IonLabel,
   IonIcon,
   IonPage,
+  isPlatform,
 } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 import { pizza, fish, scale } from "ionicons/icons";
@@ -35,7 +38,10 @@ export default defineComponent({
   name: "Tabs",
   components: { IonLabel, IonTabs, IonTabBar, IonTabButton, IonIcon, IonPage },
   setup() {
+    const isDesktop = isPlatform("desktop");
+
     return {
+      isDesktop,
       pizza,
       fish,
       scale,

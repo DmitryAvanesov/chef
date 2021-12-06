@@ -19,12 +19,10 @@
           >
             <ingredient-card :id="ingredient._id"></ingredient-card>
           </ion-col>
-          <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
-            <add-ingredient-button></add-ingredient-button>
-          </ion-col>
         </ion-row>
       </ion-grid>
     </ion-content>
+    <add-ingredient-button></add-ingredient-button>
   </ion-page>
 </template>
 
