@@ -1,5 +1,5 @@
+import type { ApiType, ApiRoute } from "@/types/api";
 import type { Ingredient } from "@/types/ingredients";
-import { ApiType, ApiRoute } from "@/types/api";
 
 const api = process.env.VUE_APP_API;
 

@@ -62,9 +62,8 @@ import {
   IonRow,
   isPlatform,
   modalController,
-  onIonViewDidEnter,
 } from "@ionic/vue";
-import type { ComputedRef} from "@vue/runtime-core";
+import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
 import { watch } from "vue";
 
@@ -80,30 +79,6 @@ export default defineComponent({
   },
   setup(props) {
     const store = useRootStore();
-    const recipeIngredientsList: ComputedRef<RecipeIngredient[]> = computed(
-      () => store.state.recipeIngredients.recipeIngredientsList
-    );
-
-    watch(
-      recipeIngredientsList,
-      (newRecipeIngredients, oldRecipeIngredients) => {
-        if (newRecipeIngredients.length > oldRecipeIngredients.length) {
-          patchRecipe({
-            ...props.recipe,
-            ingredients: [
-              ...props.recipe.ingredients,
-              [...newRecipeIngredients].pop(),
-            ],
-          });
-        } else {
-          store.dispatch("recipes/getRecipes");
-        }
-      }
-    );
-
-    const patchRecipe = (recipe: Recipe) => {
-      store.dispatch("recipes/patchRecipe", recipe);
-    };
 
     const openModal = async (
       item: HTMLIonItemSlidingElement,
@@ -123,11 +98,14 @@ export default defineComponent({
       return modal.present();
     };
 
-    const patchRecipeIngredient = (recipeIngredient: RecipeIngredient) => {
-      store.dispatch(
+    const patchRecipeIngredient = async (
+      recipeIngredient: RecipeIngredient
+    ) => {
+      await store.dispatch(
         "recipeIngredients/patchRecipeIngredient",
         recipeIngredient
       );
+      await store.dispatch("recipes/getRecipes");
     };
 
     const deleteRecipeIngredient = (id: string) => {
