@@ -11,10 +11,11 @@
             :ref="recipeIngredient._id"
           >
             <ion-item lines="full">
-              <div>
+              <div class="name">
                 {{ recipeIngredient.ingredient.name }}
               </div>
-              <div slot="end">
+              <div class="dot" v-for="index in 150" :key="index">.</div>
+              <div class="unit-block" slot="end">
                 <span class="quantity">
                   {{ recipeIngredient.quantity }}
                 </span>
@@ -121,8 +122,23 @@ export default defineComponent({
   .list-item {
     cursor: pointer;
 
-    .quantity {
-      margin-right: 4px;
+    .name {
+      white-space: nowrap;
+      margin-right: 12px;
+    }
+
+    .dot {
+      margin: 0 1px;
+    }
+
+    .unit-block {
+      width: 65px;
+      text-align: right;
+      margin-left: 8px;
+
+      .quantity {
+        margin-right: 4px;
+      }
     }
   }
 }

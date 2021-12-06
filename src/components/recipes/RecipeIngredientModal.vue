@@ -29,6 +29,7 @@
             type="number"
             :step="quantityStep"
             :min="quantityStep"
+            :max="quantityMax - quantityStep"
             placeholder="Введите количество"
             :value="data.quantity || ''"
             @ionInput="updateQuantity($event.target.value)"
@@ -91,6 +92,7 @@ export default defineComponent({
   setup(props) {
     const store = useRootStore();
     const quantityStep = 0.01;
+    const quantityMax = 0.01;
     const stubIngredient = { _id: "", name: "", units: [], image: "" };
     const stubUnit = { _id: "", name: "" };
     const data: Ref<RecipeIngredient> = ref({
@@ -156,6 +158,7 @@ export default defineComponent({
     return {
       data,
       quantityStep,
+      quantityMax,
       ingredientsList,
       unitsList,
       updateIngredient,
