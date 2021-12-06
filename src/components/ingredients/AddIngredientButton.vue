@@ -43,7 +43,6 @@ export default defineComponent({
       const modal = await modalController.create({
         component: IngredientModal,
         componentProps: {
-          ...{ name: "", units: [] },
           callback: postIngredient,
         },
         ...(isPlatform("desktop") ? { cssClass: "modal-desktop" } : {}),

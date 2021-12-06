@@ -9,6 +9,7 @@
           cancel-text="Отмена"
           ok-text="ОК"
           :value="data.ingredient._id"
+          :disabled="$props.recipeIngredient"
           @ionChange="updateIngredient($event.target.value)"
         >
           <ion-select-option
@@ -86,21 +87,32 @@ import { ref } from "vue";
 export default defineComponent({
   name: "RecipeIngredientModal",
   components: { IonSelect, IonSelectOption, IonRadio, IonRadioGroup },
-  props: ["_id", "callback"],
+  props: ["recipeIngredient", "recipe", "callback"],
   setup(props) {
     const store = useRootStore();
     const quantityStep = 0.01;
     const stubIngredient = { _id: "", name: "", units: [], image: "" };
     const stubUnit = { _id: "", name: "" };
     const data: Ref<RecipeIngredient> = ref({
-      _id: props._id,
-      ingredient: stubIngredient,
-      unit: stubUnit,
-      quantity: 0,
+      ...(props.recipeIngredient || {
+        _id: "",
+        ingredient: stubIngredient,
+        unit: stubUnit,
+        quantity: 0,
+      }),
     });
-    const ingredientsList: ComputedRef<Ingredient[]> = computed(
-      () => store.state.ingredients.ingredientsList
-    );
+    const ingredientsList: ComputedRef<Ingredient[]> = computed(() => [
+      ...store.state.ingredients.ingredientsList.filter((ingredient) =>
+        props.recipeIngredient
+          ? ingredient._id === props.recipeIngredient.ingredient._id
+          : !props.recipe.ingredients
+              .map(
+                (recipeIngredient: RecipeIngredient) =>
+                  recipeIngredient.ingredient._id
+              )
+              .includes(ingredient._id)
+      ),
+    ]);
     const unitsList: ComputedRef<Unit[]> = computed(() =>
       store.state.units.unitsList.filter((unit) =>
         data.value.ingredient.units

@@ -15,7 +15,6 @@
 import RecipeIngredientModal from "@/components/recipes/RecipeIngredientModal.vue";
 import { useRootStore } from "@/store";
 import type { RecipeIngredient } from "@/types/recipe-ingredients";
-import type { Recipe } from "@/types/recipes";
 import {
   IonFab,
   IonFabButton,
@@ -23,10 +22,8 @@ import {
   modalController,
   isPlatform,
 } from "@ionic/vue";
-import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
 import { add } from "ionicons/icons";
-import { watch } from "vue";
 
 export default defineComponent({
   name: "AddRecipeIngredientButton",
@@ -38,19 +35,6 @@ export default defineComponent({
   props: ["recipe"],
   setup(props) {
     const store = useRootStore();
-    const recipeIngredientsList: ComputedRef<RecipeIngredient[]> = computed(
-      () => store.state.recipeIngredients.recipeIngredientsList
-    );
-
-    watch(recipeIngredientsList, (newRecipeIngredients) => {
-      patchRecipe({
-        ...props.recipe,
-        ingredients: [
-          ...props.recipe.ingredients,
-          [...newRecipeIngredients].pop(),
-        ],
-      });
-    });
 
     const postRecipeIngredient = async (recipeIngredient: RecipeIngredient) => {
       await store.dispatch(
@@ -59,15 +43,11 @@ export default defineComponent({
       );
     };
 
-    const patchRecipe = (recipe: Recipe) => {
-      store.dispatch("recipes/patchRecipe", recipe);
-    };
-
     const openModal = async (): Promise<void> => {
       const modal = await modalController.create({
         component: RecipeIngredientModal,
         componentProps: {
-          _id: props.recipe._id,
+          recipe: props.recipe,
           callback: postRecipeIngredient,
         },
         ...(isPlatform("desktop") ? { cssClass: "modal-desktop" } : {}),

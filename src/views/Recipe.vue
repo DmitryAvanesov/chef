@@ -35,6 +35,7 @@ export default defineComponent({
 
     onIonViewWillEnter(() => {
       store.dispatch("recipes/getRecipes");
+      store.dispatch("recipeIngredients/getRecipeIngredients");
       store.dispatch("ingredients/getIngredients");
       store.dispatch("units/getUnits");
     });

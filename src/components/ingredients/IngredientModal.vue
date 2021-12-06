@@ -53,14 +53,17 @@ import { computed, defineComponent, ref } from "@vue/runtime-core";
 export default defineComponent({
   name: "IngredientModal",
   components: { IonSelect, IonSelectOption },
-  props: ["_id", "name", "units", "image", "callback"],
+  props: ["ingredient", "callback"],
   setup(props) {
     const store = useRootStore();
+    const stubIngredient: Ingredient = {
+      _id: "",
+      name: "",
+      units: [],
+      image: "",
+    };
     const data: Ref<Ingredient> = ref({
-      _id: props._id,
-      name: props.name,
-      units: props.units,
-      image: props.image,
+      ...(props.ingredient?.value || stubIngredient),
     });
     const unitsList: ComputedRef<Unit[]> = computed(
       () => store.state.units.unitsList

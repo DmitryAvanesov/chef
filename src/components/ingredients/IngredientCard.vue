@@ -86,7 +86,7 @@ export default defineComponent({
     const editIngredient = async (): Promise<void> => {
       const modal = await modalController.create({
         component: IngredientModal,
-        componentProps: { ...ingredient.value, callback: patchIngredient },
+        componentProps: { ingredient, callback: patchIngredient },
         ...(isPlatform("desktop") ? { cssClass: "modal-desktop" } : {}),
       });
 
