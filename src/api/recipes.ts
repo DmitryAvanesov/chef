@@ -37,7 +37,6 @@ export const apiPostRecipe = async (recipe: Recipe): Promise<Recipe> => {
 };
 
 export const apiPatchRecipe = async (payload: Recipe): Promise<void> => {
-  console.log(payload);
   const options: RequestInit = {
     method: "PATCH",
     headers: {

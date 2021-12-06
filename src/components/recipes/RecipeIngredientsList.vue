@@ -2,7 +2,26 @@
   <ion-grid>
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
-        <ion-list>
+        <h2>Ингредиенты</h2>
+        <ion-list class="list">
+          <ion-item
+            class="list-item"
+            v-for="recipeIngredient in $props.recipe.ingredients"
+            :key="recipeIngredient._id"
+            lines="full"
+          >
+            <div>
+              {{ recipeIngredient.ingredient.name }}
+            </div>
+            <div slot="end">
+              <span class="quantity">
+                {{ recipeIngredient.quantity }}
+              </span>
+              <span>
+                {{ recipeIngredient.unit.name }}
+              </span>
+            </div>
+          </ion-item>
           <add-recipe-ingredient-button
             :recipe="$props.recipe"
           ></add-recipe-ingredient-button>
@@ -26,12 +45,17 @@ export default defineComponent({
     IonRow,
     IonCol,
   },
-  setup() {
-    const store = useRootStore();
-
-    return {};
-  },
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.list {
+  padding-bottom: 96px;
+
+  .list-item {
+    .quantity {
+      margin-right: 4px;
+    }
+  }
+}
+</style>

@@ -1,6 +1,5 @@
-import { Recipe } from "@/types/recipes";
-import { Ingredient } from "@/types/ingredients";
-import { Unit } from "@/types/units";
+import type { Ingredient } from "@/types/ingredients";
+import type { Unit } from "@/types/units";
 
 export interface RecipeIngredientsState {
   recipeIngredientsList: RecipeIngredient[];

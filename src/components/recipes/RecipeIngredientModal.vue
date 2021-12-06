@@ -26,6 +26,8 @@
           <ion-input
             class="quantity-input"
             type="number"
+            :step="quantityStep"
+            :min="quantityStep"
             placeholder="Введите количество"
             :value="data.quantity || ''"
             @ionInput="updateQuantity($event.target.value)"
@@ -49,7 +51,12 @@
         <ion-button
           type="submit"
           @click="confirm()"
-          :disabled="!data.ingredient._id || !data.unit._id || !data.quantity"
+          :disabled="
+            !data.ingredient._id ||
+            !data.unit._id ||
+            !data.quantity ||
+            data.quantity < quantityStep
+          "
         >
           Сохранить
         </ion-button>
@@ -82,6 +89,7 @@ export default defineComponent({
   props: ["_id", "callback"],
   setup(props) {
     const store = useRootStore();
+    const quantityStep = 0.01;
     const stubIngredient = { _id: "", name: "", units: [], image: "" };
     const stubUnit = { _id: "", name: "" };
     const data: Ref<RecipeIngredient> = ref({
@@ -116,7 +124,7 @@ export default defineComponent({
     };
 
     const updateQuantity = (quantity: string): void => {
-      data.value.quantity = parseInt(quantity, 10);
+      data.value.quantity = parseFloat(quantity);
     };
 
     const updateUnit = (unitId: string): void => {
@@ -135,6 +143,7 @@ export default defineComponent({
 
     return {
       data,
+      quantityStep,
       ingredientsList,
       unitsList,
       updateIngredient,

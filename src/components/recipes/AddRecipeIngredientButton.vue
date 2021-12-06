@@ -23,8 +23,10 @@ import {
   modalController,
   isPlatform,
 } from "@ionic/vue";
-import { defineComponent } from "@vue/runtime-core";
+import type { ComputedRef } from "@vue/runtime-core";
+import { computed, defineComponent } from "@vue/runtime-core";
 import { add } from "ionicons/icons";
+import { watch } from "vue";
 
 export default defineComponent({
   name: "AddRecipeIngredientButton",
@@ -36,20 +38,28 @@ export default defineComponent({
   props: ["recipe"],
   setup(props) {
     const store = useRootStore();
+    const recipeIngredientsList: ComputedRef<RecipeIngredient[]> = computed(
+      () => store.state.recipeIngredients.recipeIngredientsList
+    );
+
+    watch(recipeIngredientsList, (newRecipeIngredients) => {
+      patchRecipe({
+        ...props.recipe,
+        ingredients: [
+          ...props.recipe.ingredients,
+          [...newRecipeIngredients].pop(),
+        ],
+      });
+    });
 
     const postRecipeIngredient = async (recipeIngredient: RecipeIngredient) => {
       await store.dispatch(
         "recipeIngredients/postRecipeIngredient",
         recipeIngredient
       );
-      patchRecipe({
-        ...props.recipe,
-        ingredients: [...props.recipe.ingredients, recipeIngredient],
-      });
     };
 
     const patchRecipe = (recipe: Recipe) => {
-      console.log(recipe);
       store.dispatch("recipes/patchRecipe", recipe);
     };
 
@@ -73,6 +83,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .add-recipe-ingredient-button {
+  bottom: 16px;
+
   .add-icon {
     --ionicon-stroke-width: 48px;
     font-size: 30px;

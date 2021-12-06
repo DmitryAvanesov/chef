@@ -1,4 +1,4 @@
-import { RecipeIngredient } from "@/types/recipe-ingredients";
+import type { RecipeIngredient } from "@/types/recipe-ingredients";
 
 export interface RecipesState {
   recipesList: Recipe[];
