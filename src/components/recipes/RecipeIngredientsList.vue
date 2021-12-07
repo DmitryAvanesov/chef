@@ -1,5 +1,5 @@
 <template>
-  <ion-grid>
+  <ion-grid class="grid">
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
         <h2>Ингредиенты</h2>
@@ -18,7 +18,7 @@
               >
                 {{ recipeIngredient.ingredient.name }}
               </ion-text>
-              <div class="dot" v-for="index in 150" :key="index">.</div>
+              <div class="dots">{{ ".".repeat(225) }}</div>
               <div class="unit-block" slot="end">
                 <span class="quantity">
                   {{ recipeIngredient.quantity }}
@@ -39,15 +39,17 @@
               </ion-item-option>
               <ion-item-option
                 color="danger"
-                @click="deleteRecipeIngredient(recipeIngredient._id)"
+                @click="deleteRecipeIngredient(recipeIngredient)"
               >
                 Удалить
               </ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
-          <add-recipe-ingredient-button
-            :recipe="$props.recipe"
-          ></add-recipe-ingredient-button>
+          <add-button
+            name="ингредиент"
+            :modal-component="RecipeIngredientModal"
+            :modal-component-props="{ recipe, callback: postRecipeIngredient }"
+          ></add-button>
         </ion-list>
       </ion-col>
     </ion-row>
@@ -56,10 +58,11 @@
 
 <script lang="ts">
 import IngredientCard from "@/components/ingredients/IngredientCard.vue";
-import AddRecipeIngredientButton from "@/components/recipes/AddRecipeIngredientButton.vue";
 import RecipeIngredientModal from "@/components/recipes/RecipeIngredientModal.vue";
+import AddButton from "@/components/shared/AddButton.vue";
 import { useRootStore } from "@/store";
 import type { RecipeIngredient } from "@/types/recipe-ingredients";
+import type { Recipe } from "@/types/recipes";
 import {
   IonCol,
   IonItemOption,
@@ -70,13 +73,14 @@ import {
   modalController,
   popoverController,
 } from "@ionic/vue";
-import { defineComponent } from "@vue/runtime-core";
+import type { ComputedRef } from "@vue/runtime-core";
+import { computed, defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "RecipeIngredientsList",
   props: ["recipe"],
   components: {
-    AddRecipeIngredientButton,
+    AddButton,
     IonRow,
     IonCol,
     IonItemOptions,
@@ -85,6 +89,13 @@ export default defineComponent({
   },
   setup(props) {
     const store = useRootStore();
+
+    const postRecipeIngredient = async (recipeIngredient: RecipeIngredient) => {
+      await store.dispatch("recipeIngredients/postRecipeIngredient", {
+        recipe: props.recipe,
+        recipeIngredient,
+      });
+    };
 
     const openModal = async (
       item: HTMLIonItemSlidingElement,
@@ -118,49 +129,62 @@ export default defineComponent({
     const patchRecipeIngredient = async (
       recipeIngredient: RecipeIngredient
     ) => {
-      await store.dispatch(
-        "recipeIngredients/patchRecipeIngredient",
-        recipeIngredient
-      );
-      await store.dispatch("recipes/getRecipes");
+      await store.dispatch("recipeIngredients/patchRecipeIngredient", {
+        recipe: props.recipe,
+        recipeIngredient,
+      });
     };
 
-    const deleteRecipeIngredient = (id: string) => {
-      store.dispatch("recipeIngredients/deleteRecipeIngredient", id);
+    const deleteRecipeIngredient = (recipeIngredient: RecipeIngredient) => {
+      store.dispatch("recipeIngredients/deleteRecipeIngredient", {
+        recipe: props.recipe,
+        recipeIngredient,
+      });
     };
 
-    return { openModal, openPopover, deleteRecipeIngredient };
+    return {
+      RecipeIngredientModal,
+      openModal,
+      postRecipeIngredient,
+      openPopover,
+      deleteRecipeIngredient,
+    };
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.list {
-  padding-bottom: 96px;
+.grid {
+  padding-top: 16px;
 
-  .list-item {
-    cursor: pointer;
+  .list {
+    padding-bottom: 96px;
 
-    .name {
-      white-space: nowrap;
-      margin-right: 12px;
+    .list-item {
+      cursor: pointer;
 
-      &:hover {
-        color: var(--ion-color-primary);
+      .name {
+        white-space: nowrap;
+        margin-right: 12px;
+        font-weight: 600;
+
+        &:hover {
+          color: var(--ion-color-primary);
+        }
       }
-    }
 
-    .dot {
-      margin: 0 1px;
-    }
+      .dots {
+        white-space: nowrap;
+      }
 
-    .unit-block {
-      width: 65px;
-      text-align: right;
-      margin-left: 8px;
+      .unit-block {
+        width: 75px;
+        text-align: right;
+        margin-left: 8px;
 
-      .quantity {
-        margin-right: 4px;
+        .quantity {
+          margin-right: 4px;
+        }
       }
     }
   }

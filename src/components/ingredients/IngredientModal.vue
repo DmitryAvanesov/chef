@@ -1,6 +1,6 @@
 <template>
   <ion-content>
-    <v-form class="form">
+    <div class="form">
       <ion-item>
         <ion-label position="stacked">Название</ion-label>
         <ion-input
@@ -29,16 +29,12 @@
         </ion-select>
       </ion-item>
       <div class="actions">
-        <ion-button
-          type="submit"
-          @click="confirm()"
-          :disabled="!data.name || !data.units"
-        >
+        <ion-button @click="confirm()" :disabled="!data.name || !data.units">
           Сохранить
         </ion-button>
         <ion-button color="light" @click="dismiss()">Отмена</ion-button>
       </div>
-    </v-form>
+    </div>
   </ion-content>
 </template>
 

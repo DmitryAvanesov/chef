@@ -1,15 +1,17 @@
 <template>
   <ion-card class="card">
-    <ingredient-action-button
-      v-for="(actionButton, index) in actionButtons"
-      class="action-button"
-      :color="actionButton.color"
-      :icon="actionButton.icon"
-      :title="actionButton.title"
-      :callback="actionButton.callback"
-      :key="index"
-      :style="{ marginRight: `${index * 36}px` }"
-    ></ingredient-action-button>
+    <div v-if="showActionButtons">
+      <ingredient-action-button
+        v-for="(actionButton, index) in actionButtons"
+        class="action-button"
+        :color="actionButton.color"
+        :icon="actionButton.icon"
+        :title="actionButton.title"
+        :callback="actionButton.callback"
+        :key="index"
+        :style="{ marginRight: `${index * 36}px` }"
+      ></ingredient-action-button>
+    </div>
     <ion-card-content
       class="content"
       :style="{
@@ -48,6 +50,7 @@ import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
 import { refresh, create, close } from "ionicons/icons";
 import { onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
 
 import IngredientActionButton from "./IngredientActionButton.vue";
 import IngredientModal from "./IngredientModal.vue";
@@ -65,6 +68,8 @@ export default defineComponent({
   props: ["id"],
   setup(props) {
     const store = useRootStore();
+    const route = useRoute();
+    const showActionButtons = route.path === "/ingredients";
     const ingredient: ComputedRef<Ingredient> = computed(() =>
       store.getters["ingredients/ingredientById"](props.id)
     );
@@ -162,6 +167,7 @@ export default defineComponent({
     return {
       editIngredient,
       deleteIngredient,
+      showActionButtons,
       ingredient,
       actionButtons,
       create,

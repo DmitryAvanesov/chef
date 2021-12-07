@@ -24,16 +24,13 @@
       </ion-item>
       <div class="units-block" v-if="data.ingredient._id">
         <ion-item>
-          <ion-label>
-            <span>Количество</span>
-            <span>({{ quantityMin }}-{{ quantityMax }})</span>
-          </ion-label>
+          <ion-label>Количество</ion-label>
           <ion-input
             class="quantity-input"
             type="number"
-            :step="quantityMin"
-            :min="quantityMin"
-            :max="quantityMax"
+            :step="quantityStep"
+            :min="quantityStep"
+            :max="quantityMax - quantityStep"
             placeholder="Введите количество"
             :value="data.quantity || ''"
             @ionInput="updateQuantity($event.target.value)"
@@ -60,8 +57,7 @@
             !data.ingredient._id ||
             !data.unit._id ||
             !data.quantity ||
-            data.quantity < quantityMin ||
-            data.quantity > quantityMax
+            data.quantity < quantityStep
           "
         >
           Сохранить
@@ -90,13 +86,13 @@ import type { Ref } from "vue";
 import { ref } from "vue";
 
 export default defineComponent({
-  name: "RecipeIngredientModal",
+  name: "RecipeStageModal",
   components: { IonSelect, IonSelectOption, IonRadio, IonRadioGroup },
   props: ["recipeIngredient", "recipe", "callback"],
   setup(props) {
     const store = useRootStore();
-    const quantityMin = 0.05;
-    const quantityMax = 1000;
+    const quantityStep = 0.01;
+    const quantityMax = 0.01;
     const stubIngredient = { _id: "", name: "", units: [], image: "" };
     const stubUnit = { _id: "", name: "" };
     const data: Ref<RecipeIngredient> = ref({
@@ -161,7 +157,7 @@ export default defineComponent({
 
     return {
       data,
-      quantityMin,
+      quantityStep,
       quantityMax,
       ingredientsList,
       unitsList,

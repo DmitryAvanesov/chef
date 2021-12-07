@@ -42,7 +42,7 @@ export const apiPost = async (
 export const apiPatch = async (
   route: ApiRoute,
   payload: ApiType
-): Promise<void> => {
+): Promise<ApiType> => {
   const options: RequestInit = {
     method: "PATCH",
     headers: {

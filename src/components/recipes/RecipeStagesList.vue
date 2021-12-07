@@ -2,7 +2,7 @@
   <ion-grid>
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
-        <h2>Способ приготовления</h2>
+        <h2>Этапы приготовления</h2>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -14,7 +14,7 @@ import { IonCol, IonRow } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
-  name: "RecipeStages",
+  name: "RecipeStagesList",
   props: ["recipe"],
   components: {
     IonRow,

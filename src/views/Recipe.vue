@@ -7,25 +7,25 @@
     </ion-header>
     <ion-content>
       <recipe-ingredients-list :recipe="recipe"></recipe-ingredients-list>
-      <recipe-stages :recipe="recipe"></recipe-stages>
+      <recipe-stages-list :recipe="recipe"></recipe-stages-list>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import RecipeIngredientsList from "@/components/recipes/RecipeIngredientsList.vue";
+import RecipeStagesList from "@/components/recipes/RecipeStagesList.vue";
 import { useRootStore } from "@/store";
 import type { Recipe } from "@/types/recipes";
 import { IonPage, onIonViewWillEnter } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
-import RecipeStages from "@/components/recipes/RecipeStages.vue";
 
 export default defineComponent({
   name: "Recipe",
   components: {
-    RecipeStages,
+    RecipeStagesList,
     RecipeIngredientsList,
     IonPage,
   },
@@ -38,7 +38,6 @@ export default defineComponent({
 
     onIonViewWillEnter(() => {
       store.dispatch("recipes/getRecipes");
-      store.dispatch("recipeIngredients/getRecipeIngredients");
       store.dispatch("ingredients/getIngredients");
       store.dispatch("units/getUnits");
     });
