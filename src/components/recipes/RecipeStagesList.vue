@@ -187,6 +187,7 @@ $name-line-height: 30px;
         width: $name-line-height;
         height: $name-line-height;
         color: var(--ion-color-medium);
+        pointer-events: none;
       }
 
       .minutes-label {

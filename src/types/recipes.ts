@@ -12,4 +12,5 @@ export interface Recipe {
   name: string;
   ingredients: RecipeIngredient[];
   stages: RecipeStage[];
+  image: string;
 }

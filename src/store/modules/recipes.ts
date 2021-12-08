@@ -1,5 +1,4 @@
 import { apiGet, apiPatch, apiPost } from "@/api";
-import { Ingredient, IngredientsState } from "@/types/ingredients";
 import type { Recipe, RecipesState } from "@/types/recipes";
 import type { RootState } from "@/types/root";
 import type { ActionContext } from "vuex";
@@ -16,6 +15,7 @@ const getters = {
       name: "",
       ingredients: [],
       stages: [],
+      image: "",
     },
 };
 
