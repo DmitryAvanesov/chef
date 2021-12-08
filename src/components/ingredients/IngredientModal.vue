@@ -4,6 +4,7 @@
       <ion-item>
         <ion-label>Название</ion-label>
         <ion-input
+          class="name-input"
           :value="data.name"
           placeholder="Филе куриное"
           @ionInput="updateName($event.target.value)"
@@ -103,6 +104,10 @@ export default defineComponent({
   flex-direction: column;
   min-height: 100%;
   padding: 25px;
+
+  .name-input {
+    text-align: right;
+  }
 
   .actions {
     display: flex;

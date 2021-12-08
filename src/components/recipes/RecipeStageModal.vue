@@ -4,8 +4,9 @@
       <ion-item>
         <ion-label>Описание</ion-label>
         <ion-textarea
-          :auto-grow="true"
+          class="description-textarea"
           :spellcheck="true"
+          :rows="10"
           inputmode="text"
           placeholder="Введите описание"
           :value="data.description"
@@ -102,6 +103,10 @@ export default defineComponent({
   flex-direction: column;
   min-height: 100%;
   padding: 25px;
+
+  .description-textarea {
+    text-align: right;
+  }
 
   .minutes-item {
     .minutes-input {

@@ -1,9 +1,5 @@
 import { apiDelete, apiPatch, apiPost } from "@/api";
 import type {
-  RecipeIngredientPayload,
-  RecipeIngredientsState,
-} from "@/types/recipe-ingredients";
-import type {
   RecipeStagePayload,
   RecipeStagesState,
 } from "@/types/recipe-stages";
@@ -36,26 +32,22 @@ const actions = {
       console.log(error.message);
     }
   },
-  async patchRecipeIngredient(
-    { state, dispatch }: ActionContext<RecipeIngredientsState, RootState>,
-    payload: RecipeIngredientPayload
+  async patchRecipeStage(
+    { state, dispatch }: ActionContext<RecipeStagesState, RootState>,
+    payload: RecipeStagePayload
   ): Promise<void> {
     try {
-      const newRecipeIngredient = await apiPatch(
-        state.route,
-        payload.recipeIngredient
-      );
+      const newRecipeStage = await apiPatch(state.route, payload.recipeStage);
 
       await dispatch(
         "recipes/patchRecipe",
         {
           ...payload.recipe,
-          ingredients: [
-            ...payload.recipe.ingredients.filter(
-              (recipeIngredient) =>
-                recipeIngredient._id !== newRecipeIngredient._id
+          stages: [
+            ...payload.recipe.stages.filter(
+              (recipeStage) => recipeStage._id !== newRecipeStage._id
             ),
-            newRecipeIngredient,
+            newRecipeStage,
           ],
         },
         { root: true }
@@ -64,12 +56,12 @@ const actions = {
       console.log(error.message);
     }
   },
-  async deleteRecipeIngredient(
-    { state, dispatch }: ActionContext<RecipeIngredientsState, RootState>,
-    payload: RecipeIngredientPayload
+  async deleteRecipeStage(
+    { state, dispatch }: ActionContext<RecipeStagesState, RootState>,
+    payload: RecipeStagePayload
   ): Promise<void> {
     try {
-      await apiDelete(state.route, payload.recipeIngredient._id);
+      await apiDelete(state.route, payload.recipeStage._id);
 
       await dispatch(
         "recipes/patchRecipe",
@@ -77,7 +69,7 @@ const actions = {
           ...payload.recipe,
           ingredients: payload.recipe.ingredients.filter(
             (recipeIngredient) =>
-              recipeIngredient._id !== payload.recipeIngredient._id
+              recipeIngredient._id !== payload.recipeStage._id
           ),
         },
         { root: true }

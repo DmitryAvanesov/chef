@@ -1,8 +1,8 @@
 import { apiGet, apiPatch, apiPost } from "@/api";
+import { Ingredient, IngredientsState } from "@/types/ingredients";
 import type { Recipe, RecipesState } from "@/types/recipes";
 import type { RootState } from "@/types/root";
 import type { ActionContext } from "vuex";
-import { Ingredient, IngredientsState } from "@/types/ingredients";
 
 const state = (): RecipesState => ({
   route: "recipes",
@@ -70,7 +70,16 @@ const mutations = {
       payload,
     ];
   },
-  sortRecipeStages(state: RecipesState): void {
+  sortRecipeLists(state: RecipesState): void {
+    for (const recipe of state.recipesList) {
+      recipe.ingredients.sort((a, b) =>
+        a.ingredient.name > b.ingredient.name
+          ? 1
+          : a.ingredient.name < b.ingredient.name
+          ? -1
+          : 0
+      );
+    }
     for (const recipe of state.recipesList) {
       recipe.stages.sort((a, b) =>
         a.number > b.number ? 1 : a.number < b.number ? -1 : 0

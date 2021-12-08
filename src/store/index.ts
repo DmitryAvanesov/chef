@@ -20,8 +20,11 @@ const sortUnitsPlugin = (store: Store<RootState>) => {
       mutation.type !== "ingredients/sortIngredients"
     ) {
       store.commit("ingredients/sortIngredients");
-    } else if (mutation.type.startsWith("recipes")) {
-      store.commit("recipes/sortRecipeStages");
+    } else if (
+      mutation.type.startsWith("recipes") &&
+      mutation.type !== "recipes/sortRecipeLists"
+    ) {
+      store.commit("recipes/sortRecipeLists");
     }
   });
 };
