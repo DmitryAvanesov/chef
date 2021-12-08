@@ -18,13 +18,25 @@
           class="minutes-input"
           type="number"
           placeholder="Введите число минут"
+          :min="minutesMin"
+          :max="minutesMax"
           :value="data.minutes || ''"
-          @ionChange="updateMinutes($event.target.value)"
+          @ionInput="updateMinutes($event.target.value)"
         ></ion-input>
         <ion-text class="minutes-label" slot="end">мин</ion-text>
       </ion-item>
       <div class="actions">
-        <ion-button @click="confirm()">Сохранить</ion-button>
+        <ion-button
+          :disabled="
+            !data.description ||
+            !data.minutes ||
+            data.minutes < minutesMin ||
+            data.minutes > minutesMax
+          "
+          @click="confirm()"
+        >
+          Сохранить
+        </ion-button>
         <ion-button color="light" @click="dismiss()">Отмена</ion-button>
       </div>
     </div>
@@ -43,10 +55,12 @@ export default defineComponent({
   components: { IonText },
   props: ["recipeStage", "recipe", "callback"],
   setup(props) {
+    const minutesMin = 0.5;
+    const minutesMax = 1000;
     const data: Ref<RecipeStage> = ref({
       ...(props.recipeStage || {
         _id: "",
-        number: props.recipe.stages.length + 1,
+        number: 0,
         description: "",
         minutes: 0,
       }),
@@ -70,6 +84,8 @@ export default defineComponent({
     };
 
     return {
+      minutesMin,
+      minutesMax,
       data,
       updateDescription,
       updateMinutes,
