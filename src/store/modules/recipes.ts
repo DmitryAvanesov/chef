@@ -14,6 +14,7 @@ const getters = {
       _id: "",
       name: "",
       ingredients: [],
+      stages: [],
     },
 };
 

@@ -62,7 +62,6 @@ import RecipeIngredientModal from "@/components/recipes/RecipeIngredientModal.vu
 import AddButton from "@/components/shared/AddButton.vue";
 import { useRootStore } from "@/store";
 import type { RecipeIngredient } from "@/types/recipe-ingredients";
-import type { Recipe } from "@/types/recipes";
 import {
   IonCol,
   IonItemOption,
@@ -73,8 +72,7 @@ import {
   modalController,
   popoverController,
 } from "@ionic/vue";
-import type { ComputedRef } from "@vue/runtime-core";
-import { computed, defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "RecipeIngredientsList",
@@ -90,8 +88,8 @@ export default defineComponent({
   setup(props) {
     const store = useRootStore();
 
-    const postRecipeIngredient = async (recipeIngredient: RecipeIngredient) => {
-      await store.dispatch("recipeIngredients/postRecipeIngredient", {
+    const postRecipeIngredient = (recipeIngredient: RecipeIngredient) => {
+      store.dispatch("recipeIngredients/postRecipeIngredient", {
         recipe: props.recipe,
         recipeIngredient,
       });

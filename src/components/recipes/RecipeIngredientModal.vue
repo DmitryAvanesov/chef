@@ -24,10 +24,7 @@
       </ion-item>
       <div class="units-block" v-if="data.ingredient._id">
         <ion-item>
-          <ion-label>
-            <span>Количество</span>
-            <span>({{ quantityMin }}-{{ quantityMax }})</span>
-          </ion-label>
+          <ion-label>Количество</ion-label>
           <ion-input
             class="quantity-input"
             type="number"

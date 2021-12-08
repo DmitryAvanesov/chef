@@ -3,13 +3,26 @@
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
         <h2>Этапы приготовления</h2>
+        <ion-list class="list">
+          <add-button
+            name="этап"
+            :modal-component="RecipeStageModal"
+            :modal-component-props="{
+              recipe: $props.recipe,
+              callback: postRecipeStage,
+            }"
+          ></add-button>
+        </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>
 </template>
 
 <script lang="ts">
+import RecipeStageModal from "@/components/recipes/RecipeStageModal.vue";
+import AddButton from "@/components/shared/AddButton.vue";
 import { useRootStore } from "@/store";
+import type { RecipeStage } from "@/types/recipe-stages";
 import { IonCol, IonRow } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 
@@ -17,13 +30,21 @@ export default defineComponent({
   name: "RecipeStagesList",
   props: ["recipe"],
   components: {
+    AddButton,
     IonRow,
     IonCol,
   },
-  setup() {
+  setup(props) {
     const store = useRootStore();
 
-    return {};
+    const postRecipeStage = (recipeStage: RecipeStage) => {
+      store.dispatch("recipeStages/postRecipeStage", {
+        recipe: props.recipe,
+        recipeStage,
+      });
+    };
+
+    return { RecipeStageModal, postRecipeStage };
   },
 });
 </script>
@@ -31,28 +52,5 @@ export default defineComponent({
 <style lang="scss" scoped>
 .list {
   padding-bottom: 96px;
-
-  .list-item {
-    cursor: pointer;
-
-    .name {
-      white-space: nowrap;
-      margin-right: 12px;
-    }
-
-    .dot {
-      margin: 0 1px;
-    }
-
-    .unit-block {
-      width: 65px;
-      text-align: right;
-      margin-left: 8px;
-
-      .quantity {
-        margin-right: 4px;
-      }
-    }
-  }
 }
 </style>

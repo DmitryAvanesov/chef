@@ -2,7 +2,7 @@
   <ion-content>
     <div class="form">
       <ion-item>
-        <ion-label position="stacked">Название</ion-label>
+        <ion-label>Название</ion-label>
         <ion-input
           :value="data.name"
           placeholder="Филе куриное"
@@ -10,7 +10,7 @@
         ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Единицы измерения</ion-label>
+        <ion-label>Единицы измерения</ion-label>
         <ion-select
           multiple
           placeholder="Выберите"
