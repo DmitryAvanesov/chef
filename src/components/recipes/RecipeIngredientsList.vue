@@ -18,7 +18,7 @@
               >
                 {{ recipeIngredient.ingredient.name }}
               </ion-text>
-              <div class="dots">{{ ".".repeat(225) }}</div>
+              <div class="dots">{{ ".".repeat(350) }}</div>
               <div class="unit-block" slot="end">
                 <span class="quantity">
                   {{ recipeIngredient.quantity }}
