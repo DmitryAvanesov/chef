@@ -22,9 +22,9 @@ const sortUnitsPlugin = (store: Store<RootState>) => {
       store.commit("ingredients/sortIngredients");
     } else if (
       mutation.type.startsWith("recipes") &&
-      mutation.type !== "recipes/sortRecipeLists"
+      mutation.type !== "recipes/sortRecipes"
     ) {
-      store.commit("recipes/sortRecipeLists");
+      store.commit("recipes/sortRecipes");
     }
   });
 };

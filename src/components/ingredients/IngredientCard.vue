@@ -86,8 +86,8 @@ export default defineComponent({
       }
     });
 
-    const patchIngredient = (ingredient: Ingredient): void => {
-      store.dispatch("ingredients/patchIngredient", ingredient);
+    const patchIngredient = (newIngredient: Ingredient): void => {
+      store.dispatch("ingredients/patchIngredient", newIngredient);
     };
 
     const deleteIngredient = (): void => {

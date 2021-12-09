@@ -70,7 +70,11 @@ const mutations = {
       payload,
     ];
   },
-  sortRecipeLists(state: RecipesState): void {
+  sortRecipes(state: RecipesState): void {
+    state.recipesList.sort((a, b) =>
+      a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+    );
+
     for (const recipe of state.recipesList) {
       recipe.ingredients.sort((a, b) =>
         a.ingredient.name > b.ingredient.name
@@ -79,8 +83,6 @@ const mutations = {
           ? -1
           : 0
       );
-    }
-    for (const recipe of state.recipesList) {
       recipe.stages.sort((a, b) =>
         a.number > b.number ? 1 : a.number < b.number ? -1 : 0
       );
