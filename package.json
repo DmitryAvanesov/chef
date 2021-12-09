@@ -7,6 +7,8 @@
     "serve:local": "env-cmd -f ./.env.local vue-cli-service serve",
     "serve:prod": "env-cmd -f ./.env.prod vue-cli-service serve",
     "build": "vue-cli-service build",
+    "add:android": "npx cap add android",
+    "open:android": "npx cap open android",
     "test": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "prepare": "husky install",
@@ -14,6 +16,7 @@
     "eslint": "eslint . --ext .ts,.vue --fix"
   },
   "dependencies": {
+    "@capacitor/android": "^2.4.7",
     "@capacitor/core": "2.4.7",
     "@ionic/vue": "^5.4.0",
     "@ionic/vue-router": "^5.4.0",
