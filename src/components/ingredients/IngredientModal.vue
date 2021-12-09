@@ -29,27 +29,27 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <div class="actions">
-        <ion-button @click="confirm()" :disabled="!data.name || !data.units">
-          Сохранить
-        </ion-button>
-        <ion-button color="light" @click="dismiss()">Отмена</ion-button>
-      </div>
+      <modal-buttons
+        :data="data"
+        :callback="$props.callback"
+        :disabled="!data.name || !data.units"
+      ></modal-buttons>
     </div>
   </ion-content>
 </template>
 
 <script lang="ts">
+import ModalButtons from "@/components/shared/ModalButtons.vue";
 import { useRootStore } from "@/store";
 import type { Ingredient } from "@/types/ingredients";
 import type { Unit } from "@/types/units";
-import { modalController, IonSelect, IonSelectOption } from "@ionic/vue";
+import { IonSelect, IonSelectOption } from "@ionic/vue";
 import type { ComputedRef, Ref } from "@vue/runtime-core";
 import { computed, defineComponent, ref } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "IngredientModal",
-  components: { IonSelect, IonSelectOption },
+  components: { ModalButtons, IonSelect, IonSelectOption },
   props: ["ingredient", "callback"],
   setup(props) {
     const store = useRootStore();
@@ -76,23 +76,12 @@ export default defineComponent({
       );
     };
 
-    const dismiss = () => {
-      modalController.dismiss();
-    };
-
-    const confirm = (): void => {
-      props.callback(data.value);
-      dismiss();
-    };
-
     return {
       store,
       data,
       unitsList,
       updateName,
       updateUnits,
-      dismiss,
-      confirm,
     };
   },
 });
@@ -104,19 +93,5 @@ export default defineComponent({
   flex-direction: column;
   min-height: 100%;
   padding: 25px;
-
-  .name-input {
-    text-align: right;
-  }
-
-  .actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: auto;
-
-    ion-button {
-      margin-left: 10px;
-    }
-  }
 }
 </style>

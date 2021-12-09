@@ -50,26 +50,23 @@
           </ion-item>
         </ion-radio-group>
       </div>
-      <div class="actions">
-        <ion-button
-          @click="confirm()"
-          :disabled="
-            !data.ingredient._id ||
-            !data.unit._id ||
-            !data.quantity ||
-            data.quantity < quantityMin ||
-            data.quantity > quantityMax
-          "
-        >
-          Сохранить
-        </ion-button>
-        <ion-button color="light" @click="dismiss()">Отмена</ion-button>
-      </div>
+      <modal-buttons
+        :data="data"
+        :callback="$props.callback"
+        :disabled="
+          !data.ingredient._id ||
+          !data.unit._id ||
+          !data.quantity ||
+          data.quantity < quantityMin ||
+          data.quantity > quantityMax
+        "
+      ></modal-buttons>
     </div>
   </ion-content>
 </template>
 
 <script lang="ts">
+import ModalButtons from "@/components/shared/ModalButtons.vue";
 import { useRootStore } from "@/store";
 import type { Ingredient } from "@/types/ingredients";
 import type { RecipeIngredient } from "@/types/recipe-ingredients";
@@ -79,7 +76,6 @@ import {
   IonRadioGroup,
   IonSelect,
   IonSelectOption,
-  modalController,
 } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
@@ -88,7 +84,13 @@ import { ref } from "vue";
 
 export default defineComponent({
   name: "RecipeIngredientModal",
-  components: { IonSelect, IonSelectOption, IonRadio, IonRadioGroup },
+  components: {
+    ModalButtons,
+    IonSelect,
+    IonSelectOption,
+    IonRadio,
+    IonRadioGroup,
+  },
   props: ["recipeIngredient", "recipe", "callback"],
   setup(props) {
     const store = useRootStore();
@@ -147,15 +149,6 @@ export default defineComponent({
         unitsList.value.find((unit) => unit._id === unitId) || stubUnit;
     };
 
-    const dismiss = () => {
-      modalController.dismiss();
-    };
-
-    const confirm = (): void => {
-      props.callback(data.value);
-      dismiss();
-    };
-
     return {
       data,
       quantityMin,
@@ -165,8 +158,6 @@ export default defineComponent({
       updateIngredient,
       updateQuantity,
       updateUnit,
-      dismiss,
-      confirm,
     };
   },
 });
@@ -183,26 +174,12 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
 
-    .quantity-input {
-      text-align: right;
-    }
-
     .units-radio-group {
       margin-bottom: 32px;
 
       .units-label {
         font-size: 16px;
       }
-    }
-  }
-
-  .actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: auto;
-
-    ion-button {
-      margin-left: 10px;
     }
   }
 }

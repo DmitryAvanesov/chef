@@ -10,6 +10,11 @@ h2 {
   --height: 375px;
 }
 
+ion-input,
+ion-textarea {
+  text-align: right;
+}
+
 input[type="number"] {
   -moz-appearance: textfield;
 

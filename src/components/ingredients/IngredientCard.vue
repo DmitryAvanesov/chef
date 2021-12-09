@@ -1,7 +1,7 @@
 <template>
   <ion-card class="card">
     <div v-if="showActionButtons">
-      <ingredient-action-button
+      <action-button
         v-for="(actionButton, index) in actionButtons"
         class="action-button"
         :color="actionButton.color"
@@ -10,7 +10,7 @@
         :callback="actionButton.callback"
         :key="index"
         :style="{ marginRight: `${index * 36}px` }"
-      ></ingredient-action-button>
+      ></action-button>
     </div>
     <ion-card-content
       class="content"
@@ -34,8 +34,11 @@
 </template>
 
 <script lang="ts">
+import IngredientModal from "@/components/ingredients/IngredientModal.vue";
+import ActionButton from "@/components/shared/ActionButton.vue";
 import { useRootStore } from "@/store";
-import type { ActionButton, Ingredient } from "@/types/ingredients";
+import type { Ingredient } from "@/types/ingredients";
+import type { ActionButtonData } from "@/types/shared";
 import {
   IonCard,
   IonCardHeader,
@@ -52,13 +55,10 @@ import { refresh, create, close } from "ionicons/icons";
 import { onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 
-import IngredientActionButton from "./IngredientActionButton.vue";
-import IngredientModal from "./IngredientModal.vue";
-
 export default defineComponent({
   name: "IngredientCard",
   components: {
-    IngredientActionButton,
+    ActionButton,
     IonCard,
     IonCardHeader,
     IonCardSubtitle,
@@ -143,7 +143,7 @@ export default defineComponent({
       return toast.present();
     };
 
-    const actionButtons: ActionButton[] = [
+    const actionButtons: ActionButtonData[] = [
       {
         color: "danger",
         icon: close,
