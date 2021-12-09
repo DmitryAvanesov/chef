@@ -1,6 +1,6 @@
 <template>
-  <ion-item-sliding :ref="$props.recipe._id">
-    <ion-item class="list-item">
+  <ion-item-sliding class="list-sliding-item" :ref="$props.recipe._id">
+    <ion-item class="list-item" :href="`${$route.path}/${$props.recipe._id}`">
       <div>
         <action-button
           v-for="(actionButton, index) in actionButtons"
@@ -204,84 +204,81 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.list {
-  padding: 5% 0 96px;
+.list-sliding-item {
+  .list-item {
+    --inner-padding-end: 0;
+    --padding-start: 0;
+    --background-hover: transparent;
+    cursor: pointer;
 
-  .link {
-    text-decoration: none;
+    .action-button {
+      display: none;
+    }
 
-    .list-item {
-      --inner-padding-end: 0;
-      cursor: pointer;
-
+    &:hover {
       .action-button {
-        display: none;
-      }
-
-      &:hover {
-        .action-button {
-          display: block;
-        }
-      }
-
-      .recipe-info {
-        display: flex;
-        flex-direction: column;
-        min-width: 284px;
-
-        .recipe-title {
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-
-          .name {
-            font-size: 20px;
-            margin: 8px 0;
-          }
-
-          .minutes-block {
-            min-width: 70px;
-
-            .minutes-label {
-              margin-right: 4px;
-            }
-
-            .time-icon {
-              color: initial;
-            }
-          }
-        }
-
-        .ingredients-list {
-          margin: 0 0 8px;
-          padding-left: 16px;
-          list-style: none;
-
-          & > * {
-            color: var(--ion-color-medium);
-          }
-
-          .ingredients-list-item {
-            margin: 2px 0;
-          }
-        }
-      }
-
-      .recipe-image {
-        width: 100%;
-        height: 100%;
+        display: block;
       }
     }
 
-    .item-options {
+    .recipe-info {
       display: flex;
       flex-direction: column;
-      z-index: 0;
-      width: auto;
+      min-width: 284px;
 
-      & > * {
-        flex-basis: 50%;
+      .recipe-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+
+        .name {
+          font-size: 20px;
+          margin: 8px 0;
+        }
+
+        .minutes-block {
+          min-width: 70px;
+          z-index: 0;
+
+          .minutes-label {
+            margin-right: 4px;
+          }
+
+          .time-icon {
+            color: initial;
+          }
+        }
       }
+
+      .ingredients-list {
+        margin: 0 0 8px;
+        padding-left: 16px;
+        list-style: none;
+
+        & > * {
+          color: var(--ion-color-medium);
+        }
+
+        .ingredients-list-item {
+          margin: 2px 0;
+        }
+      }
+    }
+
+    .recipe-image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .item-options {
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+    width: auto;
+
+    & > * {
+      flex-basis: 50%;
     }
   }
 }

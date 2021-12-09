@@ -3,14 +3,11 @@
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
         <ion-list class="list">
-          <router-link
-            class="link"
+          <recipe-item
             v-for="recipe in recipesList"
             :key="recipe._id"
-            :to="`${$route.path}/${recipe._id}`"
-          >
-            <recipe-item :recipe="recipe"></recipe-item>
-          </router-link>
+            :recipe="recipe"
+          ></recipe-item>
           <add-button
             name="рецепт"
             :modal-component="RecipeModal"
