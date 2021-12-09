@@ -9,6 +9,7 @@
     "build": "vue-cli-service build",
     "add:android": "npx cap add android",
     "open:android": "npx cap open android",
+    "run:android": "npx cap run android",
     "test": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "prepare": "husky install",
