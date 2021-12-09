@@ -1,6 +1,6 @@
-import { apiDelete, apiGet, apiPatch, apiPost } from "@/api";
+import { apiDelete, apiPatch, apiPost } from "@/api";
 import type {
-  RecipeIngredient,
+  RecipeIngredientPayload,
   RecipeIngredientsState,
 } from "@/types/recipe-ingredients";
 import type { RootState } from "@/types/root";
@@ -8,94 +8,86 @@ import type { ActionContext } from "vuex";
 
 const state = (): RecipeIngredientsState => ({
   route: "recipe-ingredients",
-  recipeIngredientsList: [],
 });
 
 const getters = {};
 
 const actions = {
-  async getRecipeIngredients({
-    state,
-    commit,
-  }: ActionContext<RecipeIngredientsState, RootState>): Promise<void> {
-    try {
-      const recipeIngredients = await apiGet(state.route);
-      commit("setRecipeIngredientsList", recipeIngredients);
-    } catch (error) {
-      console.log(error.message);
-    }
-  },
   async postRecipeIngredient(
-    { state, commit }: ActionContext<RecipeIngredientsState, RootState>,
-    body: RecipeIngredient
+    { state, dispatch }: ActionContext<RecipeIngredientsState, RootState>,
+    body: RecipeIngredientPayload
   ): Promise<void> {
     try {
-      const recipeIngredient = await apiPost(state.route, body);
-      commit("addRecipeIngredient", recipeIngredient);
+      const recipeIngredient = await apiPost(
+        state.route,
+        body.recipeIngredient
+      );
+
+      await dispatch(
+        "recipes/patchRecipe",
+        {
+          ...body.recipe,
+          ingredients: [...body.recipe.ingredients, recipeIngredient],
+        },
+        { root: true }
+      );
     } catch (error) {
       console.log(error.message);
     }
   },
   async patchRecipeIngredient(
-    { state, commit }: ActionContext<RecipeIngredientsState, RootState>,
-    payload: RecipeIngredient
+    { state, dispatch }: ActionContext<RecipeIngredientsState, RootState>,
+    payload: RecipeIngredientPayload
   ): Promise<void> {
     try {
-      const recipeIngredient = await apiPatch(state.route, payload);
-      commit("updateRecipeIngredient", recipeIngredient);
+      const newRecipeIngredient = await apiPatch(
+        state.route,
+        payload.recipeIngredient
+      );
+
+      await dispatch(
+        "recipes/patchRecipe",
+        {
+          ...payload.recipe,
+          ingredients: [
+            ...payload.recipe.ingredients.filter(
+              (recipeIngredient) =>
+                recipeIngredient._id !== newRecipeIngredient._id
+            ),
+            newRecipeIngredient,
+          ],
+        },
+        { root: true }
+      );
     } catch (error) {
       console.log(error.message);
     }
   },
   async deleteRecipeIngredient(
-    { state, commit }: ActionContext<RecipeIngredientsState, RootState>,
-    id: string
+    { state, dispatch }: ActionContext<RecipeIngredientsState, RootState>,
+    payload: RecipeIngredientPayload
   ): Promise<void> {
     try {
-      await apiDelete(state.route, id);
-      commit("removeRecipeIngredient", id);
+      await apiDelete(state.route, payload.recipeIngredient._id);
+
+      await dispatch(
+        "recipes/patchRecipe",
+        {
+          ...payload.recipe,
+          ingredients: payload.recipe.ingredients.filter(
+            (recipeIngredient) =>
+              recipeIngredient._id !== payload.recipeIngredient._id
+          ),
+        },
+        { root: true }
+      );
     } catch (error) {
       console.log(error.message);
     }
   },
 };
 
-const mutations = {
-  setRecipeIngredientsList(
-    state: RecipeIngredientsState,
-    ingredientsList: RecipeIngredient[]
-  ): void {
-    state.recipeIngredientsList = ingredientsList;
-  },
-  addRecipeIngredient(
-    state: RecipeIngredientsState,
-    recipeIngredient: RecipeIngredient
-  ): void {
-    state.recipeIngredientsList = [
-      ...state.recipeIngredientsList,
-      recipeIngredient,
-    ];
-  },
-  updateRecipeIngredient(
-    state: RecipeIngredientsState,
-    payload: RecipeIngredient
-  ): void {
-    state.recipeIngredientsList = [
-      ...state.recipeIngredientsList.filter(
-        (recipeIngredient: RecipeIngredient) =>
-          recipeIngredient._id !== payload._id
-      ),
-      payload,
-    ];
-  },
-  removeRecipeIngredient(state: RecipeIngredientsState, id: string): void {
-    state.recipeIngredientsList = [
-      ...state.recipeIngredientsList.filter(
-        (recipeIngredient: RecipeIngredient) => recipeIngredient._id !== id
-      ),
-    ];
-  },
-};
+const mutations = {};
 
 export default {
   namespaced: true,

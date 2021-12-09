@@ -1,10 +1,11 @@
 {
   "name": "chef",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "ionic serve --no-open",
-    "serve": "vue-cli-service serve",
+    "serve:local": "env-cmd -f ./.env.local vue-cli-service serve",
+    "serve:prod": "env-cmd -f ./.env.prod vue-cli-service serve",
     "build": "vue-cli-service build",
     "test": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
@@ -18,6 +19,7 @@
     "@ionic/vue-router": "^5.4.0",
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
+    "env-cmd": "^10.1.0",
     "typescript": "^4.2.3",
     "vue": "^3.0.0-0",
     "vue-router": "^4.0.0-0",

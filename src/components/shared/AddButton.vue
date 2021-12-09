@@ -1,8 +1,9 @@
 <template>
   <ion-fab
-    class="add-recipe-ingredient-button"
+    class="add-button"
     vertical="bottom"
     horizontal="end"
+    :title="`Добавить ${$props.name}`"
     @click="openModal()"
   >
     <ion-fab-button>
@@ -12,9 +13,6 @@
 </template>
 
 <script lang="ts">
-import RecipeIngredientModal from "@/components/recipes/RecipeIngredientModal.vue";
-import { useRootStore } from "@/store";
-import type { RecipeIngredient } from "@/types/recipe-ingredients";
 import {
   IonFab,
   IonFabButton,
@@ -22,34 +20,22 @@ import {
   modalController,
   isPlatform,
 } from "@ionic/vue";
-import { computed, defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core";
 import { add } from "ionicons/icons";
 
 export default defineComponent({
-  name: "AddRecipeIngredientButton",
+  name: "AddButton",
   components: {
     IonFab,
     IonFabButton,
     IonIcon,
   },
-  props: ["recipe"],
+  props: ["name", "modalComponent", "modalComponentProps"],
   setup(props) {
-    const store = useRootStore();
-
-    const postRecipeIngredient = async (recipeIngredient: RecipeIngredient) => {
-      await store.dispatch(
-        "recipeIngredients/postRecipeIngredient",
-        recipeIngredient
-      );
-    };
-
     const openModal = async (): Promise<void> => {
       const modal = await modalController.create({
-        component: RecipeIngredientModal,
-        componentProps: {
-          recipe: props.recipe,
-          callback: postRecipeIngredient,
-        },
+        component: props.modalComponent,
+        componentProps: props.modalComponentProps,
         ...(isPlatform("desktop") ? { cssClass: "modal-desktop" } : {}),
       });
 
@@ -62,7 +48,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.add-recipe-ingredient-button {
+.add-button {
   bottom: 16px;
 
   .add-icon {

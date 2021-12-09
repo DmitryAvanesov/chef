@@ -1,15 +1,17 @@
 <template>
   <ion-card class="card">
-    <ingredient-action-button
-      v-for="(actionButton, index) in actionButtons"
-      class="action-button"
-      :color="actionButton.color"
-      :icon="actionButton.icon"
-      :title="actionButton.title"
-      :callback="actionButton.callback"
-      :key="index"
-      :style="{ marginRight: `${index * 36}px` }"
-    ></ingredient-action-button>
+    <div v-if="showActionButtons">
+      <action-button
+        v-for="(actionButton, index) in actionButtons"
+        class="action-button"
+        :color="actionButton.color"
+        :icon="actionButton.icon"
+        :title="actionButton.title"
+        :callback="actionButton.callback"
+        :key="index"
+        :style="{ marginRight: `${index * 36}px` }"
+      ></action-button>
+    </div>
     <ion-card-content
       class="content"
       :style="{
@@ -32,8 +34,11 @@
 </template>
 
 <script lang="ts">
+import IngredientModal from "@/components/ingredients/IngredientModal.vue";
+import ActionButton from "@/components/shared/ActionButton.vue";
 import { useRootStore } from "@/store";
-import type { ActionButton, Ingredient } from "@/types/ingredients";
+import type { Ingredient } from "@/types/ingredients";
+import type { ActionButtonData } from "@/types/shared";
 import {
   IonCard,
   IonCardHeader,
@@ -43,20 +48,17 @@ import {
   isPlatform,
   modalController,
   toastController,
-  onIonViewDidEnter,
 } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { computed, defineComponent } from "@vue/runtime-core";
 import { refresh, create, close } from "ionicons/icons";
 import { onMounted, watch } from "vue";
-
-import IngredientActionButton from "./IngredientActionButton.vue";
-import IngredientModal from "./IngredientModal.vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "IngredientCard",
   components: {
-    IngredientActionButton,
+    ActionButton,
     IonCard,
     IonCardHeader,
     IonCardSubtitle,
@@ -66,6 +68,8 @@ export default defineComponent({
   props: ["id"],
   setup(props) {
     const store = useRootStore();
+    const route = useRoute();
+    const showActionButtons = route.path === "/ingredients";
     const ingredient: ComputedRef<Ingredient> = computed(() =>
       store.getters["ingredients/ingredientById"](props.id)
     );
@@ -82,8 +86,8 @@ export default defineComponent({
       }
     });
 
-    const patchIngredient = (ingredient: Ingredient): void => {
-      store.dispatch("ingredients/patchIngredient", ingredient);
+    const patchIngredient = (newIngredient: Ingredient): void => {
+      store.dispatch("ingredients/patchIngredient", newIngredient);
     };
 
     const deleteIngredient = (): void => {
@@ -139,7 +143,7 @@ export default defineComponent({
       return toast.present();
     };
 
-    const actionButtons: ActionButton[] = [
+    const actionButtons: ActionButtonData[] = [
       {
         color: "danger",
         icon: close,
@@ -163,6 +167,7 @@ export default defineComponent({
     return {
       editIngredient,
       deleteIngredient,
+      showActionButtons,
       ingredient,
       actionButtons,
       create,
@@ -177,6 +182,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   height: 200px;
+  margin: 0;
 
   .action-button {
     display: none;

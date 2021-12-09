@@ -12,10 +12,3 @@ export interface Ingredient {
   units: Unit[];
   image: string;
 }
-
-export interface ActionButton {
-  color: string;
-  icon: string;
-  title: string;
-  callback: () => void;
-}

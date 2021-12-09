@@ -1,5 +1,5 @@
 <template>
-  <ion-grid>
+  <ion-grid class="grid">
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
         <h2>Ингредиенты</h2>
@@ -11,10 +11,15 @@
             :ref="recipeIngredient._id"
           >
             <ion-item lines="full">
-              <div>
+              <ion-text
+                class="name"
+                color="dark"
+                @click="openPopover($event, recipeIngredient.ingredient._id)"
+              >
                 {{ recipeIngredient.ingredient.name }}
-              </div>
-              <div slot="end">
+              </ion-text>
+              <div class="dots">{{ ".".repeat(350) }}</div>
+              <div class="unit-block" slot="end">
                 <span class="quantity">
                   {{ recipeIngredient.quantity }}
                 </span>
@@ -34,15 +39,17 @@
               </ion-item-option>
               <ion-item-option
                 color="danger"
-                @click="deleteRecipeIngredient(recipeIngredient._id)"
+                @click="deleteRecipeIngredient(recipeIngredient)"
               >
                 Удалить
               </ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
-          <add-recipe-ingredient-button
-            :recipe="$props.recipe"
-          ></add-recipe-ingredient-button>
+          <add-button
+            name="ингредиент"
+            :modal-component="RecipeIngredientModal"
+            :modal-component-props="{ recipe, callback: postRecipeIngredient }"
+          ></add-button>
         </ion-list>
       </ion-col>
     </ion-row>
@@ -50,59 +57,42 @@
 </template>
 
 <script lang="ts">
-import AddRecipeIngredientButton from "@/components/recipes/AddRecipeIngredientButton.vue";
+import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import RecipeIngredientModal from "@/components/recipes/RecipeIngredientModal.vue";
+import AddButton from "@/components/shared/AddButton.vue";
 import { useRootStore } from "@/store";
 import type { RecipeIngredient } from "@/types/recipe-ingredients";
-import type { Recipe } from "@/types/recipes";
 import {
   IonCol,
   IonItemOption,
   IonItemOptions,
   IonRow,
+  IonText,
   isPlatform,
   modalController,
-  onIonViewDidEnter,
+  popoverController,
 } from "@ionic/vue";
-import type { ComputedRef} from "@vue/runtime-core";
-import { computed, defineComponent } from "@vue/runtime-core";
-import { watch } from "vue";
+import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "RecipeIngredientsList",
   props: ["recipe"],
   components: {
-    AddRecipeIngredientButton,
+    AddButton,
     IonRow,
     IonCol,
     IonItemOptions,
     IonItemOption,
+    IonText,
   },
   setup(props) {
     const store = useRootStore();
-    const recipeIngredientsList: ComputedRef<RecipeIngredient[]> = computed(
-      () => store.state.recipeIngredients.recipeIngredientsList
-    );
 
-    watch(
-      recipeIngredientsList,
-      (newRecipeIngredients, oldRecipeIngredients) => {
-        if (newRecipeIngredients.length > oldRecipeIngredients.length) {
-          patchRecipe({
-            ...props.recipe,
-            ingredients: [
-              ...props.recipe.ingredients,
-              [...newRecipeIngredients].pop(),
-            ],
-          });
-        } else {
-          store.dispatch("recipes/getRecipes");
-        }
-      }
-    );
-
-    const patchRecipe = (recipe: Recipe) => {
-      store.dispatch("recipes/patchRecipe", recipe);
+    const postRecipeIngredient = (recipeIngredient: RecipeIngredient) => {
+      store.dispatch("recipeIngredients/postRecipeIngredient", {
+        recipe: props.recipe,
+        recipeIngredient,
+      });
     };
 
     const openModal = async (
@@ -123,31 +113,77 @@ export default defineComponent({
       return modal.present();
     };
 
-    const patchRecipeIngredient = (recipeIngredient: RecipeIngredient) => {
-      store.dispatch(
-        "recipeIngredients/patchRecipeIngredient",
-        recipeIngredient
-      );
+    const openPopover = async (event: Event, id: string) => {
+      const popover = await popoverController.create({
+        event,
+        component: IngredientCard,
+        componentProps: {
+          id,
+        },
+      });
+      await popover.present();
     };
 
-    const deleteRecipeIngredient = (id: string) => {
-      store.dispatch("recipeIngredients/deleteRecipeIngredient", id);
+    const patchRecipeIngredient = async (
+      recipeIngredient: RecipeIngredient
+    ) => {
+      await store.dispatch("recipeIngredients/patchRecipeIngredient", {
+        recipe: props.recipe,
+        recipeIngredient,
+      });
     };
 
-    return { openModal, deleteRecipeIngredient };
+    const deleteRecipeIngredient = (recipeIngredient: RecipeIngredient) => {
+      store.dispatch("recipeIngredients/deleteRecipeIngredient", {
+        recipe: props.recipe,
+        recipeIngredient,
+      });
+    };
+
+    return {
+      RecipeIngredientModal,
+      openModal,
+      postRecipeIngredient,
+      openPopover,
+      deleteRecipeIngredient,
+    };
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.list {
-  padding-bottom: 96px;
+.grid {
+  padding-top: 16px;
 
-  .list-item {
-    cursor: pointer;
+  .list {
+    padding-bottom: 96px;
 
-    .quantity {
-      margin-right: 4px;
+    .list-item {
+      cursor: pointer;
+
+      .name {
+        white-space: nowrap;
+        margin-right: 12px;
+        font-weight: 600;
+
+        &:hover {
+          color: var(--ion-color-primary);
+        }
+      }
+
+      .dots {
+        white-space: nowrap;
+      }
+
+      .unit-block {
+        width: 75px;
+        text-align: right;
+        margin-left: 8px;
+
+        .quantity {
+          margin-right: 4px;
+        }
+      }
     }
   }
 }

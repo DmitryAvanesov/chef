@@ -4,7 +4,7 @@
       class="action-button"
       :color="color"
       :title="title"
-      @click="callback()"
+      @click="handleClick($event)"
     >
       <ion-icon class="action-icon" :icon="icon"></ion-icon>
     </ion-fab-button>
@@ -16,9 +16,17 @@ import { IonIcon } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
-  name: "IngredientActionButton",
+  name: "ActionButton",
   components: { IonIcon },
   props: ["color", "icon", "title", "callback"],
+  setup(props) {
+    const handleClick = (event: Event) => {
+      event.preventDefault();
+      props.callback();
+    };
+
+    return { handleClick };
+  },
 });
 </script>
 

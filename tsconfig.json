@@ -15,6 +15,7 @@
     "paths": {
       "@recipes/*": ["src/components/recipes"],
       "@ingredients/*": ["src/components/ingredients"],
+      "@shared/*": ["src/components/shared"],
       "@units/*": ["src/components/units"],
       "@/*": ["src/*"]
     },

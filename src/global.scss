@@ -2,8 +2,17 @@
   box-sizing: border-box;
 }
 
+h2 {
+  padding-left: 16px;
+}
+
 .modal-desktop {
   --height: 375px;
+}
+
+ion-input,
+ion-textarea {
+  text-align: right;
 }
 
 input[type="number"] {
@@ -14,4 +23,8 @@ input[type="number"] {
     -webkit-appearance: none;
     margin: 0;
   }
+}
+
+textarea {
+  min-height: 40px;
 }

@@ -27,10 +27,7 @@ import "./theme/variables.css";
 /* Global styles */
 import "./global.scss";
 
-const app = createApp(App)
-  .use(IonicVue)
-  .use(router)
-  .use(store, key);
+const app = createApp(App).use(IonicVue).use(router).use(store, key);
 
 router.isReady().then(() => {
   app.mount("#app");

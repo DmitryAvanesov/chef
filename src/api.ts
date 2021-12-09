@@ -1,5 +1,4 @@
-import type { Ingredient } from "@/types/ingredients";
-import { ApiType, ApiRoute } from "@/types/api";
+import type { ApiType, ApiRoute } from "@/types/api";
 
 const api = process.env.VUE_APP_API;
 
@@ -43,7 +42,7 @@ export const apiPost = async (
 export const apiPatch = async (
   route: ApiRoute,
   payload: ApiType
-): Promise<void> => {
+): Promise<ApiType> => {
   const options: RequestInit = {
     method: "PATCH",
     headers: {
