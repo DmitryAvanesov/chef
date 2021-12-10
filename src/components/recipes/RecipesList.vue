@@ -8,12 +8,12 @@
             :key="recipe._id"
             :recipe="recipe"
           ></recipe-item>
-          <add-button
-            name="рецепт"
-            :modal-component="RecipeModal"
-            :modal-component-props="{ callback: postRecipe }"
-          ></add-button>
         </ion-list>
+        <add-button-fixed
+          name="рецепт"
+          :modal-component="RecipeModal"
+          :modal-component-props="{ callback: postRecipe }"
+        ></add-button-fixed>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -22,7 +22,7 @@
 <script lang="ts">
 import RecipeItem from "@/components/recipes/RecipeItem.vue";
 import RecipeModal from "@/components/recipes/RecipeModal.vue";
-import AddButton from "@/components/shared/AddButton.vue";
+import AddButtonFixed from "@/components/shared/AddButtonFixed.vue";
 import { useRootStore } from "@/store";
 import type { Recipe } from "@/types/recipes";
 import { IonCol, IonRow } from "@ionic/vue";
@@ -34,8 +34,8 @@ import { computed } from "vue";
 export default defineComponent({
   name: "RecipesList",
   components: {
+    AddButtonFixed,
     RecipeItem,
-    AddButton,
     IonRow,
     IonCol,
   },

@@ -15,19 +15,17 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <div class="add-button-container">
-    <add-button
-      name="ингредиент"
-      :modal-component="IngredientModal"
-      :modal-component-props="{ callback: postIngredient }"
-    ></add-button>
-  </div>
+  <add-button-fixed
+    name="ингредиент"
+    :modal-component="IngredientModal"
+    :modal-component-props="{ callback: postIngredient }"
+  ></add-button-fixed>
 </template>
 
 <script lang="ts">
 import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import IngredientModal from "@/components/ingredients/IngredientModal.vue";
-import AddButton from "@/components/shared/AddButton.vue";
+import AddButtonFixed from "@/components/shared/AddButtonFixed.vue";
 import { useRootStore } from "@/store";
 import type { Ingredient } from "@/types/ingredients";
 import { IonCol, IonRow } from "@ionic/vue";
@@ -35,7 +33,7 @@ import { computed, defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "IngredientCardsGrid",
-  components: { AddButton, IngredientCard, IonRow, IonCol },
+  components: { AddButtonFixed, IngredientCard, IonRow, IonCol },
   setup() {
     const store = useRootStore();
     const ingredientsList = computed(
@@ -58,11 +56,5 @@ export default defineComponent({
   .ingredients-cell {
     padding: 12px;
   }
-}
-
-.add-button-container {
-  position: fixed;
-  bottom: 4px;
-  right: 12px;
 }
 </style>
