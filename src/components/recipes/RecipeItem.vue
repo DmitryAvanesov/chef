@@ -31,8 +31,7 @@
             {{ recipeIngredient.ingredient.name }}
           </li>
           <li v-if="$props.recipe.ingredients.length > ingredientsLimit">
-            и ещё
-            {{ $props.recipe.ingredients.length - ingredientsLimit }}
+            и ещё {{ $props.recipe.ingredients.length - ingredientsLimit }}
           </li>
         </ul>
       </div>
@@ -195,16 +194,6 @@ export default defineComponent({
     --background-hover: transparent;
     --min-height: 120px;
     cursor: pointer;
-
-    .action-button {
-      display: none;
-    }
-
-    &:hover {
-      .action-button {
-        display: block;
-      }
-    }
 
     .recipe-info {
       display: flex;
