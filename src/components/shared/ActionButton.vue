@@ -12,12 +12,12 @@
 </template>
 
 <script lang="ts">
-import { IonIcon } from "@ionic/vue";
+import { IonFab, IonFabButton, IonIcon } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "ActionButton",
-  components: { IonIcon },
+  components: { IonIcon, IonFab, IonFabButton },
   props: ["color", "icon", "title", "callback"],
   setup(props) {
     const handleClick = (event: Event) => {
@@ -32,11 +32,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .action-button {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
 
   .action-icon {
-    font-size: 16px;
+    font-size: 24px;
     pointer-events: none;
   }
 }

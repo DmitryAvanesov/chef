@@ -36,7 +36,12 @@
               </div>
             </div>
             <ion-text class="description">{{ stage.description }}</ion-text>
-            <ion-item class="minutes-item" slot="end" lines="none">
+            <ion-item
+              class="minutes-item"
+              v-if="isDesktop"
+              slot="end"
+              lines="none"
+            >
               <ion-text class="minutes-label">{{ stage.minutes }}</ion-text>
               <ion-icon class="time-icon" :icon="time"></ion-icon>
             </ion-item>
@@ -65,8 +70,12 @@ import {
   IonIcon,
   IonRow,
   IonText,
+  IonGrid,
+  IonList,
+  IonItem,
   isPlatform,
   modalController,
+  IonButton,
 } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 import { time, create, close } from "ionicons/icons";
@@ -80,9 +89,14 @@ export default defineComponent({
     IonCol,
     IonText,
     IonIcon,
+    IonGrid,
+    IonList,
+    IonItem,
+    IonButton,
   },
   setup(props) {
     const store = useRootStore();
+    const isDesktop = isPlatform("desktop");
 
     const postRecipeStage = (recipeStage: RecipeStage) => {
       store.dispatch("recipeStages/postRecipeStage", {
@@ -99,7 +113,7 @@ export default defineComponent({
           recipe: props.recipe,
           callback: patchRecipeStage,
         },
-        ...(isPlatform("desktop") ? { cssClass: "modal-desktop" } : {}),
+        ...(isDesktop ? { cssClass: "modal-desktop" } : {}),
       });
 
       return modal.present();
@@ -121,6 +135,7 @@ export default defineComponent({
 
     return {
       RecipeStageModal,
+      isDesktop,
       postRecipeStage,
       openModal,
       patchRecipeStage,

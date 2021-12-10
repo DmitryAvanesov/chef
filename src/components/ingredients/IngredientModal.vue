@@ -71,9 +71,14 @@ export default defineComponent({
     };
 
     const updateUnits = (units: string[]): void => {
-      data.value.units = unitsList.value.filter((unit) =>
-        units.includes(unit._id)
-      );
+      if (
+        JSON.stringify(units) !==
+        JSON.stringify(data.value.units.map((unit) => unit._id))
+      ) {
+        data.value.units = unitsList.value.filter((unit) =>
+          units.includes(unit._id)
+        );
+      }
     };
 
     return {

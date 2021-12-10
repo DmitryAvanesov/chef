@@ -9,7 +9,7 @@
         :title="actionButton.title"
         :callback="actionButton.callback"
         :key="index"
-        :style="{ marginRight: `${index * 40}px` }"
+        :style="{ marginRight: `${index * 52}px` }"
       ></action-button>
     </div>
     <ion-card-content
