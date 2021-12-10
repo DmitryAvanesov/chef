@@ -9,7 +9,7 @@
         :title="actionButton.title"
         :callback="actionButton.callback"
         :key="index"
-        :style="{ marginRight: `${index * 36}px` }"
+        :style="{ marginRight: `${index * 40}px` }"
       ></action-button>
     </div>
     <ion-card-content
@@ -157,7 +157,7 @@ export default defineComponent({
         callback: editIngredient,
       },
       {
-        color: "warning",
+        color: "tertiary",
         icon: refresh,
         title: "Обновить изображение",
         callback: refreshImage,

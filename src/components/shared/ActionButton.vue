@@ -32,8 +32,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .action-button {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
 
   .action-icon {
     font-size: 16px;

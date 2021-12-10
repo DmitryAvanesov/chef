@@ -24,7 +24,7 @@ const actions = {
       const ingredients = await apiGet(state.route);
       commit("setIngredientsList", ingredients);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async postIngredient(
@@ -35,7 +35,7 @@ const actions = {
       const ingredient = await apiPost(state.route, body);
       commit("addIngredient", ingredient);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async patchIngredient(
@@ -46,7 +46,7 @@ const actions = {
       const ingredient = await apiPatch(state.route, payload);
       commit("updateIngredient", ingredient);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async deleteIngredient(
@@ -57,7 +57,7 @@ const actions = {
       await apiDelete(state.route, id);
       commit("removeIngredient", id);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
 };

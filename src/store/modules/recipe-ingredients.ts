@@ -32,7 +32,7 @@ const actions = {
         { root: true }
       );
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async patchRecipeIngredient(
@@ -60,7 +60,7 @@ const actions = {
         { root: true }
       );
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async deleteRecipeIngredient(
@@ -82,7 +82,7 @@ const actions = {
         { root: true }
       );
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
 };

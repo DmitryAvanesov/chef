@@ -5,13 +5,20 @@
         <ion-list class="list">
           <ion-item-sliding
             class="list-item"
-            v-for="unit in unitsList"
+            v-for="(unit, index) in unitsList"
             :key="unit._id"
-            :ref="unit._id"
+            :ref="
+              (ref) => {
+                if (ref) {
+                  listItemRefs[index] = ref;
+                }
+              }
+            "
           >
             <ion-item lines="full">
               <div v-if="data._id === unit._id" class="edit-unit">
                 <ion-input
+                  class="name-input"
                   :placeholder="unit.name"
                   :value="data.name"
                   @ionInput="updateName($event.target.value)"
@@ -24,10 +31,7 @@
               <ion-label v-else>{{ unit.name }}</ion-label>
             </ion-item>
             <ion-item-options side="start">
-              <ion-item-option
-                color="primary"
-                @click="handleEditing($refs[unit._id], unit._id)"
-              >
+              <ion-item-option color="primary" @click="handleEditing(index)">
                 {{ data._id === unit._id ? "Отменить" : "Редактировать" }}
               </ion-item-option>
               <ion-item-option color="danger" @click="deleteUnit(unit._id)">
@@ -47,7 +51,18 @@ import AddUnitItem from "@/components/units/AddUnitItem.vue";
 import ConfirmButton from "@/components/units/ConfirmButton.vue";
 import { useRootStore } from "@/store";
 import type { Unit } from "@/types/units";
-import { IonCol, IonItemOption, IonItemOptions, IonRow } from "@ionic/vue";
+import {
+  IonCol,
+  IonGrid,
+  IonInput,
+  IonItem,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
+  IonLabel,
+  IonList,
+  IonRow,
+} from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { defineComponent, ref } from "@vue/runtime-core";
 import type { Ref } from "vue";
@@ -62,6 +77,12 @@ export default defineComponent({
     IonCol,
     IonItemOptions,
     IonItemOption,
+    IonGrid,
+    IonList,
+    IonItem,
+    IonItemSliding,
+    IonInput,
+    IonLabel,
   },
   setup() {
     const store = useRootStore();
@@ -72,22 +93,20 @@ export default defineComponent({
     const unitsList: ComputedRef<Unit[]> = computed(
       () => store.state.units.unitsList
     );
+    const listItemRefs = ref(new Array(unitsList.value.length));
 
     const updateName = (name: string): void => {
       data.value.name = name;
     };
 
-    const handleEditing = (
-      item: HTMLIonItemSlidingElement,
-      unit: string
-    ): void => {
+    const handleEditing = (index: number): void => {
       if (!data.value._id) {
-        data.value._id = unit;
+        data.value._id = unitsList.value[index]._id;
       } else {
         data.value._id = "";
       }
 
-      item.close();
+      listItemRefs.value[index].$el.close();
     };
 
     const patchUnit = () => {
@@ -107,6 +126,7 @@ export default defineComponent({
     return {
       data,
       unitsList,
+      listItemRefs,
       updateName,
       handleEditing,
       patchUnit,
@@ -126,6 +146,10 @@ export default defineComponent({
     .edit-unit {
       display: flex;
       width: 100%;
+
+      .name-input {
+        text-align: left;
+      }
     }
   }
 }

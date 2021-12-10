@@ -19,7 +19,7 @@ const actions = {
       const units = await apiGet(state.route);
       commit("setUnitsList", units);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async postUnit(
@@ -30,7 +30,7 @@ const actions = {
       const unit = await apiPost(state.route, body);
       commit("addUnit", unit);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async patchUnit(
@@ -42,7 +42,7 @@ const actions = {
       const unit = await apiPatch(state.route, body);
       commit("updateUnit", unit);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async deleteUnit(
@@ -53,7 +53,7 @@ const actions = {
       await apiDelete(state.route, id);
       commit("removeUnit", id);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
 };

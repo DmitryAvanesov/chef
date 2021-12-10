@@ -29,7 +29,7 @@ const actions = {
         { root: true }
       );
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async patchRecipeStage(
@@ -53,7 +53,7 @@ const actions = {
         { root: true }
       );
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async deleteRecipeStage(
@@ -75,7 +75,7 @@ const actions = {
         { root: true }
       );
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
 };
