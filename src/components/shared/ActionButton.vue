@@ -1,12 +1,21 @@
 <template>
-  <ion-fab vertical="top" horizontal="end">
+  <ion-fab
+    :style="{ right: `${$props.index * ($props.size + 4) + 8}px` }"
+    vertical="top"
+    horizontal="end"
+  >
     <ion-fab-button
       class="action-button"
+      :style="{ width: `${$props.size}px`, height: `${$props.size}px` }"
       :color="color"
       :title="title"
       @click="handleClick($event)"
     >
-      <ion-icon class="action-icon" :icon="icon"></ion-icon>
+      <ion-icon
+        class="action-icon"
+        :style="{ fontSize: `${$props.size / 2}px` }"
+        :icon="icon"
+      ></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </template>
@@ -18,7 +27,7 @@ import { defineComponent } from "@vue/runtime-core";
 export default defineComponent({
   name: "ActionButton",
   components: { IonIcon, IonFab, IonFabButton },
-  props: ["color", "icon", "title", "callback"],
+  props: ["color", "icon", "title", "callback", "index", "size"],
   setup(props) {
     const handleClick = (event: Event) => {
       event.preventDefault();
@@ -32,11 +41,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .action-button {
-  width: 44px;
-  height: 44px;
-
   .action-icon {
-    font-size: 24px;
     pointer-events: none;
   }
 }

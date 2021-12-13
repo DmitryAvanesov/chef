@@ -4,12 +4,13 @@
       <action-button
         v-for="(actionButton, index) in actionButtons"
         class="action-button"
+        :key="index"
         :color="actionButton.color"
         :icon="actionButton.icon"
         :title="actionButton.title"
         :callback="actionButton.callback"
-        :key="index"
-        :style="{ marginRight: `${index * 48}px` }"
+        :index="index"
+        :size="44"
       ></action-button>
     </div>
     <ion-card-content

@@ -2,24 +2,37 @@
   <ion-item class="list-item" lines="none">
     <ion-text class="number" slot="start">{{ $props.stage.number }}.</ion-text>
     <ion-text class="description">{{ $props.stage.description }}</ion-text>
-    <ion-item class="actions-item" slot="end" lines="none">
-      <div>
-        <ion-text class="minutes-label">{{ $props.stage.minutes }}</ion-text>
-        <ion-icon class="time-icon" :icon="time"></ion-icon>
-      </div>
-      <div>
-        <action-button
-          v-for="(actionButton, index) in actionButtons"
-          class="action-button"
-          :color="actionButton.color"
-          :icon="actionButton.icon"
-          :title="actionButton.title"
-          :callback="actionButton.callback"
-          :key="index"
-          :style="{ marginRight: `${index * 48}px` }"
-        ></action-button>
-      </div>
-    </ion-item>
+  </ion-item>
+  <ion-item class="actions-item" lines="none">
+    <div class="minutes-block">
+      <ion-icon class="time-icon" :icon="time"></ion-icon>
+      <ion-text class="minutes-label">
+        {{ $props.stage.minutes }}
+      </ion-text>
+      <ion-text>
+        {{
+          $props.stage.minutes % 10 === 1 && $props.stage.minutes % 100 !== 11
+            ? "минута"
+            : [2, 3, 4].includes($props.stage.minutes % 10) &&
+              ![12, 13, 14].includes($props.stage.minutes % 100)
+            ? "минуты"
+            : "минут"
+        }}
+      </ion-text>
+    </div>
+    <div class="actions-block">
+      <action-button
+        v-for="(actionButton, index) in actionButtons"
+        class="action-button"
+        :key="index"
+        :color="actionButton.color"
+        :icon="actionButton.icon"
+        :title="actionButton.title"
+        :callback="actionButton.callback"
+        :index="index"
+        :size="32"
+      ></action-button>
+    </div>
   </ion-item>
 </template>
 
@@ -27,6 +40,7 @@
 import RecipeStageModal from "@/components/recipes/RecipeStageModal.vue";
 import ActionButton from "@/components/shared/ActionButton.vue";
 import { useRootStore } from "@/store";
+import type { RecipeStage } from "@/types/recipe-stages";
 import type { ActionButtonData } from "@/types/shared";
 import {
   IonIcon,
@@ -65,10 +79,10 @@ export default defineComponent({
       return modal.present();
     };
 
-    const patchRecipeStage = () => {
+    const patchRecipeStage = (recipeStage: RecipeStage) => {
       store.dispatch("recipeStages/patchRecipeStage", {
         recipe: props.recipe,
-        recipeStage: props.stage,
+        recipeStage,
       });
     };
 
@@ -112,65 +126,36 @@ $name-line-height: 30px;
 
 .list-item {
   --min-height: $name-line-height;
-  padding: 8px 0;
+  padding-top: 12px;
 
   .number {
     line-height: $name-line-height;
-    color: var(--ion-color-medium);
     margin: 0 8px auto 0;
   }
-
-  //.actions-block {
-  //  display: none;
-  //
-  //  .action-button {
-  //    --padding-start: 4px;
-  //    --padding-end: 4px;
-  //    margin-left: 0;
-  //    width: 22px;
-  //    height: 22px;
-  //  }
-  //}
 
   .description {
     margin-bottom: auto;
     text-align: justify;
     line-height: $name-line-height;
   }
+}
 
-  .actions-item {
-    --min-height: $name-line-height;
-    --inner-padding-end: 0;
-    margin: 0 0 auto 16px;
-    width: 100px;
+.actions-item {
+  --inner-padding-end: 0;
+  --min-height: 56px;
+
+  .minutes-block {
+    display: flex;
+    align-items: center;
 
     .time-icon {
-      width: $name-line-height;
-      height: $name-line-height;
-      color: var(--ion-color-medium);
       pointer-events: none;
+      margin-right: 8px;
+      font-size: $name-line-height * 0.75;
     }
 
     .minutes-label {
       margin-right: 4px;
-      margin-left: auto;
-      color: var(--ion-color-medium);
-    }
-  }
-
-  &:hover {
-    .number {
-      color: initial;
-    }
-
-    .actions-item {
-      .time-icon {
-        color: initial;
-      }
-
-      .minutes-label {
-        color: initial;
-      }
     }
   }
 }
