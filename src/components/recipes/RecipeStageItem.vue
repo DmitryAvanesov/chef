@@ -41,7 +41,6 @@ import RecipeStageModal from "@/components/recipes/RecipeStageModal.vue";
 import ActionButton from "@/components/shared/ActionButton.vue";
 import { useRootStore } from "@/store";
 import type { RecipeStage } from "@/types/recipe-stages";
-import type { ActionButtonData } from "@/types/shared";
 import {
   IonIcon,
   IonText,
@@ -49,8 +48,8 @@ import {
   modalController,
   isPlatform,
 } from "@ionic/vue";
-import { defineComponent } from "@vue/runtime-core";
-import { time, create, close } from "ionicons/icons";
+import { computed, defineComponent } from "@vue/runtime-core";
+import { time, create, close, caretUp, caretDown } from "ionicons/icons";
 
 export default defineComponent({
   name: "RecipeStageItem",
@@ -79,6 +78,42 @@ export default defineComponent({
       return modal.present();
     };
 
+    const moveUp = () => {
+      const prevStage = props.recipe.stages.find(
+        (stage: RecipeStage) => stage.number === props.stage.number - 1
+      );
+
+      if (prevStage) {
+        patchRecipeStage({
+          ...prevStage,
+          number: prevStage.number + 1,
+        });
+      }
+
+      patchRecipeStage({
+        ...props.stage,
+        number: Math.max(1, props.stage.number - 1),
+      });
+    };
+
+    const moveDown = () => {
+      const nextStage = props.recipe.stages.find(
+        (stage: RecipeStage) => stage.number === props.stage.number + 1
+      );
+
+      if (nextStage) {
+        patchRecipeStage({
+          ...nextStage,
+          number: nextStage.number - 1,
+        });
+      }
+
+      patchRecipeStage({
+        ...props.stage,
+        number: Math.min(props.recipe.stages.length, props.stage.number + 1),
+      });
+    };
+
     const patchRecipeStage = (recipeStage: RecipeStage) => {
       store.dispatch("recipeStages/patchRecipeStage", {
         recipe: props.recipe,
@@ -93,7 +128,7 @@ export default defineComponent({
       });
     };
 
-    const actionButtons: ActionButtonData[] = [
+    const actionButtons = computed(() => [
       {
         color: "danger",
         icon: close,
@@ -106,7 +141,27 @@ export default defineComponent({
         title: "Редактировать",
         callback: openModal,
       },
-    ];
+      ...(props.stage.number < props.recipe.stages.length
+        ? [
+            {
+              color: "tertiary",
+              icon: caretDown,
+              title: "Переместить ниже",
+              callback: moveDown,
+            },
+          ]
+        : []),
+      ...(props.stage.number > 1
+        ? [
+            {
+              color: "tertiary",
+              icon: caretUp,
+              title: "Переместить выше",
+              callback: moveUp,
+            },
+          ]
+        : []),
+    ]);
 
     return {
       RecipeStageModal,
