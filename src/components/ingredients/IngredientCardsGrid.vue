@@ -1,6 +1,7 @@
 <template>
   <ion-grid class="ingredients-grid">
     <ion-row>
+      <div></div>
       <ion-col
         class="ingredients-cell"
         v-for="ingredient in ingredientsList"

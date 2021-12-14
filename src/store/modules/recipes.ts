@@ -6,12 +6,12 @@ import type { ActionContext } from "vuex";
 
 const state = (): RecipesState => ({
   route: "recipes",
-  recipesList: [],
+  recipesList: null,
 });
 
 const getters = {
   recipeById: (state: RecipesState) => (id: string): Recipe =>
-    state.recipesList.find((recipe: Recipe) => recipe._id === id) || {
+    state.recipesList?.find((recipe: Recipe) => recipe._id === id) || {
       _id: "",
       name: "",
       ingredients: [],
@@ -72,25 +72,26 @@ const mutations = {
     state.recipesList = recipesList;
   },
   addRecipe(state: RecipesState, recipe: Recipe): void {
-    state.recipesList = [...state.recipesList, recipe];
+    state.recipesList = [...(state.recipesList || []), recipe];
   },
   updateRecipe(state: RecipesState, payload: Recipe): void {
     state.recipesList = [
-      ...state.recipesList.filter((recipe) => recipe._id !== payload._id),
+      ...(state.recipesList?.filter((recipe) => recipe._id !== payload._id) ||
+        []),
       payload,
     ];
   },
   removeRecipe(state: RecipesState, id: string): void {
     state.recipesList = [
-      ...state.recipesList.filter((recipe) => recipe._id !== id),
+      ...(state.recipesList?.filter((recipe) => recipe._id !== id) || []),
     ];
   },
   sortRecipes(state: RecipesState): void {
-    state.recipesList.sort((a, b) =>
+    state.recipesList?.sort((a, b) =>
       a.name > b.name ? 1 : a.name < b.name ? -1 : 0
     );
 
-    for (const recipe of state.recipesList) {
+    for (const recipe of state.recipesList || []) {
       recipe.ingredients.sort((a, b) =>
         a.ingredient.name > b.ingredient.name
           ? 1

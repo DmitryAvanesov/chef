@@ -4,7 +4,7 @@ import type { RecipeStage } from "@/types/recipe-stages";
 
 export interface RecipesState {
   route: ApiRoute;
-  recipesList: Recipe[];
+  recipesList: Recipe[] | null;
 }
 
 export interface Recipe {

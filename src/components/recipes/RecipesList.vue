@@ -3,12 +3,15 @@
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
         <ion-list class="list">
-          <div v-if="recipesList.length">
-            <recipe-item
-              v-for="recipe in recipesList"
-              :key="recipe._id"
-              :recipe="recipe"
-            ></recipe-item>
+          <div v-if="recipesList">
+            <div v-if="recipesList?.length">
+              <recipe-item
+                v-for="recipe in recipesList"
+                :key="recipe._id"
+                :recipe="recipe"
+              ></recipe-item>
+            </div>
+            <empty-data v-else name="Рецепты"></empty-data>
           </div>
           <div v-else>
             <ion-skeleton-text
@@ -33,17 +36,19 @@
 import RecipeItem from "@/components/recipes/RecipeItem.vue";
 import RecipeModal from "@/components/recipes/RecipeModal.vue";
 import AddButtonFixed from "@/components/shared/AddButtonFixed.vue";
+import EmptyData from "@/components/shared/EmptyData.vue";
 import { useRootStore } from "@/store";
 import type { Recipe } from "@/types/recipes";
 import { IonCol, IonRow } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { defineComponent } from "@vue/runtime-core";
-import { time } from "ionicons/icons";
+import { time, informationCircle } from "ionicons/icons";
 import { computed } from "vue";
 
 export default defineComponent({
   name: "RecipesList",
   components: {
+    EmptyData,
     AddButtonFixed,
     RecipeItem,
     IonRow,
@@ -51,7 +56,7 @@ export default defineComponent({
   },
   setup() {
     const store = useRootStore();
-    const recipesList: ComputedRef<Recipe[]> = computed(
+    const recipesList: ComputedRef<Recipe[] | null> = computed(
       () => store.state.recipes.recipesList
     );
 
@@ -64,6 +69,7 @@ export default defineComponent({
       recipesList,
       postRecipe,
       time,
+      informationCircle,
     };
   },
 });
