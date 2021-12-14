@@ -149,6 +149,7 @@ export default defineComponent({
 
       .name-input {
         text-align: left;
+        text-align-last: auto;
       }
     }
   }

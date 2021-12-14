@@ -3,11 +3,21 @@
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
         <ion-list class="list">
-          <recipe-item
-            v-for="recipe in recipesList"
-            :key="recipe._id"
-            :recipe="recipe"
-          ></recipe-item>
+          <div v-if="recipesList.length">
+            <recipe-item
+              v-for="recipe in recipesList"
+              :key="recipe._id"
+              :recipe="recipe"
+            ></recipe-item>
+          </div>
+          <div v-else>
+            <ion-skeleton-text
+              class="skeleton"
+              v-for="index in 5"
+              :key="index"
+              animated
+            ></ion-skeleton-text>
+          </div>
         </ion-list>
         <add-button-fixed
           name="рецепт"
@@ -125,6 +135,10 @@ export default defineComponent({
         height: 100%;
       }
     }
+  }
+
+  .skeleton {
+    height: 120px;
   }
 }
 </style>

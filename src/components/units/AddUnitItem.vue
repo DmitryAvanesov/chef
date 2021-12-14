@@ -53,6 +53,7 @@ export default defineComponent({
     color: var(--ion-color-medium);
     text-overflow: ellipsis;
     text-align: left;
+    text-align-last: auto;
   }
 }
 </style>
