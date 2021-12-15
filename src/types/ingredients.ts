@@ -3,7 +3,7 @@ import type { Unit } from "@/types/units";
 
 export interface IngredientsState {
   route: ApiRoute;
-  ingredientsList: Ingredient[];
+  ingredientsList: Ingredient[] | null;
 }
 
 export interface Ingredient {

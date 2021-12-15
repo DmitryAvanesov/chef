@@ -35,7 +35,6 @@ export default defineComponent({
   setup() {
     const store = useRootStore();
     const route = useRoute();
-    console.log(route);
     const recipe: ComputedRef<Recipe> = computed(() =>
       store.getters["recipes/recipeById"](route.params.id)
     );

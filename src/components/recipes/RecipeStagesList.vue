@@ -4,12 +4,24 @@
       <ion-col :size-md="8" :offset-md="2">
         <h2>Этапы приготовления</h2>
         <ion-list class="list">
-          <recipe-stage-item
-            v-for="stage in $props.recipe.stages"
-            :key="stage._id"
-            :recipe="$props.recipe"
-            :stage="stage"
-          ></recipe-stage-item>
+          <div v-if="$props.recipe.stages">
+            <div v-if="$props.recipe.stages.length">
+              <recipe-stage-item
+                v-for="stage in $props.recipe.stages"
+                :key="stage._id"
+                :recipe="$props.recipe"
+                :stage="stage"
+              ></recipe-stage-item>
+            </div>
+            <empty-data v-else name="Этапы приготовления"></empty-data>
+          </div>
+          <div v-else>
+            <ion-skeleton-text
+              class="skeleton"
+              v-for="index in 5"
+              :key="index"
+            ></ion-skeleton-text>
+          </div>
           <add-button
             name="этап"
             :modal-component="RecipeStageModal"
@@ -33,11 +45,13 @@ import type { RecipeStage } from "@/types/recipe-stages";
 import { IonCol, IonRow, IonGrid, IonList } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 import { time, create, close } from "ionicons/icons";
+import EmptyData from "@/components/shared/EmptyData.vue";
 
 export default defineComponent({
   name: "RecipeStagesList",
   props: ["recipe"],
   components: {
+    EmptyData,
     RecipeStageItem,
     AddButton,
     IonRow,
@@ -69,5 +83,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .list {
   padding-bottom: 96px;
+
+  .skeleton {
+    height: 86px;
+    margin-top: 12px;
+  }
 }
 </style>

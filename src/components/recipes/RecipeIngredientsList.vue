@@ -4,47 +4,61 @@
       <ion-col :size-md="8" :offset-md="2">
         <h2>Ингредиенты</h2>
         <ion-list class="list">
-          <ion-item-sliding
-            class="list-item"
-            v-for="recipeIngredient in $props.recipe.ingredients"
-            :key="recipeIngredient._id"
-            :ref="recipeIngredient._id"
-          >
-            <ion-item lines="full">
-              <ion-text
-                class="name"
-                color="dark"
-                @click="openPopover($event, recipeIngredient.ingredient._id)"
+          <div v-if="$props.recipe.ingredients">
+            <div v-if="$props.recipe.ingredients.length">
+              <ion-item-sliding
+                class="list-item"
+                v-for="recipeIngredient in $props.recipe.ingredients"
+                :key="recipeIngredient._id"
+                :ref="recipeIngredient._id"
               >
-                {{ recipeIngredient.ingredient.name }}
-              </ion-text>
-              <div class="dots">{{ ".".repeat(350) }}</div>
-              <div class="unit-block" slot="end">
-                <span class="quantity">
-                  {{ recipeIngredient.quantity }}
-                </span>
-                <span>
-                  {{ recipeIngredient.unit.name }}
-                </span>
-              </div>
-            </ion-item>
-            <ion-item-options side="start">
-              <ion-item-option
-                color="primary"
-                @click="
-                  openModal($refs[recipeIngredient._id], recipeIngredient)
-                "
-              >
-                Редактировать
-              </ion-item-option>
-              <ion-item-option
-                color="danger"
-                @click="deleteRecipeIngredient(recipeIngredient)"
-              >
-                Удалить
-              </ion-item-option>
-            </ion-item-options>
-          </ion-item-sliding>
+                <ion-item lines="full">
+                  <ion-text
+                    class="name"
+                    color="dark"
+                    @click="
+                      openPopover($event, recipeIngredient.ingredient._id)
+                    "
+                  >
+                    {{ recipeIngredient.ingredient.name }}
+                  </ion-text>
+                  <div class="dots">{{ ".".repeat(350) }}</div>
+                  <div class="unit-block" slot="end">
+                    <span class="quantity">
+                      {{ recipeIngredient.quantity }}
+                    </span>
+                    <span>
+                      {{ recipeIngredient.unit.name }}
+                    </span>
+                  </div>
+                </ion-item>
+                <ion-item-options side="start">
+                  <ion-item-option
+                    color="primary"
+                    @click="
+                      openModal($refs[recipeIngredient._id], recipeIngredient)
+                    "
+                  >
+                    Редактировать
+                  </ion-item-option>
+                  <ion-item-option
+                    color="danger"
+                    @click="deleteRecipeIngredient(recipeIngredient)"
+                  >
+                    Удалить
+                  </ion-item-option>
+                </ion-item-options>
+              </ion-item-sliding>
+            </div>
+            <empty-data v-else name="Ингредиенты"></empty-data>
+          </div>
+          <div v-else>
+            <ion-skeleton-text
+              class="skeleton"
+              v-for="index in 5"
+              :key="index"
+            ></ion-skeleton-text>
+          </div>
           <add-button
             name="ингредиент"
             :modal-component="RecipeIngredientModal"
@@ -60,6 +74,7 @@
 import IngredientCard from "@/components/ingredients/IngredientCard.vue";
 import RecipeIngredientModal from "@/components/recipes/RecipeIngredientModal.vue";
 import AddButton from "@/components/shared/AddButton.vue";
+import EmptyData from "@/components/shared/EmptyData.vue";
 import { useRootStore } from "@/store";
 import type { RecipeIngredient } from "@/types/recipe-ingredients";
 import {
@@ -78,6 +93,7 @@ export default defineComponent({
   name: "RecipeIngredientsList",
   props: ["recipe"],
   components: {
+    EmptyData,
     AddButton,
     IonRow,
     IonCol,
@@ -184,6 +200,10 @@ export default defineComponent({
           margin-right: 4px;
         }
       }
+    }
+
+    .skeleton {
+      height: 48px;
     }
   }
 }

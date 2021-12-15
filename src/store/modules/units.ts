@@ -5,7 +5,7 @@ import type { ActionContext } from "vuex";
 
 const state = (): UnitsState => ({
   route: "units",
-  unitsList: [],
+  unitsList: null,
 });
 
 const getters = {};
@@ -63,21 +63,22 @@ const mutations = {
     state.unitsList = unitsList;
   },
   addUnit(state: UnitsState, unit: Unit): void {
-    state.unitsList = [...state.unitsList, unit];
+    state.unitsList = [...(state.unitsList || []), unit];
   },
   updateUnit(state: UnitsState, payload: Unit): void {
     state.unitsList = [
-      ...state.unitsList.filter((unit: Unit) => unit._id !== payload._id),
+      ...(state.unitsList?.filter((unit: Unit) => unit._id !== payload._id) ||
+        []),
       payload,
     ];
   },
   removeUnit(state: UnitsState, id: string): void {
     state.unitsList = [
-      ...state.unitsList.filter((unit: Unit) => unit._id !== id),
+      ...(state.unitsList?.filter((unit: Unit) => unit._id !== id) || []),
     ];
   },
   sortUnits(state: UnitsState): void {
-    state.unitsList.sort((a: Unit, b: Unit) =>
+    state.unitsList?.sort((a: Unit, b: Unit) =>
       a.name > b.name ? 1 : a.name < b.name ? -1 : 0
     );
   },

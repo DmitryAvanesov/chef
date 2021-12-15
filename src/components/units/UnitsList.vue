@@ -1,5 +1,5 @@
 <template>
-  <ion-grid>
+  <ion-grid v-if="unitsList">
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
         <ion-list class="list">
@@ -44,6 +44,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-progress-bar v-else type="indeterminate"></ion-progress-bar>
 </template>
 
 <script lang="ts">
@@ -63,7 +64,6 @@ import {
   IonList,
   IonRow,
 } from "@ionic/vue";
-import type { ComputedRef } from "@vue/runtime-core";
 import { defineComponent, ref } from "@vue/runtime-core";
 import type { Ref } from "vue";
 import { computed } from "vue";
@@ -90,10 +90,8 @@ export default defineComponent({
       _id: "",
       name: "",
     });
-    const unitsList: ComputedRef<Unit[]> = computed(
-      () => store.state.units.unitsList
-    );
-    const listItemRefs = ref(new Array(unitsList.value.length));
+    const unitsList = computed(() => store.state.units.unitsList);
+    const listItemRefs = ref(new Array(unitsList.value?.length));
 
     const updateName = (name: string): void => {
       data.value.name = name;
@@ -101,7 +99,7 @@ export default defineComponent({
 
     const handleEditing = (index: number): void => {
       if (!data.value._id) {
-        data.value._id = unitsList.value[index]._id;
+        data.value._id = unitsList.value?.[index]._id || "";
       } else {
         data.value._id = "";
       }

@@ -10,7 +10,7 @@ export interface RecipesState {
 export interface Recipe {
   _id: string;
   name: string;
-  ingredients: RecipeIngredient[];
-  stages: RecipeStage[];
+  ingredients: RecipeIngredient[] | null;
+  stages: RecipeStage[] | null;
   image: string;
 }

@@ -16,7 +16,7 @@
           <div v-else>
             <ion-skeleton-text
               class="skeleton"
-              v-for="index in 5"
+              v-for="index in 7"
               :key="index"
               animated
             ></ion-skeleton-text>

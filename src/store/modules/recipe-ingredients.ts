@@ -27,7 +27,7 @@ const actions = {
         "recipes/patchRecipe",
         {
           ...body.recipe,
-          ingredients: [...body.recipe.ingredients, recipeIngredient],
+          ingredients: [...(body.recipe.ingredients || []), recipeIngredient],
         },
         { root: true }
       );
@@ -50,10 +50,10 @@ const actions = {
         {
           ...payload.recipe,
           ingredients: [
-            ...payload.recipe.ingredients.filter(
+            ...(payload.recipe.ingredients?.filter(
               (recipeIngredient) =>
                 recipeIngredient._id !== newRecipeIngredient._id
-            ),
+            ) || []),
             newRecipeIngredient,
           ],
         },
@@ -74,10 +74,11 @@ const actions = {
         "recipes/patchRecipe",
         {
           ...payload.recipe,
-          ingredients: payload.recipe.ingredients.filter(
-            (recipeIngredient) =>
-              recipeIngredient._id !== payload.recipeIngredient._id
-          ),
+          ingredients:
+            payload.recipe.ingredients?.filter(
+              (recipeIngredient) =>
+                recipeIngredient._id !== payload.recipeIngredient._id
+            ) || [],
         },
         { root: true }
       );

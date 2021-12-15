@@ -24,7 +24,7 @@ const actions = {
         "recipes/patchRecipe",
         {
           ...body.recipe,
-          stages: [...body.recipe.stages, recipeStage],
+          stages: [...(body.recipe.stages || []), recipeStage],
         },
         { root: true }
       );
@@ -44,9 +44,9 @@ const actions = {
         {
           ...payload.recipe,
           stages: [
-            ...payload.recipe.stages.filter(
+            ...(payload.recipe.stages?.filter(
               (recipeStage) => recipeStage._id !== newRecipeStage._id
-            ),
+            ) || []),
             newRecipeStage,
           ],
         },
@@ -67,10 +67,10 @@ const actions = {
         "recipes/patchRecipe",
         {
           ...payload.recipe,
-          ingredients: payload.recipe.ingredients.filter(
-            (recipeIngredient) =>
-              recipeIngredient._id !== payload.recipeStage._id
-          ),
+          stages:
+            payload.recipe.stages?.filter(
+              (recipeStage) => recipeStage._id !== payload.recipeStage._id
+            ) || [],
         },
         { root: true }
       );

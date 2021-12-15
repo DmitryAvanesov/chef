@@ -14,8 +14,8 @@ const getters = {
     state.recipesList?.find((recipe: Recipe) => recipe._id === id) || {
       _id: "",
       name: "",
-      ingredients: [],
-      stages: [],
+      ingredients: null,
+      stages: null,
       image: "",
     },
 };
@@ -92,14 +92,14 @@ const mutations = {
     );
 
     for (const recipe of state.recipesList || []) {
-      recipe.ingredients.sort((a, b) =>
+      recipe.ingredients?.sort((a, b) =>
         a.ingredient.name > b.ingredient.name
           ? 1
           : a.ingredient.name < b.ingredient.name
           ? -1
           : 0
       );
-      recipe.stages.sort((a, b) =>
+      recipe.stages?.sort((a, b) =>
         a.number > b.number ? 1 : a.number < b.number ? -1 : 0
       );
     }
