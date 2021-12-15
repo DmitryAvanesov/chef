@@ -17,3 +17,8 @@ export type ApiType =
   | RecipeStage
   | Recipe
   | Unit;
+
+export interface ApiQuery {
+  ingredients?: string[];
+  minutes?: { lower: number; upper: number };
+}

@@ -43,7 +43,8 @@ import { IonCol, IonRow } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { defineComponent } from "@vue/runtime-core";
 import { time, informationCircle } from "ionicons/icons";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
+import { onBeforeRouteUpdate, useRoute } from "vue-router";
 
 export default defineComponent({
   name: "RecipesList",

@@ -1,13 +1,21 @@
-import type { ApiType, ApiRoute } from "@/types/api";
+import type { ApiType, ApiRoute, ApiQuery } from "@/types/api";
 
 const api = process.env.VUE_APP_API;
 
-export const apiGet = async (route: ApiRoute): Promise<ApiType[]> => {
+export const apiGet = async (
+  route: ApiRoute,
+  query: ApiQuery | null = null
+): Promise<ApiType[]> => {
   const options: RequestInit = {
     method: "GET",
   };
 
-  const response = await fetch(`${api}/${route}`, options);
+  const response = await fetch(
+    `${api}/${route}${
+      query ? `?${new URLSearchParams(Object.entries(query))}` : ""
+    }`,
+    options
+  );
 
   if (response.ok) {
     return response.json();

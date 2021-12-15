@@ -8,7 +8,6 @@
           placeholder="Выберите ингредиент"
           cancel-text="Отмена"
           ok-text="ОК"
-          interface="popover"
           :value="data.ingredient._id"
           :disabled="$props.recipeIngredient"
           @ionChange="updateIngredient($event.target.value)"

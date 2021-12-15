@@ -3,6 +3,7 @@ import type { IngredientsState } from "@/types/ingredients";
 import type { Recipe, RecipesState } from "@/types/recipes";
 import type { RootState } from "@/types/root";
 import type { ActionContext } from "vuex";
+import { ApiQuery } from "@/types/api";
 
 const state = (): RecipesState => ({
   route: "recipes",
@@ -21,12 +22,12 @@ const getters = {
 };
 
 const actions = {
-  async getRecipes({
-    state,
-    commit,
-  }: ActionContext<RecipesState, RootState>): Promise<void> {
+  async getRecipes(
+    { state, commit }: ActionContext<RecipesState, RootState>,
+    query: ApiQuery | null
+  ): Promise<void> {
     try {
-      const recipes = await apiGet(state.route);
+      const recipes = await apiGet(state.route, query);
       commit("setRecipesList", recipes);
     } catch (error) {
       console.log(error);
