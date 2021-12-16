@@ -24,7 +24,7 @@ const getters = {
 const actions = {
   async getRecipes(
     { state, commit }: ActionContext<RecipesState, RootState>,
-    query: ApiQuery | null
+    query: ApiQuery = {}
   ): Promise<void> {
     try {
       const recipes = await apiGet(state.route, query);

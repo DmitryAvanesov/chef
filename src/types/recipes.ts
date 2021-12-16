@@ -13,4 +13,14 @@ export interface Recipe {
   ingredients: RecipeIngredient[] | null;
   stages: RecipeStage[] | null;
   image: string;
+  minutes?: number;
+}
+
+export interface RecipesFilters extends RecipesFilterMinutes {
+  ingredients?: string[];
+}
+
+export interface RecipesFilterMinutes {
+  minutesFrom?: number;
+  minutesTo?: number;
 }

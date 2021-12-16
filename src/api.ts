@@ -4,15 +4,16 @@ const api = process.env.VUE_APP_API;
 
 export const apiGet = async (
   route: ApiRoute,
-  query: ApiQuery | null = null
+  query: ApiQuery = {}
 ): Promise<ApiType[]> => {
   const options: RequestInit = {
     method: "GET",
   };
+  const queryEntries = Object.entries(query);
 
   const response = await fetch(
     `${api}/${route}${
-      query ? `?${new URLSearchParams(Object.entries(query))}` : ""
+      queryEntries.length ? `?${new URLSearchParams(queryEntries)}` : ""
     }`,
     options
   );

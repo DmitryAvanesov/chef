@@ -1,7 +1,7 @@
 import type { Ingredient } from "@/types/ingredients";
 import type { RecipeIngredient } from "@/types/recipe-ingredients";
 import type { RecipeStage } from "@/types/recipe-stages";
-import type { Recipe } from "@/types/recipes";
+import type { Recipe, RecipesFilters } from "@/types/recipes";
 import type { Unit } from "@/types/units";
 
 export type ApiRoute =
@@ -18,7 +18,4 @@ export type ApiType =
   | Recipe
   | Unit;
 
-export interface ApiQuery {
-  ingredients?: string[];
-  minutes?: { lower: number; upper: number };
-}
+export type ApiQuery = RecipesFilters;

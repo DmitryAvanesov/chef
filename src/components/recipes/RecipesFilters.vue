@@ -14,8 +14,16 @@
                 color="primary"
                 :dual-knobs="true"
                 :pin="true"
-                :value="data.minutes"
-                @ionChange="filterByMinutes($event.target.value)"
+                :value="{
+                  lower: data.minutesFrom || minMinutes,
+                  upper: data.minutesTo || maxMinutes,
+                }"
+                @ionChange="
+                  filterByMinutes({
+                    minutesFrom: $event.target.value.lower,
+                    minutesTo: $event.target.value.upper,
+                  })
+                "
               >
                 <ion-label slot="start">{{ minMinutes }}</ion-label>
                 <ion-label slot="end">{{ maxMinutes }}</ion-label>
@@ -46,7 +54,7 @@
 
 <script lang="ts">
 import { useRootStore } from "@/store";
-import type { ApiQuery } from "@/types/api";
+import type { RecipesFilterMinutes, RecipesFilters } from "@/types/recipes";
 import {
   IonCardContent,
   IonCol,
@@ -58,7 +66,6 @@ import {
 import { computed, defineComponent } from "@vue/runtime-core";
 import type { Ref } from "vue";
 import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   name: "RecipesFilters",
@@ -72,47 +79,32 @@ export default defineComponent({
   },
   setup() {
     const store = useRootStore();
-    const router = useRouter();
-    const data: Ref<ApiQuery> = ref({
-      ingredients: [],
-      minutes: {},
-    });
+    const data: Ref<RecipesFilters> = ref({});
     const recipesList = computed(() => [
       ...(store.state.recipes.recipesList || []),
     ]);
     const ingredientsList = computed(() => [
       ...(store.state.ingredients.ingredientsList || []),
     ]);
-    const recipeStagesMinutesList = computed(() =>
-      recipesList.value.map(
-        (recipe) =>
-          recipe.stages?.reduce(
-            (previousValue, currentValue) =>
-              previousValue + currentValue.minutes,
-            0
-          ) || 0
-      )
-    );
     const minMinutes = computed(() =>
-      recipeStagesMinutesList.value.length
-        ? Math.min(...recipeStagesMinutesList.value)
-        : 0
+      Math.min(...recipesList.value.map((recipe) => recipe.minutes || 0))
     );
-    const maxMinutes = computed(() =>
-      recipeStagesMinutesList.value.length
-        ? Math.max(...recipeStagesMinutesList.value)
-        : 0
-    );
+    const maxMinutes = 46;
 
     const filterByIngredients = (ingredients: string[]) => {
-      data.value = { ingredients };
-      store.dispatch("recipes/getRecipes", { ingredients });
+      data.value.ingredients = ingredients;
+      store.dispatch("recipes/getRecipes", data.value);
     };
 
-    const filterByMinutes = (minutes: string[]) => {
-      // data.value = { minutes };
-      // store.dispatch("recipes/getRecipes", { minutes });
-      console.log(minutes);
+    const filterByMinutes = (recipesFilterMinutes: RecipesFilterMinutes) => {
+      if (
+        recipesFilterMinutes.minutesFrom !== data.value.minutesFrom ||
+        recipesFilterMinutes.minutesTo !== data.value.minutesTo
+      ) {
+        console.log(data.value, recipesFilterMinutes);
+        data.value = { ...data.value, ...recipesFilterMinutes };
+        store.dispatch("recipes/getRecipes", data.value);
+      }
     };
 
     return {

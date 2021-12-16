@@ -8,13 +8,7 @@
           </h2>
           <ion-item class="minutes-block" lines="none">
             <ion-text class="minutes-label">
-              {{
-                $props.recipe.stages.reduce(
-                  (previousValue, currentValue) =>
-                    previousValue + currentValue.minutes,
-                  0
-                )
-              }}
+              {{ $props.recipe.minutes || 0 }}
             </ion-text>
             <ion-icon class="time-icon" :icon="time"></ion-icon>
           </ion-item>
