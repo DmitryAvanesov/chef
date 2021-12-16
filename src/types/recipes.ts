@@ -4,13 +4,23 @@ import type { RecipeStage } from "@/types/recipe-stages";
 
 export interface RecipesState {
   route: ApiRoute;
-  recipesList: Recipe[];
+  recipesList: Recipe[] | null;
 }
 
 export interface Recipe {
   _id: string;
   name: string;
-  ingredients: RecipeIngredient[];
-  stages: RecipeStage[];
+  ingredients: RecipeIngredient[] | null;
+  stages: RecipeStage[] | null;
   image: string;
+  minutes?: number;
+}
+
+export interface RecipesFilters extends RecipesFilterMinutes {
+  ingredients?: string[];
+}
+
+export interface RecipesFilterMinutes {
+  minutesFrom?: number;
+  minutesTo?: number;
 }

@@ -24,12 +24,12 @@ const actions = {
         "recipes/patchRecipe",
         {
           ...body.recipe,
-          stages: [...body.recipe.stages, recipeStage],
+          stages: [...(body.recipe.stages || []), recipeStage],
         },
         { root: true }
       );
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async patchRecipeStage(
@@ -44,16 +44,16 @@ const actions = {
         {
           ...payload.recipe,
           stages: [
-            ...payload.recipe.stages.filter(
+            ...(payload.recipe.stages?.filter(
               (recipeStage) => recipeStage._id !== newRecipeStage._id
-            ),
+            ) || []),
             newRecipeStage,
           ],
         },
         { root: true }
       );
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async deleteRecipeStage(
@@ -67,15 +67,15 @@ const actions = {
         "recipes/patchRecipe",
         {
           ...payload.recipe,
-          ingredients: payload.recipe.ingredients.filter(
-            (recipeIngredient) =>
-              recipeIngredient._id !== payload.recipeStage._id
-          ),
+          stages:
+            payload.recipe.stages?.filter(
+              (recipeStage) => recipeStage._id !== payload.recipeStage._id
+            ) || [],
         },
         { root: true }
       );
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
 };

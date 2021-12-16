@@ -3,17 +3,30 @@
     <ion-row>
       <ion-col :size-md="8" :offset-md="2">
         <ion-list class="list">
-          <recipe-item
-            v-for="recipe in recipesList"
-            :key="recipe._id"
-            :recipe="recipe"
-          ></recipe-item>
-          <add-button
-            name="рецепт"
-            :modal-component="RecipeModal"
-            :modal-component-props="{ callback: postRecipe }"
-          ></add-button>
+          <div v-if="recipesList">
+            <div v-if="recipesList?.length">
+              <recipe-item
+                v-for="recipe in recipesList"
+                :key="recipe._id"
+                :recipe="recipe"
+              ></recipe-item>
+            </div>
+            <empty-data v-else name="Рецепты"></empty-data>
+          </div>
+          <div v-else>
+            <ion-skeleton-text
+              class="skeleton"
+              v-for="index in 7"
+              :key="index"
+              animated
+            ></ion-skeleton-text>
+          </div>
         </ion-list>
+        <add-button-fixed
+          name="рецепт"
+          :modal-component="RecipeModal"
+          :modal-component-props="{ callback: postRecipe }"
+        ></add-button-fixed>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -22,26 +35,29 @@
 <script lang="ts">
 import RecipeItem from "@/components/recipes/RecipeItem.vue";
 import RecipeModal from "@/components/recipes/RecipeModal.vue";
-import AddButton from "@/components/shared/AddButton.vue";
+import AddButtonFixed from "@/components/shared/AddButtonFixed.vue";
+import EmptyData from "@/components/shared/EmptyData.vue";
 import { useRootStore } from "@/store";
 import type { Recipe } from "@/types/recipes";
 import { IonCol, IonRow } from "@ionic/vue";
 import type { ComputedRef } from "@vue/runtime-core";
 import { defineComponent } from "@vue/runtime-core";
-import { time } from "ionicons/icons";
-import { computed } from "vue";
+import { time, informationCircle } from "ionicons/icons";
+import { computed, ref, watch } from "vue";
+import { onBeforeRouteUpdate, useRoute } from "vue-router";
 
 export default defineComponent({
   name: "RecipesList",
   components: {
+    EmptyData,
+    AddButtonFixed,
     RecipeItem,
-    AddButton,
     IonRow,
     IonCol,
   },
   setup() {
     const store = useRootStore();
-    const recipesList: ComputedRef<Recipe[]> = computed(
+    const recipesList: ComputedRef<Recipe[] | null> = computed(
       () => store.state.recipes.recipesList
     );
 
@@ -54,6 +70,7 @@ export default defineComponent({
       recipesList,
       postRecipe,
       time,
+      informationCircle,
     };
   },
 });
@@ -125,6 +142,10 @@ export default defineComponent({
         height: 100%;
       }
     }
+  }
+
+  .skeleton {
+    height: 120px;
   }
 }
 </style>

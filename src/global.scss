@@ -12,7 +12,8 @@ h2 {
 
 ion-input,
 ion-textarea {
-  text-align: right;
+  text-align: justify;
+  text-align-last: right;
 }
 
 input[type="number"] {

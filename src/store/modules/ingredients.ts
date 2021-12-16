@@ -5,12 +5,12 @@ import type { ActionContext } from "vuex";
 
 const state = (): IngredientsState => ({
   route: "ingredients",
-  ingredientsList: [],
+  ingredientsList: null,
 });
 
 const getters = {
   ingredientById: (state: IngredientsState) => (id: string): Ingredient =>
-    state.ingredientsList.find(
+    state.ingredientsList?.find(
       (ingredient: Ingredient) => ingredient._id === id
     ) || { _id: "", name: "", units: [], image: "" },
 };
@@ -24,7 +24,7 @@ const actions = {
       const ingredients = await apiGet(state.route);
       commit("setIngredientsList", ingredients);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async postIngredient(
@@ -35,7 +35,7 @@ const actions = {
       const ingredient = await apiPost(state.route, body);
       commit("addIngredient", ingredient);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async patchIngredient(
@@ -46,7 +46,7 @@ const actions = {
       const ingredient = await apiPatch(state.route, payload);
       commit("updateIngredient", ingredient);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
   async deleteIngredient(
@@ -57,7 +57,7 @@ const actions = {
       await apiDelete(state.route, id);
       commit("removeIngredient", id);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   },
 };
@@ -70,25 +70,25 @@ const mutations = {
     state.ingredientsList = ingredientsList;
   },
   addIngredient(state: IngredientsState, ingredient: Ingredient): void {
-    state.ingredientsList = [...state.ingredientsList, ingredient];
+    state.ingredientsList = [...(state.ingredientsList || []), ingredient];
   },
   updateIngredient(state: IngredientsState, payload: Ingredient): void {
     state.ingredientsList = [
-      ...state.ingredientsList.filter(
+      ...(state.ingredientsList?.filter(
         (ingredient: Ingredient) => ingredient._id !== payload._id
-      ),
+      ) || []),
       payload,
     ];
   },
   removeIngredient(state: IngredientsState, id: string): void {
     state.ingredientsList = [
-      ...state.ingredientsList.filter(
+      ...(state.ingredientsList?.filter(
         (ingredient: Ingredient) => ingredient._id !== id
-      ),
+      ) || []),
     ];
   },
   sortIngredients(state: IngredientsState): void {
-    state.ingredientsList.sort((a: Ingredient, b: Ingredient) =>
+    state.ingredientsList?.sort((a: Ingredient, b: Ingredient) =>
       a.name > b.name ? 1 : a.name < b.name ? -1 : 0
     );
   },

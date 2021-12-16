@@ -42,9 +42,8 @@
 import ModalButtons from "@/components/shared/ModalButtons.vue";
 import { useRootStore } from "@/store";
 import type { Ingredient } from "@/types/ingredients";
-import type { Unit } from "@/types/units";
 import { IonSelect, IonSelectOption } from "@ionic/vue";
-import type { ComputedRef, Ref } from "@vue/runtime-core";
+import type { Ref } from "@vue/runtime-core";
 import { computed, defineComponent, ref } from "@vue/runtime-core";
 
 export default defineComponent({
@@ -62,18 +61,20 @@ export default defineComponent({
     const data: Ref<Ingredient> = ref({
       ...(props.ingredient?.value || stubIngredient),
     });
-    const unitsList: ComputedRef<Unit[]> = computed(
-      () => store.state.units.unitsList
-    );
+    const unitsList = computed(() => store.state.units.unitsList);
 
     const updateName = (name: string): void => {
       data.value.name = name;
     };
 
     const updateUnits = (units: string[]): void => {
-      data.value.units = unitsList.value.filter((unit) =>
-        units.includes(unit._id)
-      );
+      if (
+        JSON.stringify(units) !==
+        JSON.stringify(data.value.units.map((unit) => unit._id))
+      ) {
+        data.value.units =
+          unitsList.value?.filter((unit) => units.includes(unit._id)) || [];
+      }
     };
 
     return {

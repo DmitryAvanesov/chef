@@ -1,18 +1,6 @@
 <template>
-  <ion-item-sliding class="list-sliding-item" :ref="$props.recipe._id">
+  <ion-item-sliding class="list-sliding-item" ref="listSlidingItemRef">
     <ion-item class="list-item" :href="`${$route.path}/${$props.recipe._id}`">
-      <div>
-        <action-button
-          v-for="(actionButton, index) in actionButtons"
-          class="action-button"
-          :color="actionButton.color"
-          :icon="actionButton.icon"
-          :title="actionButton.title"
-          :callback="actionButton.callback"
-          :key="index"
-          :style="{ marginRight: `${index * 36}px` }"
-        ></action-button>
-      </div>
       <div class="recipe-info">
         <div class="recipe-title">
           <h2 class="name">
@@ -20,13 +8,7 @@
           </h2>
           <ion-item class="minutes-block" lines="none">
             <ion-text class="minutes-label">
-              {{
-                $props.recipe.stages.reduce(
-                  (previousValue, currentValue) =>
-                    previousValue + currentValue.minutes,
-                  0
-                )
-              }}
+              {{ $props.recipe.minutes || 0 }}
             </ion-text>
             <ion-icon class="time-icon" :icon="time"></ion-icon>
           </ion-item>
@@ -43,8 +25,7 @@
             {{ recipeIngredient.ingredient.name }}
           </li>
           <li v-if="$props.recipe.ingredients.length > ingredientsLimit">
-            и ещё
-            {{ $props.recipe.ingredients.length - ingredientsLimit }}
+            и ещё {{ $props.recipe.ingredients.length - ingredientsLimit }}
           </li>
         </ul>
       </div>
@@ -60,50 +41,52 @@
       ></div>
     </ion-item>
     <ion-item-options class="item-options" side="start">
-      <ion-item-option
-        color="primary"
-        @click="openModal($refs[$props.recipe._id])"
-      >
+      <ion-item-option color="tertiary" @click="refreshImage()">
+        Обновить изображение
+      </ion-item-option>
+      <ion-item-option color="primary" @click="openModal()">
         Редактировать
       </ion-item-option>
-      <ion-item-option color="danger" @click="deleteRecipe()"
-        >Удалить</ion-item-option
-      >
+      <ion-item-option color="danger" @click="deleteRecipe()">
+        Удалить
+      </ion-item-option>
     </ion-item-options>
   </ion-item-sliding>
 </template>
 
 <script lang="ts">
 import RecipeModal from "@/components/recipes/RecipeModal.vue";
-import ActionButton from "@/components/shared/ActionButton.vue";
 import { useRootStore } from "@/store";
 import type { Recipe } from "@/types/recipes";
-import type { ActionButtonData } from "@/types/shared";
 import {
   IonIcon,
+  IonItem,
   IonItemOption,
   IonItemOptions,
+  IonItemSliding,
   IonText,
   isPlatform,
   modalController,
   toastController,
 } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
-import { refresh, time } from "ionicons/icons";
-import { onMounted, watch } from "vue";
+import { time } from "ionicons/icons";
+import { onMounted, ref, watch } from "vue";
 
 export default defineComponent({
   name: "RecipeItem",
   components: {
-    ActionButton,
     IonIcon,
     IonText,
     IonItemOptions,
     IonItemOption,
+    IonItemSliding,
+    IonItem,
   },
   props: ["recipe"],
   setup(props) {
     const store = useRootStore();
+    const listSlidingItemRef = ref();
     const ingredientsLimit = 3;
 
     onMounted(() => {
@@ -149,6 +132,8 @@ export default defineComponent({
       } else {
         await openToast(result.status);
       }
+
+      await listSlidingItemRef.value.$el.close();
     };
 
     const openToast = async (status: number) => {
@@ -164,7 +149,7 @@ export default defineComponent({
       return toast.present();
     };
 
-    const openModal = async (item: HTMLIonItemSlidingElement) => {
+    const openModal = async () => {
       const modal = await modalController.create({
         component: RecipeModal,
         componentProps: {
@@ -173,29 +158,21 @@ export default defineComponent({
         },
         ...(isPlatform("desktop") ? { cssClass: "modal-desktop" } : {}),
       });
-      await item.close();
+      await listSlidingItemRef.value.$el.close();
 
       return modal.present();
     };
 
     const deleteRecipe = () => {
-      store.dispatch("recipes/deleteRecipe", props.recipe);
+      store.dispatch("recipes/deleteRecipe", props.recipe._id);
     };
-
-    const actionButtons: ActionButtonData[] = [
-      {
-        color: "warning",
-        icon: refresh,
-        title: "Обновить изображение",
-        callback: refreshImage,
-      },
-    ];
 
     return {
       RecipeModal,
+      listSlidingItemRef,
       ingredientsLimit,
-      actionButtons,
       openModal,
+      refreshImage,
       deleteRecipe,
       time,
     };
@@ -209,22 +186,13 @@ export default defineComponent({
     --inner-padding-end: 0;
     --padding-start: 0;
     --background-hover: transparent;
+    --min-height: 120px;
     cursor: pointer;
-
-    .action-button {
-      display: none;
-    }
-
-    &:hover {
-      .action-button {
-        display: block;
-      }
-    }
 
     .recipe-info {
       display: flex;
       flex-direction: column;
-      min-width: 284px;
+      min-width: 265px;
 
       .recipe-title {
         display: flex;

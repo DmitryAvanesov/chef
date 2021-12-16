@@ -8,7 +8,6 @@
           placeholder="Выберите ингредиент"
           cancel-text="Отмена"
           ok-text="ОК"
-          interface="popover"
           :value="data.ingredient._id"
           :disabled="$props.recipeIngredient"
           @ionChange="updateIngredient($event.target.value)"
@@ -107,7 +106,7 @@ export default defineComponent({
       }),
     });
     const ingredientsList: ComputedRef<Ingredient[]> = computed(() => [
-      ...store.state.ingredients.ingredientsList.filter((ingredient) =>
+      ...(store.state.ingredients.ingredientsList?.filter((ingredient) =>
         props.recipeIngredient
           ? ingredient._id === props.recipeIngredient.ingredient._id
           : !props.recipe.ingredients
@@ -116,14 +115,15 @@ export default defineComponent({
                   recipeIngredient.ingredient._id
               )
               .includes(ingredient._id)
-      ),
+      ) || []),
     ]);
-    const unitsList: ComputedRef<Unit[]> = computed(() =>
-      store.state.units.unitsList.filter((unit) =>
-        data.value.ingredient.units
-          .map((ingredientUnit) => ingredientUnit._id)
-          .includes(unit._id)
-      )
+    const unitsList: ComputedRef<Unit[]> = computed(
+      () =>
+        store.state.units.unitsList?.filter((unit) =>
+          data.value.ingredient.units
+            .map((ingredientUnit) => ingredientUnit._id)
+            .includes(unit._id)
+        ) || []
     );
 
     const updateIngredient = (ingredientId: string): void => {
