@@ -5,9 +5,9 @@
         <ion-card>
           <ion-card-content>
             <ion-item>
-              <ion-label class="minutes-label" position="stacked"
-                >Продолжительность, мин.</ion-label
-              >
+              <ion-label class="minutes-label" position="stacked">
+                Продолжительность, мин.
+              </ion-label>
               <ion-range
                 :min="minMinutes"
                 :max="maxMinutes"
@@ -33,13 +33,14 @@
               <ion-label position="stacked">Ингредиенты</ion-label>
               <ion-select
                 multiple
+                placeholder="Выберите ингредиенты"
                 :value="data.ingredients"
                 @ionChange="filterByIngredients($event.target.value)"
               >
                 <ion-select-option
                   v-for="ingredient in ingredientsList"
-                  :key="ingredient._id"
-                  :value="ingredient._id"
+                  :key="ingredient?._id"
+                  :value="ingredient?._id"
                 >
                   {{ ingredient.name }}
                 </ion-select-option>
@@ -62,10 +63,11 @@ import {
   IonRow,
   IonSelect,
   IonSelectOption,
+  onIonViewDidEnter,
 } from "@ionic/vue";
 import { computed, defineComponent } from "@vue/runtime-core";
 import type { Ref } from "vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 export default defineComponent({
   name: "RecipesFilters",
@@ -86,10 +88,24 @@ export default defineComponent({
     const ingredientsList = computed(() => [
       ...(store.state.ingredients.ingredientsList || []),
     ]);
-    const minMinutes = computed(() =>
-      Math.min(...recipesList.value.map((recipe) => recipe.minutes || 0))
-    );
-    const maxMinutes = 46;
+    const minMinutes = ref();
+    const maxMinutes = ref();
+
+    watch(recipesList, (newRecipesList, oldRecipeList) => {
+      if (!oldRecipeList.length) {
+        const recipeMinutes = newRecipesList.map(
+          (recipe) => recipe.minutes || 0
+        );
+
+        minMinutes.value = Math.min(...recipeMinutes);
+        maxMinutes.value = Math.max(...recipeMinutes);
+        console.log(minMinutes.value, maxMinutes.value);
+      }
+    });
+
+    onIonViewDidEnter(() => {
+      console.log(recipesList);
+    });
 
     const filterByIngredients = (ingredients: string[]) => {
       data.value.ingredients = ingredients;
@@ -101,7 +117,6 @@ export default defineComponent({
         recipesFilterMinutes.minutesFrom !== data.value.minutesFrom ||
         recipesFilterMinutes.minutesTo !== data.value.minutesTo
       ) {
-        console.log(data.value, recipesFilterMinutes);
         data.value = { ...data.value, ...recipesFilterMinutes };
         store.dispatch("recipes/getRecipes", data.value);
       }

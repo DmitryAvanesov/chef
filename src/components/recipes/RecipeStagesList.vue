@@ -40,12 +40,12 @@
 import RecipeStageItem from "@/components/recipes/RecipeStageItem.vue";
 import RecipeStageModal from "@/components/recipes/RecipeStageModal.vue";
 import AddButton from "@/components/shared/AddButton.vue";
+import EmptyData from "@/components/shared/EmptyData.vue";
 import { useRootStore } from "@/store";
 import type { RecipeStage } from "@/types/recipe-stages";
 import { IonCol, IonRow, IonGrid, IonList } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 import { time, create, close } from "ionicons/icons";
-import EmptyData from "@/components/shared/EmptyData.vue";
 
 export default defineComponent({
   name: "RecipeStagesList",

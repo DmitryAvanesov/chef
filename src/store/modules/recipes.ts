@@ -1,9 +1,9 @@
 import { apiDelete, apiGet, apiPatch, apiPost } from "@/api";
+import type { ApiQuery } from "@/types/api";
 import type { IngredientsState } from "@/types/ingredients";
 import type { Recipe, RecipesState } from "@/types/recipes";
 import type { RootState } from "@/types/root";
 import type { ActionContext } from "vuex";
-import { ApiQuery } from "@/types/api";
 
 const state = (): RecipesState => ({
   route: "recipes",
