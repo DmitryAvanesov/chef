@@ -14,6 +14,7 @@
                 color="primary"
                 :dual-knobs="true"
                 :pin="true"
+                :debounce="500"
                 :value="{
                   lower: data.minutesFrom || minMinutes,
                   upper: data.minutesTo || maxMinutes,
@@ -99,12 +100,7 @@ export default defineComponent({
 
         minMinutes.value = Math.min(...recipeMinutes);
         maxMinutes.value = Math.max(...recipeMinutes);
-        console.log(minMinutes.value, maxMinutes.value);
       }
-    });
-
-    onIonViewDidEnter(() => {
-      console.log(recipesList);
     });
 
     const filterByIngredients = (ingredients: string[]) => {
